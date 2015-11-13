@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Globals and Constants</name>
+    <events>
+        <event-group description="" sid="9305137800727129" title="Variables" />
+        <comment>Interface board program counter</comment>
+        <variable comment="Program Counter (8 bit)" constant="0" name="programCounter" sid="4740604969627561" static="0" type="number">0</variable>
+        <comment>Output latches</comment>
+        <variable comment="Output latch values encoded as 16 bit integer" constant="0" name="outputLatches" sid="9834039136646932" static="0" type="number">65535</variable>
+        <comment>14500 Result Register</comment>
+        <variable comment="14500 Result Register" constant="0" name="resultRegister" sid="4976530126733518" static="0" type="number">0</variable>
+        <comment>14500 Input enabled flag</comment>
+        <variable comment="Non zero when input enabled" constant="0" name="ienFlag" sid="8824801874608698" static="0" type="number">0</variable>
+        <comment>14500 Output enabled flag</comment>
+        <variable comment="Non zero when output enabled" constant="0" name="oenFlag" sid="6694416484725304" static="0" type="number">0</variable>
+        <comment>Non zero when running, zero when in step mode</comment>
+        <variable comment="Non zero when running " constant="0" name="isInRunMode" sid="151975670399916" static="0" type="number">0</variable>
+        <comment>Non zero when independently running program</comment>
+        <variable comment="Non zero if free running e.g. the free run latch is set" constant="0" name="isFreeRunning" sid="8099245556370388" static="0" type="number">0</variable>
+        <event-group description="" sid="6284540243146058" title="Constants" />
+        <comment>Used in hex -&gt; decimal conversion</comment>
+        <variable comment="Hex char to Number conversion" constant="1" name="HEXADECIMAL" sid="5749052428077598" static="0" type="text">0123456789ABCDEF</variable>
+        <comment>Base size of interface objects</comment>
+        <variable comment="Base size of objects" constant="0" name="BASESIZE" sid="8375396845239952" static="0" type="number">32</variable>
+        <comment>Specifies which bit is used to read RR, and which Input bits are directly connected to output latches (e.g. used as data storage)</comment>
+        <variable comment="The I/O Address read to read the Result Register" constant="1" name="INPUT_BIT_RR" sid="4652439847024535" static="0" type="number">15</variable>
+        <variable comment="Lowest number of bit used as storage (e.g. wired back to Input)" constant="1" name="INPUT_BIT_DATA_LOW" sid="7367817872066557" static="0" type="number">8</variable>
+        <variable comment="Highest number of bit used as storage (e.g. wired back to Input)" constant="1" name="INPUT_BIT_DATA_HIGH" sid="464197447180041" static="0" type="number">14</variable>
+        <comment>14500 Opcodes</comment>
+        <variable comment="14500 Opcodes" constant="1" name="OPCODES" sid="7201145237563113" static="0" type="text">NOP0:LD:LDC:AND:ANDC:OR:ORC:XNOR:STO:STOC:IEN:OEN:JMP:RTN:SKZ:NOPF</variable>
+    </events>
+</c2eventsheet>

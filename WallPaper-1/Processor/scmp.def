@@ -1,0 +1,206 @@
+// ****************************************************************************************************************
+// ****************************************************************************************************************
+//
+//										SC/MP Processor Definition File
+//
+// ****************************************************************************************************************
+// ****************************************************************************************************************
+//
+//	Defined Registers, and others:
+//
+//		AC, SR, EX		(8 bit)			
+//		SR is 			(CY/L OV SB SA IE F2 F1 F0)
+//		P0, P1, P2, P3	(16 bit)
+//
+//		OPERAND 		(8 bit prefetched if OPCODE is >= $80)
+//		EA 				(16 bit effective address)
+//		TEMP16 			(16 bit temporary for XPPC)
+//		CYCLES 			(16 bit cycle counter)
+//		FRAMESTOSKIP	(Whole frames to skip - for DLY $xx)
+//
+//	Substitutions:
+//
+//		$N 				Operand
+//		$P 				Pointer register (P0-P3), mnemonic $N(P0) should be converted to $O (offset from PC)
+//		@CHECKEX 		For Memory reference - checks for OPERAND = $80, use E instead.
+//		@EAC			Calculate EAC using operand and pointer register (sign extend it)
+//		@PREINDEX 		Pre autoindex checks
+//		@POSTINDEX		Post autoindex checks.
+//
+//	Types and Macros:
+//	
+//		BYTE8 			Unsigned 8 bit 
+//		WORD16 			Unsigned 16 bit.
+//		READ/WRITE 		Memory access Macros.
+//
+// ****************************************************************************************************************
+// ****************************************************************************************************************
+
+// ****************************************************************************************************************
+//											Register Definitions
+// ****************************************************************************************************************
+
+:static BYTE8 	AC,SR,EX;												// CPU Registers (8 bit)
+:static WORD16 	P0,P1,P2,P3;											// CPU Registers (16 bit)
+:static WORD16  CYCLES;													// Cycle counter.
+:static WORD16 	FRAMESTOSKIP;											// Frames to skip wholesale (for DLY)
+:static BYTE8 	OPCODE,OPERAND;											// Pre-fetched Opcode and Operand
+:static WORD16 	EA,TEMP16;												// Work Registers
+
+// ****************************************************************************************************************
+//								   Code to Reset CPU, Execute one instruction
+// ****************************************************************************************************************
+
+:void SCMPReset(void) {
+:	AC = SR = EX = P0 = P1 = P2 = P3 = 0;								// Clear all those registers.		
+:	CYCLES = 0;FRAMESTOSKIP = 0;										// Clear timing counters.
+:}
+
+:#define INC1612(pr)		pr = (pr + 1) & 0xFFFF 						// Technically inaccurate but faster.
+
+:void SCMPExecute(void) {
+:	INC1612(P0);OPCODE = READ(P0);										// Read opcode and increment P0
+:	if ((OPCODE & 0x80) != 0) {											// If bit 7 of opcode is set it is two bytes.
+:		INC1612(P0);OPERAND = READ(P0);									// Read operand and increment P0
+:	}
+:	switch(OPCODE) {													// With a switch, execute the opcode fetched.
+:		#include "_opcodes.h"	
+:	}
+:}
+
+// ****************************************************************************************************************
+// 										Memory Reference Instructions
+// ****************************************************************************************************************
+
+C0-C3	"LD $N($P)"		18	@CHECKEX;@EAC;AC = READ(EA)
+C5-C7 	"LD @$N($P)"	18 	@CHECKEX;@PREINDEX;@EAC;AC = READ(EA);@POSTINDEX
+
+C8-CB	"ST $N($P)"		18	@CHECKEX;@EAC;WRITE(EA,AC)
+CD-CF 	"ST @$N($P)"	18 	@CHECKEX;@PREINDEX;@EAC;WRITE(EA,AC);@POSTINDEX
+
+D0-D3 	"AND $N($P)"	18 	@CHECKEX;@EAC;AC = AC & READ(EA)
+D5-D7 	"AND @$N($P)"	18	@CHECKEX;@PREINDEX;@EAC;AC = AC & READ(EA);@POSTINDEX
+
+D8-DB 	"OR $N($P)"		18 	@CHECKEX;@EAC;AC = AC | READ(EA)
+DD-DF 	"OR @$N($P)"	18	@CHECKEX;@PREINDEX;@EAC;AC = AC | READ(EA);@POSTINDEX
+
+E0-E3 	"XOR $N($P)"	18 	@CHECKEX;@EAC;AC = AC ^ READ(EA)
+E5-E7 	"XOR @$N($P)"	18	@CHECKEX;@PREINDEX;@EAC;AC = AC ^ READ(EA);@POSTINDEX
+
+E8-EB 	"DAD $N($P)"	23 	@CHECKEX;@EAC;AC = SCMPDecimalAdd(AC,READ(EA))
+ED-EF 	"DAD @$N($P)"	23	@CHECKEX;@PREINDEX;@EAC;AC = _SCMPDecimalAdd(AC,READ(EA));@POSTINDEX
+
+F0-F3 	"ADD $N($P)"	18 	@CHECKEX;@EAC;AC = SCMPBinaryAdd(AC,READ(EA))
+F5-F7 	"ADD @$N($P)"	18	@CHECKEX;@PREINDEX;@EAC;AC = _SCMPBinaryAdd(AC,READ(EA));@POSTINDEX
+
+F8-FB 	"CAD $N($P)"	20 	@CHECKEX;@EAC;AC = SCMPBinaryAdd(AC,READ(EA) ^ 0xFF)
+FD-FF 	"CAD @$N($P)"	20	@CHECKEX;@PREINDEX;@EAC;AC = _SCMPBinaryAdd(AC,READ(EA) ^ 0xFF);@POSTINDEX
+
+// ****************************************************************************************************************
+//											Arithmetic Functions
+// ****************************************************************************************************************
+
+:static BYTE8 _SCMPBinaryAdd(BYTE8 n1,BYTE8 n2) {
+:	WORD16 result = n1 + n2 + (SR >> 7);								// Calculate result, add inputs and carry/link.
+:	SR = SR & 0x3F;														// Clear OV and CY/L
+:	if ((result & 0x0100) != 0) SR = SR | 0x80;							// Set CY/L on carry out.
+:	if ((n1 & 0x80) == (n2 & 0x80)) {									// If the inputs have the same sign.
+:		if ((n1 & 0x80) != (result & 0x80)) SR = SR | 0x40;				// But the result is different, set OV.
+:	}
+:	return result & 0xFF;												// Return Byte part.
+:}
+
+:static BYTE8 _SCMPDecimalAdd(BYTE8 n1,BYTE8 n2) {
+:	WORD16 result = (n1 & 0x0F) + (n2 & 0x0F) + (SR >> 7);				// Calculate the lower digit, from lower nibbles and CY/L
+:	SR = SR & 0x7F;														// Clear Carry/Link bit (Overflow is unaffected)
+:	if (result > 0x09) {												// Carry out ?
+:		result = (result - 0xA)+0x10; 									// If so, adjust result and add 10 hex to it.
+:	}
+:	result = result + (n1 & 0xF0) + (n2 & 0xF0);						// Add the upper nibbles.
+:	if (result > 0x99) {												// Carry out ?
+:		result = result - 0xA0;											// Adjust it back.
+:		SR = SR | 0x80;													// Set Carry/Link bit.
+:	}
+:}
+
+// ****************************************************************************************************************
+// 											Immediate Instructions
+// ****************************************************************************************************************
+
+C4		"LDI $N"		10	AC = OPERAND
+D4 		"ANI $N"		10 	AC = AC & OPERAND
+DC 		"ORI $N"		10 	AC = AC | OPERAND
+E4 		"XRI $N"		10 	AC = AC ^ OPERAND
+EC 		"DAI $N"		15 	AC = _SCMPDecimalAdd(AC,OPERAND)
+F4 		"ADI $N"		11 	AC = _SCMPBinaryAdd(AC,OPERAND)
+FC	 	"CAI $N"		12 	AC = _SCMPBinaryAdd(AC,OPERAND ^ 0xFF)
+
+// ****************************************************************************************************************
+// 											Transfer Instructions
+// ****************************************************************************************************************
+
+90-93 	"JMP $N($P)"	11	@EAC;P0 = EA
+94-97	"JP $N($P)"		10	if ((AC & 0x80) == 0) { @EAC;P0 = EA; }
+98-9B	"JZ $N($P)"		10	if (AC == 0) { @EAC;P0 = EA; }
+9C-9F	"JNZ $N($P)"	10	if (AC != 0) { @EAC;P0 = EA; }
+
+// ****************************************************************************************************************
+//	 								Memory Increment/Decrement Instructions
+// ****************************************************************************************************************
+
+A8-AB 	"ILD $N($P)"	22 	@EAC;AC = (READ(EA)+1) & 0xFF;WRITE(EA,AC)
+B8-BB 	"DLD $N($P)"	22 	@EAC;AC = (READ(EA)-1) & 0xFF;WRITE(EA,AC)
+
+// ****************************************************************************************************************
+// 									Extension Register Instructions
+// ****************************************************************************************************************
+
+40		"LDE"			6	AC = EX
+01 		"XAE"			7	OPERAND = AC;AC = EX;EX = OPERAND 			// Use OPERAND as a temporary register to swap.
+50 		"ANE"			6 	AC = AC & EX
+58 		"ORE"			6 	AC = AC | EX
+60 		"XRE"			6 	AC = AC ^ EX
+68 		"DAE"			11 	AC = _SCMPDecimalAdd(AC,EX)
+70 		"ADE"			7 	AC = _SCMPBinaryAdd(AC,EX)
+78	 	"CAE"			8 	AC = _SCMPBinaryAdd(AC,EX ^ 0xFF)
+
+// ****************************************************************************************************************
+// 									Pointer Register Move Instructions
+// ****************************************************************************************************************
+
+																		// Swap lower 8 bits of Pn and AC
+30-33 	"XPAL $P"		8 	OPERAND = $P & 0xFF;$P = ($P & 0xFF00)|AC;AC = OPERAND
+																		// Swap upper 8 bits of Pn and AC
+34-37 	"XPAH $P"		8 	OPERAND = ($P >> 8) & 0xFF;$P = ($P & 0x00FF)|(((WORD16)AC) << 8);AC = OPERAND
+3C 		"XPPC P0"		7	;											// XPPC P0 is a no-op 
+3D-3F 	"XPPC $P"		7 	TEMP16 = $P;$P = P0;P0 = TEMP16 			// Swap Pn and P0.
+
+// ****************************************************************************************************************
+//								Shift, Rotate, Serial I/O Instructions
+// ****************************************************************************************************************
+
+19 		"SIO"			5 	EX = (EX >> 1) 								// a temporary fudge until SIO hardware done.
+																	
+																		// SR shift AC right once.
+1C 		"SR"			5 	AC = (AC >> 1)
+																		// SRL shift AC right once, CY/L copied to bit 7.
+1D 		"SRL"			5 	AC = (AC >> 1) | (SR & 0x80)
+																		// RR rotate AC right once.
+1E 		"RR"			5	AC = ((AC >> 1) | (AC << 7)) & 0xFF
+																		// RRL rotate AC right once, CY/L copied to bit 7
+																		// Old bit 0 of AC to CY/L.
+1F 		"RRL"			5 	OPERAND = AC & 1;AC = ((AC >> 1) | (SR & 0x80);SR = (SR & 0x7F) | (OPERAND << 7)
+
+// ****************************************************************************************************************
+//									Miscellaneous Instructions
+// ****************************************************************************************************************
+
+00 		"HALT" 			5 	;											// We do not decode H-Flag.
+02 		"CCL"			5 	SR = SR & 0x7F
+03 		"SCL"			5 	SR = SR | 0x80
+05 		"IEN"			6 	SR = SR | 0x08;								// Interrupts are not used. If we do use them, note
+04 		"DINT"			6 	SR = SR & 0xF7								// that IEN is delayed one instruction.
+06 		"CSA"			5 	SR = (SR & 0xCF) | SCMPReadSenseFlags()
+07 		"CAS"			6 	SR = AC										// SR bits 4 and 5 (SA/SB) will be wrong, usually :)
+08 		"NOP"			5 	; 											// Build using code in CSA.
+8F 		"DLY $N"		13 	SCMPSetDelayCycles(OPERAND,AC)

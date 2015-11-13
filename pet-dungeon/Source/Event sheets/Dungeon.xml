@@ -1,0 +1,483 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Dungeon</name>
+    <events>
+        <event-group description="Builds the dungeon, the maze and the visibility layer" sid="848590517188351" title="Dungeon Code" />
+        <comment>Set the size and position of the two tilemaps</comment>
+        <event-block sid="6387313403472435">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="7090038565124989" type="System" />
+            </conditions>
+            <actions>
+                <action id="-3" name="Set position" sid="8945854267857723" type="Map">
+                    <param id="0" name="X">0</param>
+                    <param id="1" name="Y">TOPMARGIN</param>
+                </action>
+                <action id="-7" name="Set size" sid="5968079964029651" type="Map">
+                    <param id="0" name="Width">HMAP*CELLSIZE</param>
+                    <param id="1" name="Height">VMAP*CELLSIZE</param>
+                </action>
+                <action id="-3" name="Set position" sid="8462029922149073" type="Visibility">
+                    <param id="0" name="X">0</param>
+                    <param id="1" name="Y">TOPMARGIN</param>
+                </action>
+                <action id="-7" name="Set size" sid="8676673937351874" type="Visibility">
+                    <param id="0" name="Width">HMAP*CELLSIZE</param>
+                    <param id="1" name="Height">VMAP*CELLSIZE</param>
+                </action>
+            </actions>
+            <sub-events>
+                <comment>Clear the tilemaps to their initial states</comment>
+                <event-block sid="1878863641796667">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="3514336912310083" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="3" name="Set tile range" sid="9838456077414363" type="Visibility">
+                            <param id="0" name="Tile X">0</param>
+                            <param id="1" name="Tile Y">0</param>
+                            <param id="2" name="Width">HMAP</param>
+                            <param id="3" name="Height">VMAP</param>
+                            <param id="4" name="Tile">VTILE_CLOSED</param>
+                            <param id="5" name="State">0</param>
+                        </action>
+                        <action id="3" name="Set tile range" sid="4452012481149221" type="Map">
+                            <param id="0" name="Tile X">0</param>
+                            <param id="1" name="Tile Y">0</param>
+                            <param id="2" name="Width">HMAP</param>
+                            <param id="3" name="Height">VMAP</param>
+                            <param id="4" name="Tile">TILE_WALL</param>
+                            <param id="5" name="State">0</param>
+                        </action>
+                        <action id="3" name="Set tile range" sid="1131636568793669" type="Map">
+                            <param id="0" name="Tile X">0</param>
+                            <param id="1" name="Tile Y">0</param>
+                            <param id="2" name="Width">HMAP</param>
+                            <param id="3" name="Height">1</param>
+                            <param id="4" name="Tile">TILE_FRAME</param>
+                            <param id="5" name="State">0</param>
+                        </action>
+                        <action id="3" name="Set tile range" sid="7240927136169392" type="Map">
+                            <param id="0" name="Tile X">0</param>
+                            <param id="1" name="Tile Y">0</param>
+                            <param id="2" name="Width">1</param>
+                            <param id="3" name="Height">VMAP</param>
+                            <param id="4" name="Tile">TILE_FRAME</param>
+                            <param id="5" name="State">0</param>
+                        </action>
+                        <action id="3" name="Set tile range" sid="4548005910185793" type="Map">
+                            <param id="0" name="Tile X">0</param>
+                            <param id="1" name="Tile Y">VMAP-1</param>
+                            <param id="2" name="Width">HMAP</param>
+                            <param id="3" name="Height">1</param>
+                            <param id="4" name="Tile">TILE_FRAME</param>
+                            <param id="5" name="State">0</param>
+                        </action>
+                        <action id="3" name="Set tile range" sid="5712584352790792" type="Map">
+                            <param id="0" name="Tile X">HMAP-1</param>
+                            <param id="1" name="Tile Y">0</param>
+                            <param id="2" name="Width">1</param>
+                            <param id="3" name="Height">VMAP</param>
+                            <param id="4" name="Tile">TILE_FRAME</param>
+                            <param id="5" name="State">0</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <variable constant="0" name="count" sid="421846215913613" static="0" type="number">0</variable>
+                <comment>Number of rooms to create</comment>
+                <event-block sid="6152771843061719">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="3081742770413522" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="8886307812717728" type="System">
+                            <param id="0" name="Variable">count</param>
+                            <param id="1" name="Value">round(HMAP*VMAP/76)</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>Keep creating till all created</comment>
+                <event-block sid="9347578815132298">
+                    <conditions>
+                        <condition id="-23" name="While" sid="8716907158497692" type="System" />
+                        <condition id="-14" name="Compare variable" sid="6349494682597545" type="System">
+                            <param id="0" name="Variable">count</param>
+                            <param id="1" name="Comparison">4</param>
+                            <param id="2" name="Value">0</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-3" name="Create object" sid="6980428794744728" type="System">
+                            <param id="0" name="Object to create">RoomMarker</param>
+                            <param id="1" name="Layer">0</param>
+                            <param id="2" name="X">100</param>
+                            <param id="3" name="Y">100</param>
+                        </action>
+                        <action id="-7" name="Set size" sid="8249866020899382" type="RoomMarker">
+                            <param id="0" name="Width">floor(random(2,11))*CELLSIZE</param>
+                            <param id="1" name="Height">floor(random(2,11))*CELLSIZE</param>
+                        </action>
+                        <action id="-3" name="Set position" sid="590948705769861" type="RoomMarker">
+                            <param id="0" name="X">floor(random(2,HMAP-1-RoomMarker.Width/CELLSIZE))*CELLSIZE</param>
+                            <param id="1" name="Y">floor(random(2,VMAP-1-RoomMarker.Height/CELLSIZE))*CELLSIZE+TOPMARGIN</param>
+                        </action>
+                        <action id="-11" name="Subtract from" sid="9586461287755682" type="System">
+                            <param id="0" name="Variable">count</param>
+                            <param id="1" name="Value">1</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <comment>Are we overlapping a currently existing room. If so, move it off screen so it won&apos;t overlap any more (destroy won&apos;t remove it immediately) and re-increment the to do count</comment>
+                        <event-block sid="3099495499971919">
+                            <conditions>
+                                <condition id="1" name="Is overlapping another object" sid="467383954482142" type="RoomMarker">
+                                    <param id="0" name="Object">RoomMarkerFamily</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-3" name="Set position" sid="5246677488306112" type="RoomMarker">
+                                    <param id="0" name="X">-999999</param>
+                                    <param id="1" name="Y">-999999</param>
+                                </action>
+                                <action id="-9" name="Destroy" sid="32003826887314" type="RoomMarker" />
+                                <action id="-10" name="Add to" sid="3164685630534366" type="System">
+                                    <param id="0" name="Variable">count</param>
+                                    <param id="1" name="Value">1</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Open up all rooms - replace the room marker with actual room tiles.</comment>
+        <event-block sid="3143164693680163">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="2921896965311012" type="System" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <variable constant="0" name="h" sid="9336623433962894" static="0" type="number">0</variable>
+                <variable constant="0" name="w" sid="7432817123108289" static="0" type="number">0</variable>
+                <event-block sid="5808013571521761">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="7703785901685321" type="System">
+                            <param id="0" name="Object">RoomMarker</param>
+                        </condition>
+                        <condition id="-3" name="Is on-screen" sid="6528521328808707" type="RoomMarker" />
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="3834917867920302" type="System">
+                            <param id="0" name="Variable">w</param>
+                            <param id="1" name="Value">RoomMarker.Width/CELLSIZE</param>
+                        </action>
+                        <action id="-9" name="Set value" sid="6401830156401032" type="System">
+                            <param id="0" name="Variable">h</param>
+                            <param id="1" name="Value">RoomMarker.Height/CELLSIZE</param>
+                        </action>
+                        <action id="3" name="Set tile range" sid="7883671354873938" type="Map">
+                            <param id="0" name="Tile X">Map.PositionToTileX(RoomMarker.X)</param>
+                            <param id="1" name="Tile Y">Map.PositionToTileY(RoomMarker.Y)</param>
+                            <param id="2" name="Width">w</param>
+                            <param id="3" name="Height">h</param>
+                            <param id="4" name="Tile">TILE_ROOM</param>
+                            <param id="5" name="State">0</param>
+                        </action>
+                        <action disabled="1" id="1" name="Append text" sid="9449578850073775" type="debugText">
+                            <param id="0" name="Text">&quot; &quot; &amp; RoomMarker.X</param>
+                        </action>
+                        <action id="-3" name="Create object" sid="9795088419354928" type="System">
+                            <param id="0" name="Object to create">Gold</param>
+                            <param id="1" name="Layer">1</param>
+                            <param id="2" name="X">floor(random(0,w))*CELLSIZE+RoomMarker.X</param>
+                            <param id="3" name="Y">floor(random(0,h))*CELLSIZE+RoomMarker.Y</param>
+                        </action>
+                        <action id="-3" name="Create object" sid="9770121775744998" type="System">
+                            <param id="0" name="Object to create">Monster</param>
+                            <param id="1" name="Layer">1</param>
+                            <param id="2" name="X">floor(random(0,w))*CELLSIZE+RoomMarker.X</param>
+                            <param id="3" name="Y">floor(random(0,h))*CELLSIZE+RoomMarker.Y</param>
+                        </action>
+                        <action id="2" name="Stop" sid="1500985087266753" type="Monster" />
+                        <action id="-10" name="Set value" sid="1907877626606121" type="Monster">
+                            <param id="0" name="Instance variable">typeID</param>
+                            <param id="1" name="Value">floor(random(0,Monster.AnimationFrameCount))</param>
+                        </action>
+                        <action id="5" name="Set frame" sid="6596695340517187" type="Monster">
+                            <param id="0" name="Frame number">Monster.typeID</param>
+                        </action>
+                        <action id="-10" name="Set value" sid="3568722809948585" type="Monster">
+                            <param id="0" name="Instance variable">name</param>
+                            <param id="1" name="Value">tokenat(MONSTER_DEF,Monster.typeID*2,&quot;:&quot;)</param>
+                        </action>
+                        <action id="-10" name="Set value" sid="5770935127261013" type="Monster">
+                            <param id="0" name="Instance variable">monsterHPCalcValue</param>
+                            <param id="1" name="Value">int(tokenat(MONSTER_DEF,Monster.typeID*2+1,&quot;:&quot;))</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <event-block sid="1180082549775975">
+                            <conditions>
+                                <condition id="-23" name="While" sid="7131150691864565" type="System" />
+                                <condition id="1" name="Is overlapping another object" sid="1700928827161744" type="Monster">
+                                    <param id="0" name="Object">Gold</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-3" name="Set position" sid="1683645702255699" type="Monster">
+                                    <param id="0" name="X">floor(random(0,w))*CELLSIZE+RoomMarker.X</param>
+                                    <param id="1" name="Y">floor(random(0,h))*CELLSIZE+RoomMarker.Y</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <event-block sid="3292269143569377">
+                            <conditions>
+                                <condition id="-1" name="Every tick" sid="4407998307892755" type="System" />
+                            </conditions>
+                            <actions>
+                                <action id="-10" name="Set value" sid="6086191364418407" type="Monster">
+                                    <param id="0" name="Instance variable">xTarget</param>
+                                    <param id="1" name="Value">Monster.X</param>
+                                </action>
+                                <action id="-10" name="Set value" sid="50631805523459" type="Monster">
+                                    <param id="0" name="Instance variable">yTarget</param>
+                                    <param id="1" name="Value">Monster.Y</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Scan the paths right and down, place player on a path somewhere.</comment>
+        <event-block sid="3074116217536372">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="9462356745000984" type="System" />
+            </conditions>
+            <actions>
+                <action id="-3" name="Create object" sid="372316759634259" type="System">
+                    <param id="0" name="Object to create">Player</param>
+                    <param id="1" name="Layer">1</param>
+                    <param id="2" name="X">floor(random(1,HMAP))*CELLSIZE+CELLSIZE/2</param>
+                    <param id="3" name="Y">floor(random(1,VMAP))*CELLSIZE+CELLSIZE/2</param>
+                </action>
+            </actions>
+            <sub-events>
+                <event-block sid="7774203882256531">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="176027050716623" type="System">
+                            <param id="0" name="Object">RoomMarker</param>
+                        </condition>
+                        <condition id="-3" name="Is on-screen" sid="6055475659234647" type="RoomMarker" />
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Call function" sid="1162557228546739" type="Function">
+                            <param id="0" name="Name">&quot;ScanPath&quot;</param>
+                            <param id="1" name="Parameter {n}">Map.PositionToTileX(RoomMarker.X)+RoomMarker.Width/CELLSIZE{###}Map.PositionToTileY(RoomMarker.Y)+1{###}1{###}0{###}0</param>
+                        </action>
+                        <action id="0" name="Call function" sid="9619333198979941" type="Function">
+                            <param id="0" name="Name">&quot;ScanPath&quot;</param>
+                            <param id="1" name="Parameter {n}">Map.PositionToTileX(RoomMarker.X)+1{###}Map.PositionToTileY(RoomMarker.Y)+RoomMarker.Height/CELLSIZE{###}0{###}1{###}0</param>
+                        </action>
+                        <action id="-9" name="Destroy" sid="4489875224466961" type="RoomMarker" />
+                    </actions>
+                </event-block>
+                <comment>Keep moving player till we find a path</comment>
+                <event-block sid="3306191795759018">
+                    <conditions>
+                        <condition id="-23" name="While" sid="5297547619521872" type="System" />
+                        <condition id="0" name="Compare tile at" sid="5751236296781012" type="Map">
+                            <param id="0" name="Tile X">Map.PositionToTileX(Player.X)</param>
+                            <param id="1" name="Tile Y">Map.PositionToTileY(Player.Y)</param>
+                            <param id="2" name="Comparison">1</param>
+                            <param id="3" name="Tile">TILE_PATH</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-3" name="Set position" sid="1731971011168209" type="Player">
+                            <param id="0" name="X">floor(random(1,HMAP-1))*CELLSIZE+CELLSIZE/2</param>
+                            <param id="1" name="Y">floor(random(1,VMAP-1))*CELLSIZE+CELLSIZE/2</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-group description="Called recursively to open up paths to the south and the east" sid="8986490599641587" title="Scan Path Function" />
+        <event-block sid="1400441706422354">
+            <conditions>
+                <condition id="0" name="On function" sid="4839414230690419" type="Function">
+                    <param id="0" name="Name">&quot;ScanPath&quot;</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="1" name="Set return value" sid="5020363847464247" type="Function">
+                    <param id="0" name="Value">0</param>
+                </action>
+            </actions>
+            <sub-events>
+                <comment>Check if we are still on the map</comment>
+                <event-block sid="7787383107254374">
+                    <conditions>
+                        <condition id="1" name="Compare parameter" sid="6429418110011813" type="Function">
+                            <param id="0" name="Index">0</param>
+                            <param id="1" name="Comparison">2</param>
+                            <param id="2" name="Value">HMAP-2</param>
+                        </condition>
+                        <condition id="1" name="Compare parameter" sid="3544847917111372" type="Function">
+                            <param id="0" name="Index">1</param>
+                            <param id="1" name="Comparison">2</param>
+                            <param id="2" name="Value">VMAP-2</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <variable constant="0" name="rv" sid="9549090451451793" static="0" type="number">0</variable>
+                        <comment>Have we found a room, if so return 2, which tells caller to plot a door where they are</comment>
+                        <event-block sid="1115069711161755">
+                            <conditions>
+                                <condition id="0" name="Compare tile at" sid="5188088080138849" type="Map">
+                                    <param id="0" name="Tile X">Function.Param(0)</param>
+                                    <param id="1" name="Tile Y">Function.Param(1)</param>
+                                    <param id="2" name="Comparison">0</param>
+                                    <param id="3" name="Tile">TILE_ROOM</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="1" name="Set return value" sid="4307260254281445" type="Function">
+                                    <param id="0" name="Value">2</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                        <comment>If not, call function recursively with next position along, and save value</comment>
+                        <event-block sid="1035326838668802">
+                            <conditions>
+                                <condition id="-22" name="Else" sid="7253868028264761" type="System" />
+                            </conditions>
+                            <actions>
+                                <action id="-9" name="Set value" sid="6825462989467066" type="System">
+                                    <param id="0" name="Variable">rv</param>
+                                    <param id="1" name="Value">Function.Call(&quot;ScanPath&quot;,Function.Param(0)+Function.Param(2),Function.Param(1)+Function.Param(3),Function.Param(2),Function.Param(3),Function.Param(4)+1)</param>
+                                </action>
+                                <action id="1" name="Set return value" sid="4772086412965591" type="Function">
+                                    <param id="0" name="Value">rv</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <comment>If at root level of recursion stack and plotting a path (rv = 1) plot a path instead</comment>
+                                <event-block sid="8205079579720726">
+                                    <conditions>
+                                        <condition id="1" name="Compare parameter" sid="531917338422097" type="Function">
+                                            <param id="0" name="Index">4</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">0</param>
+                                        </condition>
+                                        <condition id="-14" name="Compare variable" sid="5866824357657387" type="System">
+                                            <param id="0" name="Variable">rv</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">1</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-9" name="Set value" sid="5354809416545765" type="System">
+                                            <param id="0" name="Variable">rv</param>
+                                            <param id="1" name="Value">2</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <comment>If rv = 1 plot a path</comment>
+                                <event-block sid="7650070158218639">
+                                    <conditions>
+                                        <condition id="-14" name="Compare variable" sid="7126492820238544" type="System">
+                                            <param id="0" name="Variable">rv</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">1</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="1" name="Set tile" sid="8467925127244357" type="Map">
+                                            <param id="0" name="Tile X">Function.Param(0)</param>
+                                            <param id="1" name="Tile Y">Function.Param(1)</param>
+                                            <param id="2" name="Tile">TILE_PATH</param>
+                                            <param id="3" name="State">0</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <comment>If rv = 2 (first and last) plot a door</comment>
+                                <event-block sid="8218443360068981">
+                                    <conditions>
+                                        <condition id="-14" name="Compare variable" sid="1983015729477008" type="System">
+                                            <param id="0" name="Variable">rv</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">2</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="1" name="Set tile" sid="6259592274424767" type="Map">
+                                            <param id="0" name="Tile X">Function.Param(0)</param>
+                                            <param id="1" name="Tile Y">Function.Param(1)</param>
+                                            <param id="2" name="Tile">TILE_DOOR</param>
+                                            <param id="3" name="State">0</param>
+                                        </action>
+                                        <action id="1" name="Set return value" sid="3137862226099808" type="Function">
+                                            <param id="0" name="Value">1</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>When this is enabled, it converts the game to PET look</comment>
+        <event-block disabled="1" sid="4961085366818395">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="5767911693899981" type="System" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block disabled="1" sid="9823692117307697">
+                    <conditions>
+                        <condition id="-10" name="For" sid="8947362201581685" type="System">
+                            <param id="0" name="Name">&quot;x&quot;</param>
+                            <param id="1" name="Start index">0</param>
+                            <param id="2" name="End index">HMAP-1</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block disabled="1" sid="7896899369543708">
+                            <conditions>
+                                <condition id="-10" name="For" sid="9750484532793092" type="System">
+                                    <param id="0" name="Name">&quot;y&quot;</param>
+                                    <param id="1" name="Start index">0</param>
+                                    <param id="2" name="End index">VMAP-1</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="1" name="Set tile" sid="287985552137012" type="Map">
+                                    <param id="0" name="Tile X">loopindex(&quot;x&quot;)</param>
+                                    <param id="1" name="Tile Y">loopindex(&quot;y&quot;)</param>
+                                    <param id="2" name="Tile">Map.TileAt(loopindex(&quot;x&quot;),loopindex(&quot;y&quot;))+8</param>
+                                    <param id="3" name="State">0</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-block disabled="1" sid="9407721955109084">
+            <conditions>
+                <condition id="-18" name="On created" sid="7979678514107499" type="GameObject" />
+            </conditions>
+            <actions>
+                <action id="4" name="Set animation" sid="2464548248858143" type="GameObject">
+                    <param id="0" name="Animation">&quot;Original&quot;</param>
+                    <param id="1" name="From">1</param>
+                </action>
+            </actions>
+        </event-block>
+    </events>
+</c2eventsheet>

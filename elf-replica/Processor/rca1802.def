@@ -1,0 +1,228 @@
+// **********************************************************************************************
+// **********************************************************************************************
+//
+//									RCA1802 Processor Definition
+//
+// **********************************************************************************************
+// **********************************************************************************************
+
+// **********************************************************************************************
+//
+//	D 			8 bit Data register
+//	DF 			1 bit DF register
+//	X 			4 bit X register
+//	P 			4 bit P register
+//	Q 			1 bit Q register
+//	T 			8 bit T register
+//	R[]			16 x 16 bit words, register
+//	IE 			1 bit IE register
+//
+//	opcode 		Current opcode (these two set up in fetch)
+//	pReg 		Points to R[(opcode & 0x0F)]
+//
+//	MB/MA 		Memory access
+//	LBA 		Long branch address
+//
+//	$L 			lower 4 bits of operation code 
+//	$F 			lower 2 bits of operation code as flag number (1-4)
+//	$P 			lower 3 bits of operation code 
+//	$REG 		expression "*pReg" e.g. R[opcode & 0x0F]
+//
+// **********************************************************************************************
+
+:static WORD16 		*pReg;															// Points to current register
+																					// (e.g. &R[opcode & 0x0F])
+
+:#define FETCH8() 	MA = R[P];ADDRP(1);READ()										// 8 bit fetch.
+:#define FETCH16() 	MA = R[P];ADDRP(2);READ16() 									// 16 bit read (high,low order)
+
+:#define READMX() 	MA = R[X];READ()												// Read Mem(R[X]) into MB
+
+																					// (All can be optimised for WORD/BYTE auto truncation)
+:#define INCRX() 	R[X] = (R[X]+1) & 0xFFFF 										// Inc R[X]
+:#define DECRX() 	R[X] = (R[X]-1) & 0xFFFF 										// Dec R[X]
+:#define DECR2() 	R[2] = (R[2]-1) & 0xFFFF 										// Dec R[2]
+:#define INCREG() 	*pReg = (*pReg + 1) & 0xFFFF 									// Inc R[Opcode]
+:#define DECREG() 	*pReg = (*pReg - 1) & 0xFFFF 									// Dec R[Opcode]
+:#define ADDRP(n) 	R[P] = (R[P] + n) & 0xFFFF 										// Adjust R[P]
+:#define TOD(n) 	((n) & 0xFF)													// Values being copied to D
+
+// **********************************************************************************************
+//											   CPU Reset
+// **********************************************************************************************
+
+:static void CPU1802Reset(void) {
+:	Q = 0;IE = 1;																	// First cycle clears Q,sets IE	
+:	X = P = R[0] = 0;																// Second cycles clears X,P,R(0)
+:	cycles = 0;																		// Clear the Cycle Counter.
+:	SETQOFF();																		// Update the Q output pin
+:}
+
+// **********************************************************************************************
+//											Memory Reference
+// **********************************************************************************************
+
+01-0F	2	"LDN R$L"	MA = $REG;READ();D = MB										// Load via N
+40-4F 	2 	"LDA R$L"	MA = $REG;INCREG();READ();D = MB				 			// Load advance
+F0 		2 	"LDX"		READMX();D = MB 											// Load via X
+72 		2 	"LDXA"		READMX();INCRX();D = MB 									// Load via X and advance
+F8 		2	"LDI @1"	FETCH8();D = MB 											// Load immediate
+50-5F 	2 	"STR R$L"	MA = $REG;MB = D;WRITE() 									// Store via N
+73 		2	"STXD"		MA = R[X];DECRX();MB = D;WRITE() 							// Store via X and decrement
+
+// **********************************************************************************************
+//											Register Operations
+// **********************************************************************************************
+
+10-1F 	2 	"INC R$L"	INCREG() 													// Increment Reg N
+20-2F 	2 	"DEC R$L"	DECREG() 													// Decrement Reg N
+60 		2 	"IRX"		INCRX() 													// Increment Reg X
+80-8F 	2 	"GLO R$L"	D = TOD($REG) 												// Get Low Reg N
+A0-AF 	2 	"PLO R$L"	$REG = ($REG & 0xFF00) | D 									// Put Low Reg N
+90-9F 	2 	"GHI R$L"	D = TOD($REG >> 8) 											// Get High Reg N
+B0-BF 	2 	"PHI R$L"	$REG = ($REG & 0x00FF) | (((WORD16)D) << 8)					// Put High Reg N
+
+// **********************************************************************************************
+//											  Logic Operations
+// **********************************************************************************************
+
+F1 		2 	"OR"		READMX();D |= MB 											// Or
+F9 		2 	"ORI @1"	FETCH8();D |= MB											// Or immediate
+F3 		2 	"XOR"		READMX();D ^= MB 											// Xor
+FB 		2 	"XRI @1"	FETCH8();D ^= MB											// Xor immediate
+F2 		2 	"AND"		READMX();D &= MB 											// And
+FA 		2 	"ANI @1"	FETCH8();D &= MB											// And immediate
+
+F6 		2 	"SHR"		DF = D & 1;D = (D >> 1) & 0x7F 								// Shift right into carry
+76 		2 	"RSHR"		MB = D;D = (D >> 1) | (DF << 7);DF = MB & 1					// Rotate right through carry
+FE 		2 	"SHL"		DF = (D >> 7) & 1;D = TOD(D << 1) 							// Shift left into carry.
+7E 		2 	"RSHL"		MB = (D >> 7) & 1;D = TOD((D << 1) | DF);DF = MB 			// Rotate left through carry
+
+// **********************************************************************************************
+//										   Arithmetic Operations
+// **********************************************************************************************
+
+F4 		2 	"ADD"		DF = 0;READMX();ADD() 										// Add 
+FC 		2 	"ADI @1"	DF = 0;FETCH8();ADD()										// Add immediate
+74 		2 	"ADC"		READMX();ADD() 												// Add with carry
+7C 		2 	"ADCI @1"	FETCH8();ADD()												// Add with carry immediate
+
+:#define ADD() MA = D+MB+DF;DF = MB >> 8;D = TOD(MA) 								// Add macro
+
+F5 		2 	"SD"		DF = 1;READMX();SUB(MB,D) 									// Subtract 
+FD 		2 	"SDI @1"	DF = 1;FETCH8();SUB(MB,D)									// Subtract immediate
+75 		2 	"SDB"		READMX();SUB(MB,D) 											// Subtract with borrow
+7D 		2 	"SDBI @1"	FETCH8();SUB(MB,D)											// Subtract with borrow immediate
+
+:#define SUB(n1,n2) MA = (n1)+((n2) ^ 0xFF)+DF;DF = MA >> 8;D = TOD(MA) 			// Subtract macro
+
+F7 		2 	"SM"		DF = 1;READMX();SUB(D,MB) 									// Subtract Memory 
+FF 		2 	"SMI @1"	DF = 1;FETCH8();SUB(D,MB)									// Subtract Memory immediate
+77 		2 	"SMB"		READMX();SUB(D,MB) 											// Subtract Memory with borrow
+7F 		2 	"SMBI @1"	FETCH8();SUB(D,MB)											// Subtract Memory with borrow immediate
+
+// **********************************************************************************************
+//									Branch instructions (Short)
+// **********************************************************************************************
+
+30 		2 	"BR @1"		BRANCH(1)													// Branch always
+38 		2 	"SKP"		ADDRP(1)													// Skip
+32 		2 	"BZ @1"		BRANCH(D == 0)												// Branch if D = 0
+3A 		2 	"BNZ @1"	BRANCH(D != 0)												// Branch if D <> 0
+33 		2 	"BDF @1"	BRANCH(DF != 0)												// Branch if DF set
+3B 		2 	"BNF @1"	BRANCH(DF == 0)												// Branch if DF clear
+31 		2 	"BQ @1"		BRANCH(Q != 0)												// Branch if Q set
+39 		2 	"BNQ @1"	BRANCH(Q == 0)												// Branch if Q clear
+
+34 		2 	"B1 @1"		BRANCH(EFLAG1() != 0)										// Branch if EFLAG set
+35 		2 	"B2 @1"		BRANCH(EFLAG2() != 0)
+36 		2 	"B3 @1"		BRANCH(EFLAG3() != 0)
+37 		2 	"B4 @1"		BRANCH(EFLAG4() != 0)
+
+3C 		2 	"BN1 @1"	BRANCH(EFLAG1() == 0)										// Branch if EFLAG clear
+3D 		2 	"BN2 @1"	BRANCH(EFLAG2() == 0)
+3E 		2 	"BN3 @1"	BRANCH(EFLAG3() == 0)
+3F 		2 	"BN4 @1"	BRANCH(EFLAG4() == 0)
+
+:#define BRANCH(t) 	FETCH8();if (t) R[P] = (R[P] & 0xFF00) | MB 					// Short Branch Macro
+
+// **********************************************************************************************
+//									Branch instructions (Long)
+// **********************************************************************************************
+
+C0 		3 	"LBR @2"	LONGBRANCH(1)												// Long Branch always
+C8 		3 	"LSKP"		ADDRP(2)													// Long Skip
+C2 		3 	"LBZ @2"	LONGBRANCH(D == 0)											// Long Branch if D = 0
+CA 		3 	"LBNZ @2"	LONGBRANCH(D != 0)											// Long Branch if D <> 0
+C3 		3 	"LBDF @2"	LONGBRANCH(DF != 0)											// Long Branch if DF set
+CB 		3 	"LBNF @2"	LONGBRANCH(DF == 0)											// Long Branch if DF clear
+C1 		3 	"LBQ @2"	LONGBRANCH(Q != 0)											// Long Branch if Q set
+C9 		3 	"LBNQ @2"	LONGBRANCH(Q == 0)											// Long Branch if Q clear
+
+:#define LONGBRANCH(t)	FETCH16();if (t) R[P] = LBA 								// Long Branch Macro
+
+// **********************************************************************************************
+//								 Skip instructions (conditional only)
+// **********************************************************************************************
+
+CE 		3 	"LSZ"		LONGSKIP(D == 0)											// Long Skip if D = 0
+C6 		3 	"LSNZ"		LONGSKIP(D != 0)											// Long Skip if D <> 0
+CF 		3 	"LSDF"		LONGSKIP(DF != 0)											// Long Skip if DF set
+C7 		3 	"LSNF"		LONGSKIP(DF == 0)											// Long Skip if DF clear
+CD 		3 	"LSQ"		LONGSKIP(Q != 0)											// Long Skip if Q set
+C5 		3 	"LSNQ"		LONGSKIP(Q == 0)											// Long Skip if Q clear
+CC 		3 	"LSIE"		LONGSKIP(IE != 0) 											// Long Skip if IE = 1
+
+:#define LONGSKIP(t) 	if (t) ADDRP(2) 											// Long skip Macro
+
+// **********************************************************************************************
+//										Control Instructions
+// **********************************************************************************************
+
+00 		2 	"IDL"		;															// Not implementing IDL
+C4 		3 	"NOP"		;															// No operation
+68 		2 	"NOP68"		;															// Undefined 0x68 instruction
+D0-DF 	2 	"SEP R$L" 	P = opcode & 0xF 											// Set P
+E0-EF 	2 	"SEX R$L" 	X = opcode & 0xF 											// Set X
+7B 		2 	"SEQ"		if (Q == 0) { Q = 1;SETQON(); }								// Set Q
+7A 		2 	"REQ"		if (Q != 0) { Q = 0;SETQOFF(); }							// Reset Q
+78 		2 	"SAV"		MA = R[X];MB = T;WRITE()									// Save (T -> R(X))
+79 		2 	"MARK"		T = (X << 4) | P;MA = R[2];MB = T;WRITE();X = P;DECR2() 	// Push X,P on stack
+70 		2 	"RET"		INTRET(1)													// Return
+71 		2 	"DIS"		INTRET(0)													// Disable
+
+																					// Return from interrupt
+:#define INTRET(f) 		MA = R[X];READ();INCRX();X = (MB >> 4) & 0xF;P = MB & 0xF;IE = f
+
+// **********************************************************************************************
+//										   Fire CPU interrupt
+// **********************************************************************************************
+
+:static void CPU1802Interrupt(void) {
+:	if (IE != 0) {																	// Only if interrupt enabled.
+:		T = (X << 4) | P; 															// Save X,P in T
+:		P = 1;X = 2;																// Update X and P to Int routine
+:		IE = 0;																		// Disable any further interrupts
+:	}	
+:}
+
+// **********************************************************************************************
+//										Input-Output Byte Transfer
+// **********************************************************************************************
+
+61 		2 	"OUT 1"		READMX();OUTPORT1(MB);INCRX()
+62 		2 	"OUT 2"		READMX();OUTPORT2(MB);INCRX()
+63 		2 	"OUT 3"		READMX();OUTPORT3(MB);INCRX()
+64 		2 	"OUT 4"		READMX();OUTPORT4(MB);INCRX()
+65 		2 	"OUT 5"		READMX();OUTPORT5(MB);INCRX()
+66 		2 	"OUT 6"		READMX();OUTPORT6(MB);INCRX()
+67 		2 	"OUT 7"		READMX();OUTPORT7(MB);INCRX()
+
+69 		2 	"INP 1"		D = MB = INPORT1();MA = R[X];WRITE()
+6A 		2 	"INP 2"		D = MB = INPORT2();MA = R[X];WRITE()
+6B 		2 	"INP 3"		D = MB = INPORT3();MA = R[X];WRITE()
+6C 		2 	"INP 4"		D = MB = INPORT4();MA = R[X];WRITE()
+6D 		2 	"INP 5"		D = MB = INPORT5();MA = R[X];WRITE()
+6E 		2 	"INP 6"		D = MB = INPORT6();MA = R[X];WRITE()
+6F 		2 	"INP 7"		D = MB = INPORT7();MA = R[X];WRITE()
+

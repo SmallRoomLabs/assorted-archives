@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="agkdoc.css">
+</head>
+<body>
+<div id="title">Module : library-eval</div>
+<div id="body"><i> Defined in '.\library-eval.agc'</i></div>
+<div id="body">This module provides evaluation functionality to AGK2, the ability to evaluate an expression complete with variables etc. Unfortunately it is not possible to directly access the variables AGK2 uses, so each "state" has its own set, which can be reused when necessary<br> The concept is fairly straightforward. This module contains a compiler which converts algebraic notation (a + b ) * 7 into an internal RPN code (actually AGK2 does this too !) and an interpreter which interprets that code. Both the source and the 'object' rpn code are strings (the RPN code looks like a series of characters seperated by commas).<br> The reason for the 'split' is the run time interpreter is much quicker than the compiler part.<br> When running a script you provided it with a "state" - this is basically the variables that the script works on. So a script could look like S = SIN(A):C = COS(A):N = S*S + C*C:SQRT(A) - this is three assignment statements, and an expression. The Evaluator can be used to do either simple arithmetic or operate on sets of variables.</div>
+<table>
+  <tr>
+    <td>Name</td>
+    <td>library-eval</td>
+  </tr>
+  <tr class="alt">
+    <td>Author</td>
+    <td>Paul Scott Robson</td>
+  </tr>
+  <tr>
+    <td>Email</td>
+    <td>paulscottrobson@gmail.com</td>
+  </tr>
+  <tr class="alt">
+    <td>License</td>
+    <td>MIT</td>
+  </tr>
+  <tr>
+    <td>Prefix</td>
+    <td>Eval_</td>
+  </tr>
+  <tr class="alt">
+    <td>Version</td>
+    <td>0.1</td>
+  </tr>
+  <tr>
+    <td>Created</td>
+    <td>05-Feb-15</td>
+  </tr>
+  <tr class="alt">
+    <td>Updated</td>
+    <td>06-Feb-15</td>
+  </tr>
+  <tr>
+    <td>Provides</td>
+    <td>evaluation</td>
+  </tr>
+</table>
+<div id="title">User Defined Type : Eval_CompileInfo</div>
+<div id="body"><i> Defined in '.\library-eval.agc'</i></div>
+<div id="body">This type contains the compiling information. You can compile using one of these, or there is a simpler shortcut.</div>
+<table>
+  <tr>
+    <th>Member</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>isError</td>
+    <td>integer</td>
+    <td>has an error occurred ?</td>
+  </tr>
+  <tr class="alt">
+    <td>errorDescription</td>
+    <td>string</td>
+    <td>text description of error</td>
+  </tr>
+  <tr>
+    <td>srcCode</td>
+    <td>string</td>
+    <td>input infix code.</td>
+  </tr>
+  <tr class="alt">
+    <td>rpnCode</td>
+    <td>string</td>
+    <td>resulting RPN code.</td>
+  </tr>
+</table>
+<div id="title">User Defined Type : Eval_State</div>
+<div id="body"><i> Defined in '.\library-eval.agc'</i></div>
+<div id="body">This type is a set of variables to be used in any evaluation, and also contains the evaluation stack. Do not access the member variables directly as the implementation may change in the future.</div>
+<table>
+  <tr>
+    <th>Member</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>stackPointer</td>
+    <td>integer</td>
+    <td>Stack pointer, points to current TOS value.</td>
+  </tr>
+  <tr class="alt">
+    <td>stack</td>
+    <td>float[8]</td>
+    <td>Stack itself. All values are floats.</td>
+  </tr>
+  <tr>
+    <td>variables</td>
+    <td>float[26]</td>
+    <td>26 variables, A-Z (variables[1] == A)</td>
+  </tr>
+</table>
+<div id="title">Function : Eval_Compile(ec,srcCode)</div>
+<div id="body"><i> Defined in '.\library-eval.agc'</i></div>
+<div id="body">Compile RPN code. This is a sequence of expressions or assignments, seperated by a colon.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>ec</td>
+    <td>ref Eval_CompileInfo</td>
+    <td>Compilation Information structure, initialised by this method.</td>
+  </tr>
+  <tr class="alt">
+    <td>srcCode</td>
+    <td>String</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><i>returns</i></td>
+    <td>integer</td>
+    <td>RPN object code, also stored in the compiler info structure.</td>
+  </tr>
+</table>
+<div id="title">Function : Eval_Continue(state,script)</div>
+<div id="body"><i> Defined in '.\library-eval.agc'</i></div>
+<div id="body">Run a RPN script on a new evaluation state, without resetting the stack. A script is a bit Forth-like commands seperated by commas. Operators are +,-,*,/,%(modulus), <, = , >, # (not equal). Variable access commands are !name and @name for write and read respectively. A floating point number or an integer (must begin with a digit) can be pushed on the stack. &x is a single parameter function on TOS, e.g. &sin,&cos,&tan,&sqrt. Note that this does virtually no checking at all.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>state</td>
+    <td>ref Eval_State</td>
+    <td>the evaluation machine state</td>
+  </tr>
+  <tr class="alt">
+    <td>script</td>
+    <td>String</td>
+    <td>an RPN script as a string.</td>
+  </tr>
+  <tr>
+    <td><i>returns</i></td>
+    <td>float</td>
+    <td>the top of stack value or 0 if there is no TOS value.</td>
+  </tr>
+</table>
+<div id="title">Function : Eval_QCompile(srcCode)</div>
+<div id="body"><i> Defined in '.\library-eval.agc'</i></div>
+<div id="body">This is a shortcut version of Eval_Compile - it returns either the compiled code as a string, or ?? followed by the error message, and uses an internal workspace.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>srcCode</td>
+    <td>String</td>
+    <td>Compiler source code</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>String</td>
+    <td>rpnCode or ?? followed by an error message if appropriate.</td>
+  </tr>
+</table>
+<div id="title">Function : Eval_Read(state,name)</div>
+<div id="body"><i> Defined in '.\library-eval.agc'</i></div>
+<div id="body">Read a variable from an evaluation state.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>state</td>
+    <td>ref Eval_State</td>
+    <td></td>
+  </tr>
+  <tr class="alt">
+    <td>name</td>
+    <td>String</td>
+    <td>name of variable</td>
+  </tr>
+  <tr>
+    <td><i>returns</i></td>
+    <td>float</td>
+    <td>value of variable.</td>
+  </tr>
+</table>
+<div id="title">Function : Eval_Run(state,script)</div>
+<div id="body"><i> Defined in '.\library-eval.agc'</i></div>
+<div id="body">Run a RPN script on a new evaluation state. This and the function Eval_Continue which is the same save it does not reset the stack at the start, can be used by developers if they wish to write in RPN directly. However there is less error checking on this run time interpreter.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>state</td>
+    <td>ref Eval_State</td>
+    <td>the evaluation machine state</td>
+  </tr>
+  <tr class="alt">
+    <td>script</td>
+    <td>String</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><i>returns</i></td>
+    <td>float</td>
+    <td>the top of stack value or 0 if there is no TOS value.</td>
+  </tr>
+</table>
+<div id="title">Function : Eval_Write(state,name,value)</div>
+<div id="body"><i> Defined in '.\library-eval.agc'</i></div>
+<div id="body">Write a variable to an evaluation state.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>state</td>
+    <td>ref Eval_State</td>
+    <td></td>
+  </tr>
+  <tr class="alt">
+    <td>name</td>
+    <td>String</td>
+    <td>name of variable</td>
+  </tr>
+  <tr>
+    <td>value</td>
+    <td>Float</td>
+    <td>value to write.</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<br /><div><i>Generated by agkdoc.py on 02/06/15 17:33:05</i></div>
+</body>
+</html>

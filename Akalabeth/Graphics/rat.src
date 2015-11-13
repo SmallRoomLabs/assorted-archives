@@ -1,0 +1,13 @@
+// *************************************************************************
+//
+//                               Draw Giant Rat
+//
+// *************************************************************************
+320       hplot y.m + 5 / dI,x.m - 30 / dI to y.m,x.m - 25 / dI to y.m - 5 / dI,x.m - 30 / dI to y.m - 15 / dI,x.m - 5 / dI to y.m - 10 / dI,x.m to y.m + 10 / dI,x.m to y.m + 15 / dI,x.m - 5 / dI
+321       hplot to y.m + 20 / dI,x.m - 5 / dI to y.m + 10 / dI,x.m to y.m + 15 / dI,x.m - 5 / dI to y.m + 5 / dI,x.m - 30 / dI to y.m + 10 / dI,x.m - 40 / dI to y.m + 3 / dI + .5,x.m - 35 / dI to y.m - 3 / dI + .5,x.m - 35 / dI to y.m - 10 / dI,x.m - 40 / dI to y.m - 5 / dI,x.m - 30 / dI
+322       hplot y.m - 5 / dI,x.m - 33 / dI to y.m - 3 / dI + .5,x.m - 30 / dI:
+          hplot y.m + 5 / dI,x.m - 33 / dI to y.m + 3 / dI + .5,x.m - 30 / dI:
+          hplot y.m - 5 / dI,x.m - 20 / dI to y.m - 5 / dI,x.m - 15 / dI
+323       hplot y.m + 5 / dI,x.m - 20 / dI to y.m + 5 / dI,x.m - 15 / dI:
+          hplot y.m - 7 / dI,x.m - 20 / dI to y.m - 7 / dI,x.m - 15 / dI:
+          hplot y.m + 7 / dI,x.m - 20 / dI to y.m + 7 / dI,x.m - 15 / dI

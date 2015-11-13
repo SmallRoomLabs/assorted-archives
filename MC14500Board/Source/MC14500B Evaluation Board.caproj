@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2project>
+    <name>MC14500B Evaluation Board</name>
+    <description>Simulator of Motorola CPU Evaluation Board</description>
+    <version>1.0.0.0</version>
+    <author>Paul Robson</author>
+    <author-email>paul@robsons.org.uk</author-email>
+    <author-website>http://</author-website>
+    <app-id>com.mycompany.myapp</app-id>
+    <unique-id>o6bmrinqbnwr</unique-id>
+    <saved-with-version>20600</saved-with-version>
+    <used-plugins>
+        <plugin author="Scirra" id="Arr" version="1">Array</plugin>
+        <plugin author="Scirra" id="Dictionary" version="1">Dictionary</plugin>
+        <plugin author="Scirra" id="Function" version="1">Function</plugin>
+        <plugin author="Scirra" id="Keyboard" version="1">Keyboard</plugin>
+        <plugin author="Scirra" id="NinePatch" version="1">9-patch</plugin>
+        <plugin author="Scirra" id="Sprite" version="1">Sprite</plugin>
+        <plugin author="Scirra" id="Spritefont2" version="1">Sprite font</plugin>
+        <plugin author="Scirra" id="Touch" version="1">Touch</plugin>
+    </used-plugins>
+    <used-behaviors>
+        <behavior author="Scirra" id="Timer" version="1">Timer</behavior>
+    </used-behaviors>
+    <used-effects />
+    <configurations>
+        <configuration exporter-descname="HTML5" exporter-id="html5" name="HTML5" />
+    </configurations>
+    <window-size>
+        <width>1024</width>
+        <height>768</height>
+    </window-size>
+    <pixel-rounding>0</pixel-rounding>
+    <preview-effects>1</preview-effects>
+    <use-loader-layout>0</use-loader-layout>
+    <configuration-settings>
+        <prop name="Clear background">Yes</prop>
+        <prop name="Downscaling">Medium quality</prop>
+        <prop name="Enable WebGL">On</prop>
+        <prop name="Fullscreen in browser">Letterbox scale</prop>
+        <prop name="Fullscreen scaling">High quality</prop>
+        <prop name="Loader style">Progress bar &amp; logo</prop>
+        <prop name="Orientations">Any</prop>
+        <prop name="Pause on unfocus">No</prop>
+        <prop name="Physics engine">Box2D asm.js</prop>
+        <prop name="Preload sounds">Yes</prop>
+        <prop name="Preview browser">(default)</prop>
+        <prop name="Sampling">Linear</prop>
+        <prop name="Use high-DPI display">Yes</prop>
+    </configuration-settings>
+    <object-folder>
+        <object-type name="IOMarker" sid="1673510429889843">
+            <plugin id="Sprite" />
+            <instance-variables>
+                <instance-variable comment="Key value of represented data" name="key" sid="1273336797476941" type="string" />
+                <instance-variable comment="Number of bits displayed" name="bitCount" sid="2262583555455644" type="number" />
+                <instance-variable comment="Display item name (e.g. animation)" name="itemName" sid="5774241086405644" type="string" />
+                <instance-variable comment="True if input" name="isInput" sid="6980141047919177" type="boolean" />
+                <instance-variable name="topLabel" sid="6763542151387172" type="string" />
+                <instance-variable name="bottomLabel" sid="3442749229143957" type="string" />
+            </instance-variables>
+            <animation-folder>
+                <animation framecount="1" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" sid="8639667318354986" speed="5">
+                    <frame duration="1" hotspotX="0.5" hotspotY="0.5" />
+                </animation>
+            </animation-folder>
+        </object-type>
+        <object-type name="InterfaceObject" sid="8781941560422825">
+            <plugin id="Sprite" />
+            <instance-variables>
+                <instance-variable comment="Key in interface data store" name="key" sid="9212823575660888" type="string" />
+                <instance-variable comment="Bit in data" name="bit" sid="8820190934344161" type="number" />
+                <instance-variable name="isInput" sid="2004220569696668" type="boolean" />
+            </instance-variables>
+            <animation-folder>
+                <animation framecount="2" loop="0" name="LED" pingpong="0" repeatcount="1" repeatto="0" sid="9482816102243184" speed="5">
+                    <frame duration="1" hotspotX="0.5" hotspotY="0.5" original-source="C:\Construct2\MC14500Board\Images\LED_Off.png" />
+                    <frame duration="1" hotspotX="0.5" hotspotY="0.5" original-source="C:\Construct2\MC14500Board\Images\LED_On.png" />
+                </animation>
+                <animation framecount="2" loop="0" name="Switch" pingpong="0" repeatcount="1" repeatto="0" sid="4030282542196637" speed="5">
+                    <frame duration="1" hotspotX="0.5" hotspotY="0.5" original-source="C:\Construct2\MC14500Board\Images\Switch_Off.png" />
+                    <frame duration="1" hotspotX="0.5" hotspotY="0.5" original-source="C:\Construct2\MC14500Board\Images\Switch_On.png" />
+                </animation>
+            </animation-folder>
+        </object-type>
+        <object-type global="1" name="InterfaceData" sid="9780709896835919">
+            <plugin id="Dictionary" />
+        </object-type>
+        <object-type name="Label" sid="6561342808514546">
+            <plugin id="Spritefont2" />
+            <texture original-source="C:\Construct2\MC14500Board\Images\console.png" />
+        </object-type>
+        <object-type name="Touch" sid="9444372878689211">
+            <plugin id="Touch" />
+        </object-type>
+        <object-type name="PushButton" sid="1759400674870466">
+            <plugin id="Sprite" />
+            <instance-variables>
+                <instance-variable name="topLabel" sid="9478948278739289" type="string" />
+                <instance-variable comment="Function to call on actioned" name="actionName" sid="2281673185507712" type="string" />
+            </instance-variables>
+            <behaviors>
+                <behavior-type name="Timer" sid="6090671359340671">
+                    <behavior id="Timer" />
+                </behavior-type>
+            </behaviors>
+            <animation-folder>
+                <animation framecount="2" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" sid="1655171824222768" speed="5">
+                    <frame duration="1" hotspotX="0.5" hotspotY="0.5" original-source="C:\Construct2\MC14500Board\Images\Button_Out.png" />
+                    <frame duration="1" hotspotX="0.5" hotspotY="0.5" original-source="C:\Construct2\MC14500Board\Images\Button_In.png" />
+                </animation>
+            </animation-folder>
+        </object-type>
+        <object-type name="Frame" sid="12132442497166">
+            <plugin id="NinePatch" />
+            <texture />
+        </object-type>
+        <object-type name="IC" sid="9599479832979044">
+            <plugin id="Sprite" />
+            <animation-folder>
+                <animation framecount="1" loop="0" name="Default" pingpong="0" repeatcount="1" repeatto="0" sid="4689974432560433" speed="5">
+                    <frame duration="1" hotspotX="0.506667" hotspotY="0.502008" />
+                </animation>
+            </animation-folder>
+        </object-type>
+        <object-type global="1" name="programMemory" sid="9257644809420347">
+            <plugin id="Arr" />
+        </object-type>
+        <object-type name="Function" sid="1609312119276714">
+            <plugin id="Function" />
+        </object-type>
+        <object-type name="Keyboard" sid="3027963448447042">
+            <plugin id="Keyboard" />
+        </object-type>
+        <object-type name="Disassembly" sid="6905378656263746">
+            <plugin id="Spritefont2" />
+            <texture original-source="C:\Construct2\MC14500Board\Images\console.png" />
+        </object-type>
+    </object-folder>
+    <families />
+    <layout-folder>
+        <layout>Board.xml</layout>
+    </layout-folder>
+    <event-folder>
+        <event-sheet>Main.xml</event-sheet>
+        <event-sheet>Globals and Constants.xml</event-sheet>
+        <event-sheet>Interface.xml</event-sheet>
+        <event-sheet>Interface Refresh.xml</event-sheet>
+        <event-sheet>Commands.xml</event-sheet>
+        <event-sheet>Emulation.xml</event-sheet>
+    </event-folder>
+    <global-instances>
+        <global-instance type="Touch" uid="7">
+            <properties>
+                <use-mouse-input>Yes</use-mouse-input>
+            </properties>
+        </global-instance>
+        <global-instance type="Function" uid="46" />
+        <global-instance type="Keyboard" uid="47" />
+    </global-instances>
+    <sounds-folder />
+    <music-folder />
+    <files-folder>
+        <file-folder name="Icons">
+            <file name="icon-16.png" />
+            <file name="icon-32.png" />
+            <file name="icon-114.png" />
+            <file name="icon-128.png" />
+            <file name="icon-256.png" />
+            <file name="loading-logo.png" />
+        </file-folder>
+    </files-folder>
+</c2project>

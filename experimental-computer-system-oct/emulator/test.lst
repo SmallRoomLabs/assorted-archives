@@ -1,0 +1,466 @@
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 1 - 10/27/2015 15:15:46
+
+
+       1/       0 :                     	
+       2/       0 :                     		cpu		8008new
+       3/       0 :                     
+       4/       0 :                     
+       5/       0 :                     
+       6/       0 : =8H                 COScopeDisplay = 10o
+       7/       0 :                     
+       8/       0 :                     ; ******************************************************************************************************************************
+       9/       0 :                     ;													OS ROM
+      10/       0 :                     ; ******************************************************************************************************************************
+      11/       0 :                     
+      12/       0 : 44 6F 01            		jmp 	_BootMonitor 	
+      13/       3 :                     COCharacterOut:	
+      14/       3 : 44 89 00            		jmp 	_COCharacterOut
+      15/       6 :                     COStringOut:
+      16/       6 : 44 61 01            		jmp 	_COStringOut
+      17/       9 :                     
+      18/       9 :                     ; ******************************************************************************************************************************
+      19/       9 :                     ;
+      20/       9 :                     ;									3 x 5 pixel font table, on a 128 byte boundary
+      21/       9 :                     ;
+      22/       9 :                     ; ******************************************************************************************************************************
+      23/       9 :                     
+      24/       9 :                     COFontTable:																; this needs to be in the same page.
+      25/       9 :                     		include fonttable.asm
+(1)    1/       9 : 00 80                   dw 0100000o
+(1)    2/       B : 82 A4                   dw 0122202o
+(1)    3/       D : 00 DA                   dw 0155000o
+(1)    4/       F : 7D DF                   dw 0157575o
+(1)    5/      11 : 7A AE                   dw 0127172o
+(1)    6/      13 : 8D D8                   dw 0154215o
+(1)    7/      15 : EE AA                   dw 0125356o
+(1)    8/      17 : 00 A4                   dw 0122000o
+(1)    9/      19 : 94 C4                   dw 0142224o
+(1)   10/      1B : 91 94                   dw 0112221o
+(1)   11/      1D : D5 D5                   dw 0152725o
+(1)   12/      1F : D2 A5                   dw 0122722o
+(1)   13/      21 : 11 80                   dw 0100021o
+(1)   14/      23 : C0 81                   dw 0100700o
+(1)   15/      25 : 10 80                   dw 0100020o
+(1)   16/      27 : 89 C8                   dw 0144211o
+(1)   17/      29 : 6F FB                   dw 0175557o
+(1)   18/      2B : 97 A6                   dw 0123227o
+(1)   19/      2D : CF F9                   dw 0174717o
+(1)   20/      2F : E7 F9                   dw 0174747o
+(1)   21/      31 : E4 DB                   dw 0155744o
+(1)   22/      33 : E7 F3                   dw 0171747o
+(1)   23/      35 : EF F3                   dw 0171757o
+(1)   24/      37 : 24 F9                   dw 0174444o
+(1)   25/      39 : EF FB                   dw 0175757o
+(1)   26/      3B : E7 FB                   dw 0175747o
+(1)   27/      3D : 10 84                   dw 0102020o
+(1)   28/      3F : 11 84                   dw 0102021o
+(1)   29/      41 : 54 C4                   dw 0142124o
+(1)   30/      43 : 38 8E                   dw 0107070o
+(1)   31/      45 : 11 95                   dw 0112421o
+(1)   32/      47 : 82 F9                   dw 0174602o
+(1)   33/      49 : 4F AB                   dw 0125517o
+(1)   34/      4B : ED FB                   dw 0175755o
+(1)   35/      4D : EF FA                   dw 0175357o
+ AS V1.42 Beta [Bld 102] - source file test.asm(fonttable.asm) - page 2 - 10/27/2015 15:15:46
+
+
+(1)   36/      4F : 4F F2                   dw 0171117o
+(1)   37/      51 : 6B BB                   dw 0135553o
+(1)   38/      53 : CF F3                   dw 0171717o
+(1)   39/      55 : C9 F3                   dw 0171711o
+(1)   40/      57 : 6F F3                   dw 0171557o
+(1)   41/      59 : ED DB                   dw 0155755o
+(1)   42/      5B : 97 F4                   dw 0172227o
+(1)   43/      5D : 2F F9                   dw 0174457o
+(1)   44/      5F : ED DA                   dw 0155355o
+(1)   45/      61 : 4F 92                   dw 0111117o
+(1)   46/      63 : ED DF                   dw 0157755o
+(1)   47/      65 : 6D FB                   dw 0175555o
+(1)   48/      67 : 6F FB                   dw 0175557o
+(1)   49/      69 : C9 FB                   dw 0175711o
+(1)   50/      6B : E4 FB                   dw 0175744o
+(1)   51/      6D : DD FB                   dw 0175735o
+(1)   52/      6F : E7 F3                   dw 0171747o
+(1)   53/      71 : 92 F4                   dw 0172222o
+(1)   54/      73 : 6F DB                   dw 0155557o
+(1)   55/      75 : 6A DB                   dw 0155552o
+(1)   56/      77 : FD DB                   dw 0155775o
+(1)   57/      79 : AD DA                   dw 0155255o
+(1)   58/      7B : 92 DA                   dw 0155222o
+(1)   59/      7D : 8F F8                   dw 0174217o
+(1)   60/      7F : 4F F2                   dw 0171117o
+(1)   61/      81 : A4 92                   dw 0111244o
+(1)   62/      83 : 27 F9                   dw 0174447o
+(1)   63/      85 : 92 AE                   dw 0127222o
+(1)   64/      87 : 07 80                   dw 0100007o
+(1)   65/      89 :                     
+      26/      89 :                     
+      27/      89 :                     ; ******************************************************************************************************************************
+      28/      89 :                     ;
+      29/      89 :                     ;		Output character in A. Preserves A,B,C,H and L. D and E lost.
+      30/      89 :                     ;
+      31/      89 :                     ;		0..31 		Control characters (13 = CR, 12 = Clear, 8 = Backspace, others ignored)
+      32/      89 :                     ;		32..95 		Normal characters
+      33/      89 :                     ;		96..127		Mapped onto 64-95 hence lower -> upper
+      34/      89 :                     ; 		128..191 	Set horizontal position
+      35/      89 :                     ;		192..255 	Set vertical position
+      36/      89 :                     ;
+      37/      89 :                     ; ******************************************************************************************************************************
+      38/      89 :                     
+      39/      89 :                     _COCharacterOut:
+      40/      89 : DD                  		mov 	d,h 														; save old HL in DE
+      41/      8A : E6                  		mov 	e,l
+      42/      8B : 2E 01               		mvi 	h,_COHLSave / 256 											; point HL to restore point
+      43/      8D : 36 86               		mvi 	l,_COHLSave & 255
+      44/      8F : FC                  		mov 	m,e 														; save HL there - note the page issue here
+      45/      90 : 30                  		inr 	l 															; potentially.
+      46/      91 : FB                  		mov 	m,d
+      47/      92 : 30                  		inr 	l 															; HL now points to the X position.
+      48/      93 : E0                  		mov 	e,a 														; save character in E
+      49/      94 :                     
+      50/      94 : 06 81               		mvi 	a,201o 														; turn scanning off.
+      51/      96 : 51                  		out 	COScopeDisplay
+      52/      97 :                     ;
+      53/      97 :                     ;		set the x,y position on the display.
+      54/      97 :                     ;
+      55/      97 :                     COHPositionM1:
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 3 - 10/27/2015 15:15:46
+
+
+      56/      97 : C7                  		mov 	a,m 														; read current horizontal (2nd byte modified)
+      57/      98 : 51                  		out 	COScopeDisplay 												; which is STX
+      58/      99 : 30                  		inr 	l 															; point to Y position.
+      59/      9A :                     COVPositionM1:
+      60/      9A : C7                  		mov 	a,m 														; read current vertical (2nd byte modified)
+      61/      9B : 31                  		dcr 	l 															; back pointing at X position.
+      62/      9C : 04 05               		adi 	5 															; five down as we draw character upwards
+      63/      9E : 34 40               		ori 	0100o 														; make set Y command
+      64/      A0 : 51                  		out 	COScopeDisplay 												; set Y
+      65/      A1 :                     ;
+      66/      A1 :                     ;		Check and process character
+      67/      A1 :                     ;	
+      68/      A1 : C4                  		mov 	a,e 														; get character back.
+      69/      A2 : B0                  		ora 	a 															; check sign.
+      70/      A3 : 70 52 01            		jm 		COSetPosition 												; 0x80 ... 0xFF are set H/V.
+      71/      A6 :                     
+      72/      A6 : 3C 60               		cpi 	060h 														; if L/C, make U/C
+      73/      A8 : 60 AD 00            		jc 		CONotLower
+      74/      AB : 14 20               		sui 	32 															; difference between a and A
+      75/      AD :                     CONotLower:
+      76/      AD : 14 20               		sui 	32 															; 32-95 becomes 0-63
+      77/      AF : 70 31 01            		jm 		COControl 													; if is no negative it was 0-31.
+      78/      B2 : 80                  		add 	a 															; double it
+      79/      B3 : 04 09               		adi		COFontTable & 255 											; make HL point to the font table entry
+      80/      B5 : F0                  		mov 	l,a 														; save in L
+      81/      B6 : 2E 00               		mvi 	h,COFontTable / 256
+      82/      B8 : C7                  		mov 	a,m 														; read char description low into A
+      83/      B9 : 30                  		inr 	l 	
+      84/      BA : EF                  		mov 	h,m 														; read char description high into H
+      85/      BB : F0                  		mov 	l,a 														; HL now contains character description
+      86/      BC :                     ;
+      87/      BC :                     ;		Macro outputs the LSB of HL rotating it right. Can use draw/clear with or without the advance.
+      88/      BC :                     ;
+      89/      BC :                     outbit 	macro 	cmdbase
+      90/      BC :                     		mov 	a,h 														; rotate HL right into carry.
+      91/      BC :                     		rar
+      92/      BC :                     		mov 	h,a
+      93/      BC :                     		mov 	a,l
+      94/      BC :                     		rar 
+      95/      BC :                     		mov 	l,a
+      96/      BC :                     
+      97/      BC :                     		mvi 	a,0	 														; A = 1 = draw, 0 = clear
+      98/      BC :                     		ral
+      99/      BC :                     		xri 	cmdbase 													; construct command
+     100/      BC :                     		out 	COScopeDisplay 												; display it.
+     101/      BC :                     		endm
+     102/      BC :                     ;
+     103/      BC :                     ;		Rendering loop - 3 bits at a time working upwards
+     104/      BC :                     ;
+     105/      BC :                     CONextRow:
+     106/      BC : (MACRO)             		outbit	205o
+     106/      BC : C5                                  mov     a,h                                                                                                             ; rotate HL right into carry.
+     106/      BD : 1A                                  rar
+     106/      BE : E8                                  mov     h,a
+     106/      BF : C6                                  mov     a,l
+     106/      C0 : 1A                                  rar 
+     106/      C1 : F0                                  mov     l,a
+     106/      C2 :                     
+     106/      C2 : 06 00                               mvi     a,0                                                                                                                     ; A = 1 = draw, 0 = clear
+     106/      C4 : 12                                  ral
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 4 - 10/27/2015 15:15:46
+
+
+     106/      C5 : 2C 85                               xri     205O                                                                                                         ; construct command
+     106/      C7 : 51                                  out     COScopeDisplay                                                                                          ; display it.
+     107/      C8 : (MACRO)             		outbit 	205o
+     107/      C8 : C5                                  mov     a,h                                                                                                             ; rotate HL right into carry.
+     107/      C9 : 1A                                  rar
+     107/      CA : E8                                  mov     h,a
+     107/      CB : C6                                  mov     a,l
+     107/      CC : 1A                                  rar 
+     107/      CD : F0                                  mov     l,a
+     107/      CE :                     
+     107/      CE : 06 00                               mvi     a,0                                                                                                                     ; A = 1 = draw, 0 = clear
+     107/      D0 : 12                                  ral
+     107/      D1 : 2C 85                               xri     205O                                                                                                         ; construct command
+     107/      D3 : 51                                  out     COScopeDisplay                                                                                          ; display it.
+     108/      D4 : (MACRO)             		outbit 	203o
+     108/      D4 : C5                                  mov     a,h                                                                                                             ; rotate HL right into carry.
+     108/      D5 : 1A                                  rar
+     108/      D6 : E8                                  mov     h,a
+     108/      D7 : C6                                  mov     a,l
+     108/      D8 : 1A                                  rar 
+     108/      D9 : F0                                  mov     l,a
+     108/      DA :                     
+     108/      DA : 06 00                               mvi     a,0                                                                                                                     ; A = 1 = draw, 0 = clear
+     108/      DC : 12                                  ral
+     108/      DD : 2C 83                               xri     203O                                                                                                         ; construct command
+     108/      DF : 51                                  out     COScopeDisplay                                                                                          ; display it.
+     109/      E0 :                     
+     110/      E0 : 06 80               		mvi 	a,200o 														; dec Y
+     111/      E2 : 51                  		out 	COScopeDisplay
+     112/      E3 : 06 87               		mvi 	a,207o 														; dec X twice
+     113/      E5 : 51                  		out 	COScopeDisplay
+     114/      E6 : 51                  		out 	COScopeDisplay
+     115/      E7 :                     
+     116/      E7 : C5                  		mov 	a,h 														; when we only have 01 left, then we are
+     117/      E8 : B6                  		ora 	l 															; finished rendering.
+     118/      E9 : 3C 01               		cpi 	1
+     119/      EB : 48 BC 00            		jnz 	CONextRow
+     120/      EE :                     
+     121/      EE : 2E 01               		mvi 	h,XCursor / 256 											; point HL to X position
+     122/      F0 : 36 88               		mvi 	l,XCursor & 255
+     123/      F2 : C7                  		mov 	a,m 														; get X position back
+     124/      F3 : 04 04               		adi 	4 															; advance by 4
+     125/      F5 : F8                  		mov 	m,a
+     126/      F6 : 3C 3D               		cpi 	61 															; if < 61 then position is okay, exit.
+     127/      F8 : 60 24 01            		jc 		COExit		
+     128/      FB :                     ;
+     129/      FB :                     ;		Macro required for filling.
+     130/      FB :                     ;
+     131/      FB :                     out4 	macro 																; output same character four times.
+     132/      FB :                     		out 	COScopeDisplay
+     133/      FB :                     		out 	COScopeDisplay
+     134/      FB :                     		out 	COScopeDisplay
+     135/      FB :                     		out 	COScopeDisplay
+     136/      FB :                     		endm
+     137/      FB :                     ;
+     138/      FB :                     ;		Execute a CR, on entry requires HL to point to the H-X position.
+     139/      FB :                     ;
+     140/      FB :                     COCarriageReturn: 															; do CR, on entry HL should point to H Position
+     141/      FB : A8                  		xra 	a 															; zero Acc
+     142/      FC : 51                  		out 	COScopeDisplay 												; set X Position to 0.
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 5 - 10/27/2015 15:15:46
+
+
+     143/      FD : F8                  		mov 	m,a															; do a carriage return, set X to zero.
+     144/      FE : 30                  		inr 	l 															; point HL to Y position
+     145/      FF : C7                  		mov 	a,m 														; add 6 to that
+     146/     100 : 04 06               		adi 	6
+     147/     102 : 3C 39               		cpi 	57 															; if < 59 a new line will fit.
+     148/     104 : 60 08 01            		jc 		CONoHome
+     149/     107 : A8                  		xra 	a 															; back to top of screen
+     150/     108 :                     CONoHome:
+     151/     108 : F8                  		mov 	m,a 														; update Y position
+     152/     109 : 34 40               		ori 	0100o 														; make it a STY command
+     153/     10B : 51                  		out 	COScopeDisplay
+     154/     10C : 1E 18               		mvi 	d,24 														; fill this x 16 
+     155/     10E :                     ;
+     156/     10E :                     ;		Draw 16 x D blanks from the current position. Used for clearing new line on CR and clearing screen.
+     157/     10E :                     ;
+     158/     10E :                     COFill:																		; print d x 16 blanks, if 24 this is one line.
+     159/     10E : 06 85               		mvi 	a,205o														; command is clear pixel and advance X.
+     160/     110 :                     COFillLoop:
+     161/     110 : (MACRO)             		out4 																; in total, output 16 times.	
+     161/     110 : 51                                  out     COScopeDisplay
+     161/     111 : 51                                  out     COScopeDisplay
+     161/     112 : 51                                  out     COScopeDisplay
+     161/     113 : 51                                  out     COScopeDisplay
+     162/     114 : (MACRO)             		out4
+     162/     114 : 51                                  out     COScopeDisplay
+     162/     115 : 51                                  out     COScopeDisplay
+     162/     116 : 51                                  out     COScopeDisplay
+     162/     117 : 51                                  out     COScopeDisplay
+     163/     118 : (MACRO)             		out4
+     163/     118 : 51                                  out     COScopeDisplay
+     163/     119 : 51                                  out     COScopeDisplay
+     163/     11A : 51                                  out     COScopeDisplay
+     163/     11B : 51                                  out     COScopeDisplay
+     164/     11C : (MACRO)             		out4
+     164/     11C : 51                                  out     COScopeDisplay
+     164/     11D : 51                                  out     COScopeDisplay
+     164/     11E : 51                                  out     COScopeDisplay
+     164/     11F : 51                                  out     COScopeDisplay
+     165/     120 : 19                  		dcr 	d
+     166/     121 : 48 10 01            		jnz 	COFillLoop
+     167/     124 :                     ;
+     168/     124 :                     ;		Exit point. Done this way so align above
+     169/     124 :                     ;
+     170/     124 :                     COExit:	
+     171/     124 : 06 86               		mvi 	a,206o 														; screen back on.
+     172/     126 : 51                  		out 	COScopeDisplay
+     173/     127 :                     CORestore:
+     174/     127 : C4                  		mov 	a,e 														; restore A
+     175/     128 : 2E 01               		mvi 	h,_COHLSave / 256 											; point HL to restore point
+     176/     12A : 36 86               		mvi 	l,_COHLSave & 255
+     177/     12C : E7                  		mov 	e,m 														; reload HL using E
+     178/     12D : 30                  		inr 	l
+     179/     12E : EF                  		mov		h,m
+     180/     12F : F4                  		mov 	l,e 	
+     181/     130 : 07                  		ret
+     182/     131 :                     
+     183/     131 :                     ;
+     184/     131 :                     ;		Handle control characters. On entrance, A has had 32 subtracted from it hence comparing 13-32
+     185/     131 :                     ;		HL points to the X position.
+     186/     131 :                     ;
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 6 - 10/27/2015 15:15:46
+
+
+     187/     131 :                     COControl:
+     188/     131 : 3C ED               		cpi 	13-32 														; was it a CR ?
+     189/     133 : 68 FB 00            		jz 		COCarriageReturn 											; go to the carriage return code.
+     190/     136 : 3C E8               		cpi 	8-32 														; was it backspace ?
+     191/     138 : 68 47 01            		jz 		COBackSpace 												; go to the backspace code.
+     192/     13B : 14 EC               		sui 	12-32 														; was it clear screen ?
+     193/     13D : 48 24 01            		jnz 	COExit														; exit if not.
+     194/     140 : F8                  		mov 	m,a 														; clear X, as the result of sui will be zero if CLR
+     195/     141 : 30                  		inr 	l 															; point HL to Y position
+     196/     142 : F8                  		mov 	m,a 														; clear that as well
+     197/     143 : D8                  		mov 	d,a 														; we want 256 x 16 blanks = 4096
+     198/     144 : 44 0E 01            		jmp 	COFill 														; doesn't matter where we start
+     199/     147 :                     ;
+     200/     147 :                     ;		Backspace, moves back one character and falls through to exit.
+     201/     147 :                     ;
+     202/     147 :                     COBackSpace:
+     203/     147 : C7                  		mov 	a,m 														; get X position
+     204/     148 : 14 04               		sui 	4															; back 4
+     205/     14A : 50 4E 01            		jp 		CONotLeftEdge  												; if -ve now
+     206/     14D : A8                  		xra 	a 															; set X as 0
+     207/     14E :                     CONotLeftEdge:
+     208/     14E : F8                  		mov 	m,a 														; update X position and fall through
+     209/     14F : 44 24 01            		jmp 	COExit
+     210/     152 :                     ;
+     211/     152 :                     ;		Character codes 128..255 set X and Y position.
+     212/     152 :                     ;
+     213/     152 :                     COSetPosition:
+     214/     152 : 44 24 01            		jmp 	COExit
+     215/     155 : 80                  		add 	a 															; put bit 6 into bit 7
+     216/     156 : 50 5A 01            		jp 		COSPSkip
+     217/     159 : 30                  		inr 	l 															; now point HL to Y position.
+     218/     15A :                     COSPSkip:
+     219/     15A : C4                  		mov 	a,e 														; get character back
+     220/     15B : 24 3F               		ani 	03Fh 														; only interested in lower 6 bits
+     221/     15D : F8                  		mov 	m,a 														; write to X or Y accordingly.
+     222/     15E : 44 24 01            		jmp 	COExit
+     223/     161 :                     
+     224/     161 :                     ; ******************************************************************************************************************************
+     225/     161 :                     ;
+     226/     161 :                     ;				Print String at HL. Preserves B,C. On exit, A = 0, HL points to character after string end.
+     227/     161 :                     ;
+     228/     161 :                     ; ******************************************************************************************************************************
+     229/     161 :                     
+     230/     161 :                     _COStringOut:										
+     231/     161 : C7                  		mov 	a,m 														; read character
+     232/     162 : 30                  		inr 	l 															; bump HL
+     233/     163 : 48 67 01            		jnz 	_CSNoCarry
+     234/     166 : 28                  		inr 	h
+     235/     167 :                     _CSNoCarry:
+     236/     167 : B0                  		ora 	a 															; return if zero
+     237/     168 : 2B                  		rz
+     238/     169 : 46 03 00            		call 	COCharacterOut 												; print character
+     239/     16C : 44 06 00            		jmp 	COStringOut
+     240/     16F :                     
+     241/     16F :                     _BootMonitor:
+     242/     16F : 06 02               		mvi 	a,2 														; disable keyboard interrupt
+     243/     171 : 41                  		in 		0 										
+     244/     172 :                     
+     245/     172 : 2E 01               		mvi 	h,BootText/256
+     246/     174 : 36 7A               		mvi 	l,BootText&255
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 7 - 10/27/2015 15:15:46
+
+
+     247/     176 : 46 06 00            		call 	COStringOut
+     248/     179 : 00                  		hlt
+     249/     17A :                     
+     250/     17A :                     BootText:	
+     251/     17A : 0C 45 43 53 2D 38   		db 		12,"ECS-8008",13,13,0
+                    30 30 38 0D 0D 00 
+     252/     186 :                     
+     253/     186 :                     
+     254/     186 :                     ; ******************************************************************************************************************************
+     255/     186 :                     ;													RAM Data
+     256/     186 :                     ; ******************************************************************************************************************************
+     257/     186 :                     
+     258/     186 :                     _COHLSave:																	; storage for HL save, CharacterOut.
+     259/     186 : 00 00               		dw 		0
+     260/     188 :                     XCursor:																	; horizontal cursor position
+     261/     188 : 00                  		db 		0
+     262/     189 :                     YCursor:																	; vertical cursor position.
+     263/     189 : 00                  		db 		0
+     264/     18A :                     
+     265/     18A :                     
+     266/     18A :                     
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 8 - 10/27/2015 15:15:46
+
+
+  symbol table (* = unused):
+  ------------------------
+
+*ARCHITECTURE :  i386-unknown-win32 - | *BIGENDIAN :                      0 - |
+ BOOTTEXT :                     17A C | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - |  COBACKSPACE :                  147 C |
+ COCARRIAGERETURN :              FB C |  COCHARACTEROUT :                 3 C |
+ COCONTROL :                    131 C |  COEXIT :                       124 C |
+ COFILL :                       10E C |  COFILLLOOP :                   110 C |
+ COFONTTABLE :                    9 C | *COHPOSITIONM1 :                 97 C |
+ CONEXTROW :                     BC C |  CONOHOME :                     108 C |
+ CONOTLEFTEDGE :                14E C |  CONOTLOWER :                    AD C |
+*CONSTPI :        3.141592653589793 - | *CORESTORE :                    127 C |
+ COSCOPEDISPLAY :                 8 - |  COSETPOSITION :                152 C |
+ COSPSKIP :                     15A C |  COSTRINGOUT :                    6 C |
+*COVPOSITIONM1 :                 9A C | *DATE :                  10/27/2015 - |
+*FALSE :                          0 - | *FULLPMMU :                       1 - |
+*HAS64 :                          1 - | *HASDSP :                         0 - |
+*HASFPU :                         0 - | *HASPMMU :                        0 - |
+*INEXTMODE :                      0 - | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - | *LISTON :                         1 - |
+*MACEXP :                         1 - | *MOMCPU :                     8008E - |
+*MOMCPUNAME :               8008NEW - | *NESTMAX :                      100 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+*RELAXED :                        0 - | *TIME :                    15:15:46 - |
+*TRUE :                           1 - | *VERSION :                     142F - |
+ XCURSOR :                      188 C | *YCURSOR :                      189 C |
+ _BOOTMONITOR :                 16F C |  _COCHARACTEROUT :               89 C |
+ _COHLSAVE :                    186 C |  _COSTRINGOUT :                 161 C |
+ _CSNOCARRY :                   167 C |
+
+     55 symbols
+     32 unused symbols
+
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 9 - 10/27/2015 15:15:46
+
+
+  defined macros:
+  ---------------
+
+OUT4                                  | OUTBIT                               
+
+      2 macros
+
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 10 - 10/27/2015 15:15:46
+
+
+  codepages:
+  ----------
+
+STANDARD (0 changed characters)
+
+
+0.00 seconds assembly time
+
+    331 lines source file
+    380 lines incl. macro expansions
+      2 passes
+      0 errors
+      0 warnings

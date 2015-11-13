@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Interface</name>
+    <events>
+        <event-group description="Handles interface creation from IOMarkers, initialisation of push buttons, transfer of data to and from the InterfaceData dictionary, and actions on switches causing updates or dispatches." sid="1413782982309593" title="Interface" />
+        <comment>Preprocess all the IO Groups, creating the objects</comment>
+        <event-block sid="3034994069371984">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="3658628751555027" type="System" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="8900554534693326">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="4456981432350649" type="System">
+                            <param id="0" name="Object">IOMarker</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Add key" sid="2994384705928287" type="InterfaceData">
+                            <param id="0" name="Key">IOMarker.key</param>
+                            <param id="1" name="Value">0</param>
+                        </action>
+                        <action id="-15" name="Set visible" sid="4453575672481553" type="IOMarker">
+                            <param id="0" name="Visibility">0</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <event-block sid="7591954098797408">
+                            <conditions>
+                                <condition id="-10" name="For" sid="1980985996538379" type="System">
+                                    <param id="0" name="Name">&quot;&quot;</param>
+                                    <param id="1" name="Start index">0</param>
+                                    <param id="2" name="End index">IOMarker.bitCount-1</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-3" name="Create object" sid="112315435736538" type="System">
+                                    <param id="0" name="Object to create">InterfaceObject</param>
+                                    <param id="1" name="Layer">1</param>
+                                    <param id="2" name="X">IOMarker.X+BASESIZE*loopindex-(IOMarker.bitCount-1)/2*BASESIZE</param>
+                                    <param id="3" name="Y">IOMarker.Y</param>
+                                </action>
+                                <action id="4" name="Set animation" sid="1752974132513363" type="InterfaceObject">
+                                    <param id="0" name="Animation">IOMarker.itemName</param>
+                                    <param id="1" name="From">1</param>
+                                </action>
+                                <action id="2" name="Stop" sid="7373303622231562" type="InterfaceObject" />
+                                <action id="-10" name="Set value" sid="2695011639165318" type="InterfaceObject">
+                                    <param id="0" name="Instance variable">key</param>
+                                    <param id="1" name="Value">IOMarker.key</param>
+                                </action>
+                                <action id="-10" name="Set value" sid="232807558467296" type="InterfaceObject">
+                                    <param id="0" name="Instance variable">bit</param>
+                                    <param id="1" name="Value">IOMarker.bitCount-1-loopindex</param>
+                                </action>
+                                <action id="9" name="Set scale" sid="2533984492183301" type="InterfaceObject">
+                                    <param id="0" name="Scale">BASESIZE/InterfaceObject.Height</param>
+                                </action>
+                                <action id="5" name="Set frame" sid="4759240495687033" type="InterfaceObject">
+                                    <param id="0" name="Frame number">0</param>
+                                </action>
+                                <action id="-13" name="Set boolean" sid="1617466082611691" type="InterfaceObject">
+                                    <param id="0" name="Instance variable">isInput</param>
+                                    <param id="1" name="Value">0</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <event-block sid="9550291210960432">
+                                    <conditions>
+                                        <condition id="-8" name="Is boolean instance variable set" sid="3388676098146683" type="IOMarker">
+                                            <param id="0" name="Instance variable">isInput</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-13" name="Set boolean" sid="997406885393644" type="InterfaceObject">
+                                            <param id="0" name="Instance variable">isInput</param>
+                                            <param id="1" name="Value">1</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <event-block sid="7984337489267913">
+                                    <conditions>
+                                        <condition id="-7" name="Compare instance variable" sid="5872907867290868" type="IOMarker">
+                                            <param id="0" name="Instance variable">topLabel</param>
+                                            <param id="1" name="Comparison">1</param>
+                                            <param id="2" name="Value">&quot;&quot;</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-3" name="Create object" sid="9132156453371301" type="System">
+                                            <param id="0" name="Object to create">Label</param>
+                                            <param id="1" name="Layer">0</param>
+                                            <param id="2" name="X">InterfaceObject.X</param>
+                                            <param id="3" name="Y">IOMarker.Y-BASESIZE</param>
+                                        </action>
+                                        <action id="0" name="Set text" sid="1833620887399101" type="Label">
+                                            <param id="0" name="Text">replace(IOMarker.topLabel,&quot;*&quot;,&quot;&quot; &amp; InterfaceObject.bit)</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <event-block sid="4125536236669562">
+                                    <conditions>
+                                        <condition id="-7" name="Compare instance variable" sid="9593017619424125" type="IOMarker">
+                                            <param id="0" name="Instance variable">bottomLabel</param>
+                                            <param id="1" name="Comparison">1</param>
+                                            <param id="2" name="Value">&quot;&quot;</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-3" name="Create object" sid="1828286811727062" type="System">
+                                            <param id="0" name="Object to create">Label</param>
+                                            <param id="1" name="Layer">0</param>
+                                            <param id="2" name="X">InterfaceObject.X</param>
+                                            <param id="3" name="Y">IOMarker.Y+BASESIZE</param>
+                                        </action>
+                                        <action id="0" name="Set text" sid="6892337436124049" type="Label">
+                                            <param id="0" name="Text">replace(IOMarker.bottomLabel,&quot;*&quot;,&quot;&quot; &amp; InterfaceObject.bit)</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Update information to/from the interface data and the interface objects</comment>
+        <event-block sid="3571443711224525">
+            <conditions>
+                <condition id="-6" name="Every X seconds" sid="3988139689953363" type="System">
+                    <param id="0" name="Interval (seconds)">0.1</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="364219975910949">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="1594715560622744" type="System">
+                            <param id="0" name="Object">InterfaceObject</param>
+                        </condition>
+                        <condition id="-8" name="Is boolean instance variable set" sid="3572218688572678" type="InterfaceObject">
+                            <param id="0" name="Instance variable">isInput</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Add key" sid="809235348182188" type="InterfaceData">
+                            <param id="0" name="Key">InterfaceObject.key</param>
+                            <param id="1" name="Value">setbit(InterfaceData.Get(InterfaceObject.key),InterfaceObject.bit,InterfaceObject.AnimationFrame)</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="44579193835464">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="4819379050555124" type="System">
+                            <param id="0" name="Object">InterfaceObject</param>
+                        </condition>
+                        <condition id="-8" inverted="1" name="Is boolean instance variable set" sid="1433757274407145" type="InterfaceObject">
+                            <param id="0" name="Instance variable">isInput</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="5" name="Set frame" sid="6247965831934573" type="InterfaceObject">
+                            <param id="0" name="Frame number">getbit(InterfaceData.Get(InterfaceObject.key),InterfaceObject.bit) </param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Handle touching toggle switches</comment>
+        <event-block sid="7064262735339996">
+            <conditions>
+                <condition id="17" name="On tap object" sid="2766604180718272" type="Touch">
+                    <param id="0" name="Object">InterfaceObject</param>
+                </condition>
+                <condition id="-8" name="Is boolean instance variable set" sid="2427793123610433" type="InterfaceObject">
+                    <param id="0" name="Instance variable">isInput</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="5" name="Set frame" sid="5592556470222597" type="InterfaceObject">
+                    <param id="0" name="Frame number">1-InterfaceObject.AnimationFrame</param>
+                </action>
+            </actions>
+        </event-block>
+        <comment>Handle initialisation of push buttons</comment>
+        <event-block sid="1251372782275478">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="6925404773750598" type="System" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="1096956169716827">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="4666724650027588" type="System">
+                            <param id="0" name="Object">PushButton</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="2" name="Stop" sid="63813044530909" type="PushButton" />
+                        <action id="9" name="Set scale" sid="2954885565916153" type="PushButton">
+                            <param id="0" name="Scale">BASESIZE/PushButton.Height</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <event-block sid="2631114172875442">
+                            <conditions>
+                                <condition id="-7" name="Compare instance variable" sid="2626180264124531" type="PushButton">
+                                    <param id="0" name="Instance variable">topLabel</param>
+                                    <param id="1" name="Comparison">1</param>
+                                    <param id="2" name="Value">&quot;&quot;</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-3" name="Create object" sid="5940854997849083" type="System">
+                                    <param id="0" name="Object to create">Label</param>
+                                    <param id="1" name="Layer">0</param>
+                                    <param id="2" name="X">PushButton.X</param>
+                                    <param id="3" name="Y">PushButton.Y-BASESIZE</param>
+                                </action>
+                                <action id="0" name="Set text" sid="4126773179279244" type="Label">
+                                    <param id="0" name="Text">PushButton.topLabel</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Handle tapping push button</comment>
+        <event-block sid="3151414810374521">
+            <conditions>
+                <condition id="17" name="On tap object" sid="8797703857991432" type="Touch">
+                    <param id="0" name="Object">PushButton</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="5" name="Set frame" sid="2158999905227746" type="PushButton">
+                    <param id="0" name="Frame number">1</param>
+                </action>
+                <action behavior="Timer" id="0" name="Start timer" sid="7918790479311557" type="PushButton">
+                    <param id="0" name="Duration">0.4</param>
+                    <param id="1" name="Type">0</param>
+                    <param id="2" name="Tag">&quot;PopButton&quot;</param>
+                </action>
+                <action id="0" name="Call function" sid="695426482417361" type="Function">
+                    <param id="0" name="Name">&quot;On&quot; &amp; PushButton.actionName</param>
+                    <param id="1" name="Parameter {n}"></param>
+                </action>
+            </actions>
+        </event-block>
+        <comment>Pop button back up</comment>
+        <event-block sid="9478049672841475">
+            <conditions>
+                <condition behavior="Timer" id="0" name="On timer" sid="5133112361828731" type="PushButton">
+                    <param id="0" name="Tag">&quot;PopButton&quot;</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="5" name="Set frame" sid="1358126641238565" type="PushButton">
+                    <param id="0" name="Frame number">0</param>
+                </action>
+            </actions>
+        </event-block>
+        <comment>Handle keyboard input</comment>
+        <event-block sid="9419636205950336">
+            <conditions>
+                <condition id="1" name="On any key pressed" sid="4863133724111433" type="Keyboard" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <variable constant="0" name="key" sid="3247361826024643" static="0" type="text"></variable>
+                <event-block sid="2290663085036591">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="9829142881376977" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="2578105455889799" type="System">
+                            <param id="0" name="Variable">key</param>
+                            <param id="1" name="Value">uppercase(Keyboard.StringFromKeyCode(Keyboard.LastKeyCode))</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <event-block sid="2343175660606298">
+                            <conditions>
+                                <condition id="-8" name="Compare two values" sid="2928837027450636" type="System">
+                                    <param id="0" name="First value">find(HEXADECIMAL,key)</param>
+                                    <param id="1" name="Comparison">5</param>
+                                    <param id="2" name="Second value">0</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="1" name="Set key" sid="3429068467231918" type="InterfaceData">
+                                    <param id="0" name="Key">&quot;dataswitches&quot;</param>
+                                    <param id="1" name="Value">find(HEXADECIMAL,key)</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <event-block sid="8127750567067079">
+                                    <conditions>
+                                        <condition id="-11" name="For Each" sid="1216061301123471" type="System">
+                                            <param id="0" name="Object">InterfaceObject</param>
+                                        </condition>
+                                        <condition id="-7" name="Compare instance variable" sid="4950384743581608" type="InterfaceObject">
+                                            <param id="0" name="Instance variable">key</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">&quot;dataswitches&quot;</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="5" name="Set frame" sid="9999910230316212" type="InterfaceObject">
+                                            <param id="0" name="Frame number">getbit(find(HEXADECIMAL,key),InterfaceObject.bit)</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                        <event-block sid="5619421879589399">
+                            <conditions>
+                                <condition id="-1" name="Every tick" sid="2774725885265672" type="System" />
+                            </conditions>
+                            <actions>
+                                <action id="0" name="Call function" sid="9280787353258667" type="Function">
+                                    <param id="0" name="Name">&quot;OnLoadData&quot;</param>
+                                    <param id="1" name="Parameter {n}"></param>
+                                </action>
+                                <action id="0" name="Call function" sid="550653478800854" type="Function">
+                                    <param id="0" name="Name">&quot;OnSingleStep&quot;</param>
+                                    <param id="1" name="Parameter {n}"></param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+    </events>
+</c2eventsheet>

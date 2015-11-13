@@ -1,0 +1,295 @@
+// ***********************************************************************************************************************************************
+// ***********************************************************************************************************************************************
+//
+//																MC6800 Processor Source
+//
+// ***********************************************************************************************************************************************
+// ***********************************************************************************************************************************************
+
+"ABA"		2		1B 									carry = 0;a = ALUAdd8BitWithCarry(a,b)
+
+"ADCA"		4 		(IM:89,DR:99,EX:B9,IN:A9)			@EAC;a = ALUAdd8BitWithCarry(a,readByte(eac))
+"ADCB"		4 		(IM:C9,DR:D9,EX:F9,IN:E9)			@EAC;b = ALUAdd8BitWithCarry(b,readByte(eac))
+
+"ADDA"		4 		(IM:8B,DR:9B,EX:BB,IN:AB)			@EAC;carry = 0;a = ALUAdd8BitWithCarry(a,readByte(eac))
+"ADDB"		4 		(IM:CB,DR:DB,EX:FB,IN:EB)			@EAC;carry = 0;b = ALUAdd8BitWithCarry(b,readByte(eac))
+
+"ANDA"		4 		(IM:84,DR:94,EX:B4,IN:A4)			@EAC;nValue = zValue = a = a & readByte(eac);overflow = 0
+"ANDB"		4 		(IM:C4,DR:D4,EX:F4,IN:E4)			@EAC;nValue = zValue = b = b & readByte(eac);overflow = 0
+
+"ASLA"		2 		48 									a = ALUASLShift(a)
+"ASLB"		2 		58 									b = ALUASLShift(b)
+"ASL"		6 		(EX:78,IN:68)						@EAC;writeByte(eac,ALUASLShift(readByte(eac)))
+
+"ASRA"		2 		47 									a = ALUASRShift(a)
+"ASRB"		2 		57 									b = ALUASRShift(b)
+"ASR"		6 		(EX:77,IN:67)						@EAC;writeByte(eac,ALUASRShift(readByte(eac)))
+
+"BRA @1"	3 		20 									temp8 = fetchByte();BRANCH(temp8);
+"BHI @1"	3 		22 									BRANCHIF(carry == 0 && zValue != 0)
+"BLS @1"	3 		23 									BRANCHIF(!(carry == 0 && zValue != 0))
+"BCC @1"	3 		24 									BRANCHIF(carry == 0)
+"BCS @1"	3 		25 									BRANCHIF(carry != 0)
+"BNE @1"	3 		26 									BRANCHIF(zValue != 0)
+"BEQ @1"	3 		27 									BRANCHIF(zValue == 0)
+"BVC @1"	3 		28 									BRANCHIF(overflow == 0)
+"BVS @1"	3 		29 									BRANCHIF(overflow != 0)
+"BPL @1" 	3 		2A 									BRANCHIF((nValue & 0x80) == 0)
+"BMI @1"	3 		2B 									BRANCHIF((nValue & 0x80) != 0)
+"BGE @1"	3 		2C 									BRANCHIF((nValue >> 7) == overflow)
+"BLT @1"	3 		2D 									BRANCHIF((nValue >> 7) != overflow)
+"BGT @1"	3 		2E 									BRANCHIF((nValue >> 7) == overflow && zValue != 0)
+"BLE @1"	3 		2F 									BRANCHIF(!((nValue >> 7) == overflow && zValue != 0))
+
+"BITA"		4 		(IM:85,DR:95,EX:B5,IN:A5) 			@EAC;overflow = 0;nValue = zValue = a & readByte(eac)
+"BITB"		4 		(IM:C5,DR:D5,EX:F5,IN:E5) 			@EAC;overflow = 0;nValue = zValue = b & readByte(eac)
+
+"BSR @1"	6 		8D 									temp8 = fetchByte();PUSHWORD(pc);BRANCH(temp8)
+
+"CBA"		2 		11 									carry = 0;ALUSub8BitWithCarry(a,b)
+
+"CLC"		2 		0C 									carry = 0
+"CLI"		2 		0E 									interruptMask = 0
+"CLV"		2 		0A 									overflow = 0
+
+"CLRA"		2 		4F 									a = nValue = zValue = overflow = carry = 0
+"CLRB"		2 		5F 									b = nValue = zValue = overflow = carry = 0
+"CLR"		6 		(EX:7F,IN:6F)						@EAC;nValue = zValue = overflow = carry = 0;writeByte(eac,0)
+
+"CMPA"		4 		(IM:81,DR:91,EX:B1,IN:A1)			@EAC;carry = 0;ALUSub8BitWithCarry(a,readByte(eac))
+"CMPB"		4 		(IM:C1,DR:D1,EX:F1,IN:E1)			@EAC;carry = 0;ALUSub8BitWithCarry(b,readByte(eac))
+
+"COMA"		2 		43 									carry = 1;overflow = 0;nValue = zValue = a = a ^ 0xFF
+"COMB"		2 		53 									carry = 1;overflow = 0;nValue = zValue = b = b ^ 0xFF
+"COM"		6 		(EX:73,IN:63)						@EAC;carry = 1;overflow = 0;nValue = zValue = readByte(eac) ^ 0xFF;writeByte(eac,zValue)
+
+"CPX #@1@2"	4 		8C  								FETCHWORDTEMP16();ALUCompare16Bit(ix,temp16)
+"CPX"		6 		(DR:9C,EX:BC,IN:AC)					@EAC;READWORDTEMP16(eac);ALUCompare16Bit(ix,temp16)
+
+"DAA"		2 		19 									ALUDecimalAdjust()
+
+"DECA"		2 		4A 									overflow = (a == 0x80) ? 1 : 0;nValue = zValue = --a
+"DECB"		2 		5A 									overflow = (b == 0x80) ? 1 : 0;nValue = zValue = --b
+"DEC"		6 		(EX:7A,IN:6A)						@EAC;temp8 = readByte(eac);overflow = (temp8 == 0x80) ? 1 : 0;nValue = zValue = --temp8;writeByte(eac,temp8)
+
+"DES"		3 		34 									sp--
+"DEX"		3 		09									ix--;zValue = ix | (ix >> 8)
+
+"EORA"		4 		(IM:88,DR:98,EX:B8,IN:A8)			@EAC;nValue = zValue = a ^= readByte(eac);overflow = 0
+"EORB"		4 		(IM:C8,DR:D8,EX:F8,IN:E8)			@EAC;nValue = zValue = b ^= readByte(eac);overflow = 0
+
+"INCA"		2 		4C  								overflow = (a == 0x7F) ? 1 : 0;nValue = zValue = ++a
+"INCB"		2 		5C 									overflow = (b == 0x7F) ? 1 : 0;nValue = zValue = ++b
+"INC"		6 		(EX:7C,IN:6C)						@EAC;temp8 = readByte(eac);overflow = (temp8 == 0x7F) ? 1 : 0;nValue = zValue = ++temp8;writeByte(eac,temp8)
+	
+"INS"		3 		31 									sp++
+"INX"		3 		08 									ix++;zValue = ix | (ix >> 8)
+
+"JMP"		3 		(EX:7E,IN:6E)						@EAC;setProgramCounter(eac)
+"JSR"		6 		(EX:BD,IN:AD)						@EAC;PUSHWORD(pc);setProgramCounter(eac)
+
+"LDAA"		4 		(IM:86,DR:96,EX:B6,IN:A6)			@EAC;nValue = zValue = a = readByte(eac);overflow = 0
+"LDAB"		4 		(IM:C6,DR:D6,EX:F6,IN:E6)			@EAC;nValue = zValue = b = readByte(eac);overflow = 0
+
+"LDS #@1@2"	3 		8E 									FETCHWORDTEMP16();sp = temp16;overflow = 0;nValue = sp >> 8;zValue = (sp >> 8)|sp
+"LDS"		5 		(DR:9E,EX:BE,IN:AE)					@EAC;READWORDTEMP16(eac);sp = temp16;overflow = 0;nValue = sp >> 8;zValue = (sp >> 8)|sp
+
+"LDX #@1@2"	3 		CE 									FETCHWORDTEMP16();ix = temp16;overflow = 0;nValue = ix >> 8;zValue = (ix >> 8)|ix
+"LDX"		5 		(DR:DE,EX:FE,IN:EE)					@EAC;READWORDTEMP16(eac);ix = temp16;overflow = 0;nValue = ix >> 8;zValue = (ix >> 8)|ix
+
+"LSRA"		2 		44 									a = ALULSRShift(a)
+"LSRB"		2 		54 									b = ALULSRShift(b)
+"LSR"		6 		(EX:74,IN:64)						@EAC;writeByte(eac,ALULSRShift(readByte(eac)))
+
+"NEGA"		2 		40 									carry = 0;a = ALUSub8BitWithCarry(0,a);
+"NEGB"		2 		50 									carry = 0;b = ALUSub8BitWithCarry(0,b);
+"NEG"		6 		(EX:70,IN:60)						@EAC;carry = 0;writeByte(eac,ALUSub8BitWithCarry(0,readByte(eac)))
+
+"NOP"		2 		01 									{}
+
+"ORAA"		4 		(IM:8A,DR:9A,EX:BA,IN:AA)			@EAC;nValue = zValue = a |= readByte(eac);overflow = 0
+"ORAB"		4 		(IM:CA,DR:DA,EX:FA,IN:EA)			@EAC;nValue = zValue = b |= readByte(eac);overflow = 0
+
+"PSHA"		3 		36 									PUSHBYTE(a)
+"PSHB"		3 		37 									PUSHBYTE(b)
+
+"PULA"		4 		32 									a = PULLBYTE()
+"PULB"		4 		33 									b = PULLBYTE()
+
+"ROLA"		2 		49 									a = ALUROLRotate(a)
+"ROLB"		2 		59 									b = ALUROLRotate(b)
+"ROL"		6 		(EX:79,IN:69)						@EAC;writeByte(eac,ALUROLRotate(readByte(eac)))
+
+"RORA"		2 		46 									a = ALURORRotate(a)
+"RORB"		2 		56 									b = ALURORRotate(b)
+"ROR"		6 		(EX:76,IN:66)						@EAC;writeByte(eac,ALURORRotate(readByte(eac)))
+
+"RTI" 		10 		3B 									putCCR(PULLBYTE());b = PULLBYTE();a = PULLBYTE();PULLWORDTEMP16();ix = temp16;PULLWORDTEMP16();setProgramCounter(temp16)
+
+"RTS"		5 		39 									PULLWORDTEMP16();setProgramCounter(temp16)
+
+"SBA"		2 		10 									carry = 0;a = ALUSub8BitWithCarry(a,b)
+
+"SBCA"		4 		(IM:82,DR:92,EX:B2,IN:A2)			@EAC;a = ALUSub8BitWithCarry(a,readByte(eac))
+"SBCB"		4 		(IM:C2,DR:D2,EX:F2,IN:E2)			@EAC;b = ALUSub8BitWithCarry(b,readByte(eac))
+
+"SEC"		2 		0D 									carry = 1
+"SEI"		2 		0F 									interruptMask = 1
+"SEV"		2 		0B 									overflow = 1
+
+"STAA"		4 		(DR:97,EX:B7,IN:A7)					@EAC;writeByte(eac,a);overflow = 0;nValue = zValue = a
+"STAB"		4 		(DR:D7,EX:F7,IN:E7)					@EAC;writeByte(eac,b);overflow = 0;nValue = zValue = b
+
+"STS"		5 		(DR:9F,EX:BF,IN:AF)					@EAC;writeByte(eac,sp >> 8);writeByte(eac+1,sp);nValue = sp >> 8;zValue = (sp >> 8)|sp
+
+"STX"		5 		(DR:DF,EX:FF,IN:EF)					@EAC;writeByte(eac,ix >> 8);writeByte(eac+1,ix);nValue = ix >> 8;zValue = (ix >> 8)|ix
+
+"SUBA"		4 		(IM:80,DR:90,EX:B0,IN:A0)			@EAC;carry = 0;a = ALUSub8BitWithCarry(a,readByte(eac))
+"SUBB"		4 		(IM:C0,DR:D0,EX:F0,IN:E0)			@EAC;carry = 0;b = ALUSub8BitWithCarry(b,readByte(eac))
+
+"SWI"		12 		3F 									softwareInterrupt()
+
+"TAB"		2 		16 									nValue = zValue = b = a;overflow = 0
+"TAP"		2 		06 									putCCR(a)
+"TBA"		2 		17 									nValue = zValue = a = b;overflow = 0
+"TPA"		2 		07 									a = getCCR()
+
+"TSTA"		2 		4D 									carry = overflow = 0;zValue = nValue = a
+"TSTB"		2 		5D 									carry = overflow = 0;zValue = nValue = b
+"TST"		6 		(EX:7D,IN:6D) 						@EAC;carry = overflow = 0;zValue = nValue = readByte(eac)
+
+"TSX"		3 		30 									ix = sp + 1
+"TXS"		3 		35 									sp = ix - 1
+
+// WAI not implemented.
+
+:#define BRANCHIF(cond) 	temp8 = fetchByte();if (cond) { BRANCH(temp8); } 								// Branches, conditional or otherwise.
+:#define BRANCH(n) 			{ setProgramCounter(((n) & 0x80) ? (pc + (n) - 256) : (pc + (n))); }
+
+:#define FETCHWORDTEMP16()	{ temp16 = fetchByte();temp16 = (temp16 << 8) | fetchByte(); } 					// 16 Bit Operations.
+:#define READWORDTEMP16(n)	{ temp16 = readByte(n);temp16 = (temp16 << 8) | readByte((n)+1); }
+
+:#define PULLBYTE() 		readByte(++sp) 																	// 8 Bit Stack Operations
+:#define PUSHBYTE(n) 		writeByte(sp--,n)	
+:#define PUSHWORD(n) 		{ PUSHBYTE(n);PUSHBYTE((n) >> 8); }												// 16 Bit Stack Operations
+:#define PULLWORDTEMP16()   { temp16 = PULLBYTE();temp16 = (temp16 << 8) | PULLBYTE(); }
+
+:static BYTE8 a,b;																							// 8 Bit Registers
+:static WORD16 ix,sp,pc;																					// 16 Bit Registers
+:static BYTE8 carry,overflow,halfCarry,nValue,zValue,interruptMask;											// 8 Bit Flag Components
+
+:static BYTE8 temp8;																						// Temp register
+:static WORD16 temp16,eac;																					// Temp register, Effective Address Calc.
+
+:static BYTE8 getCCR(void) { 																				// Get CCR as 8 bit value.
+:	BYTE8 ccr = carry | (overflow << 1) | (interruptMask << 4) | (halfCarry << 5) | 0xC0;					// Build 11HI..VC
+:	if (zValue == 0) ccr |= 0x04;																			// Add Z
+:	if (nValue & 0x80) ccr |= 0x08;																			// Add N
+:	return ccr;
+:}
+
+:static void putCCR(BYTE8 ccr) {
+:	carry = ccr & 1; 																						// Extract C,V,I,H
+:	overflow = (ccr >> 1) & 1;
+:	interruptMask = (ccr >> 4) & 1;
+:	halfCarry = (ccr >> 5) & 1;
+:	nValue = (ccr & 0x08) << 4;																				// Extract N and shift to bit 7.
+:	zValue = (ccr & 0x04) ? 0 : 1;																			// ZValue bit set if 0 else 1.
+:}
+
+:static void resetProcessor(void) { 																		// CPU reset.
+:	READWORDTEMP16(0xFFFE);setProgramCounter(temp16);														// Read the interrupt vector and go there.
+:	carry = carry & 1;halfCarry = halfCarry & 1;interruptMask = interruptMask & 1; 							// Make CPU values legal ones.
+:	overflow = overflow & 1;nValue = zValue; 																// and sensible ones.
+:}
+
+:static void softwareInterrupt(void) {																		// Execute a software interrupt
+:	PUSHWORD(pc);
+:	PUSHWORD(ix);
+:	PUSHBYTE(a);
+:	PUSHBYTE(b);
+:	PUSHBYTE(getCCR());
+:	interruptMask = 1;
+:	READWORDTEMP16(0xFFFA);
+:	setProgramCounter(temp16);
+:}
+
+:static BYTE8 ALUAdd8BitWithCarry(BYTE8 n1,BYTE8 n2) {
+:	WORD16 result = n1 + n2 + carry;							// Calculate the result.
+:	carry = result >> 8;										// Store the carry out.
+:	halfCarry = ((n1 & 0xF) + (n2 & 0xF) + carry) >> 4;			// Store the half carry out.
+:	overflow = ((n1 & 0x80) == (n2 & 0x80) && 					// Calculate the overflow.
+:							(n1 & 0x80) != (((BYTE8)result) & 0x80)) ? 1 : 0;
+:	nValue = zValue = result; 									// N,Z set according to result.
+:	return result;												// Mask to 8 bits on return.
+:}
+:
+:static BYTE8 ALUSub8BitWithCarry(BYTE8 n1,BYTE8 n2) {
+:	WORD16 result = n1 - n2 - carry;							// Calculate the result.
+:	carry = (result >> 8) & 1;									// Store the carry out (Half Carry unaffected)
+:	overflow = ((n1 & 0x80) != (n2 & 0x80) && 					// Calculate the overflow.
+:							(n2 & 0x80) == (((BYTE8)result) & 0x80)) ? 1 : 0;
+:	nValue = zValue = result; 									// N,Z set according to result.
+:	return result;												// Mask to 8 bits on return.
+:}
+:
+:static void ALUCompare16Bit(WORD16 w1,WORD16 w2) {
+:	WORD16 result = w1 - w2;									// Calculate the result.
+:	overflow = ((w1 & 0x8000) != (w2 & 0x8000) && 				// Calculate the overflow.
+:							(w2 & 0x8000) == (((WORD16)result) & 0x8000)) ? 1 : 0;
+:	nValue = result >> 8;										// Set N value from result
+:	zValue = (result >> 8) | result;							// Set Z value from result
+:}
+:
+:static void ALUDecimalAdjust(void) {
+:	BYTE8 correction = 0;										// Actually DAA from the Z80 as per the
+:	if (a > 0x99 || carry != 0) {								// World of Spectrum Z80 Information
+:		correction = 0x60;
+:		carry = 1;
+:	} else {
+:		carry = 0;
+:	}
+:	if ((a & 0xF) > 9 || halfCarry != 0) {
+:		correction += 6;
+:	}
+:	a = a + correction;
+:	nValue = zValue = a;										// Sets N & Z flags.
+:}
+:
+:static BYTE8 ALUASLShift(BYTE8 n) {
+:	carry = n >> 7;												// Bit 7 into carry
+:	nValue = zValue = n << 1;									// Store result into N,Z
+:	overflow = carry ^ (nValue >> 7);							// Overflow set if N and C are different.
+:	return nValue;
+:}
+:
+:static BYTE8 ALUASRShift(BYTE8 n) {
+:	carry = n & 1;												// Bit 0 into carry
+:	nValue = zValue = (n >> 1) | (n & 0x80);					// Store result into N,Z
+:	overflow = carry ^ (nValue >> 7);							// Overflow set if N and C are different.
+:	return nValue;
+:}
+:
+:static BYTE8 ALULSRShift(BYTE8 n) {
+:	carry = n & 1;												// Bit 0 into carry
+:	nValue = zValue = (n >> 1);									// Store result into N,Z
+:	overflow = carry ^ (nValue >> 7);							// Overflow set if N and C are different.
+:	return nValue;
+:}
+:
+:static BYTE8 ALUROLRotate(BYTE8 n) {
+:	BYTE8 newCarry = n >> 7; 									// New carry will be bit 7.
+:	nValue = zValue = (n << 1) | carry;							// Store result into N,Z
+:	carry = newCarry;											// Update carry.
+:	overflow = carry ^ (nValue >> 7);							// Overflow set if N and C are different.
+:	return nValue;
+:}
+:
+:static BYTE8 ALURORRotate(BYTE8 n) {
+:	BYTE8 newCarry = n & 1; 									// New carry will be bit 0.
+:	nValue = zValue = (n >> 1) | (carry << 7);					// Store result into N,Z
+:	carry = newCarry;											// Update carry.
+:	overflow = carry ^ (nValue >> 7);							// Overflow set if N and C are different.
+:	return nValue;
+:}
+:

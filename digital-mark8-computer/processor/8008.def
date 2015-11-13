@@ -1,0 +1,133 @@
+// *******************************************************************************************************
+//
+//	A,B,C,D,E,H,L	Standard 8008 Registers
+//	HaltFlag, Carry Halt and Carry flags
+//	PSZValue 		Value to test for P,S,Z.
+//	PCR[8],PCIX 	Program Counter Registers/Index.
+//
+//	$SRC 			Register name based on step (A,B,C,D,E,H,L,M)
+//	$DST 			Register name based on destination (A,B,C,D,E,H,L,M) (/8)
+//	$SCODE 			As $SRC but accessor for register (M becomes READ(HL()))
+//	$TNAME 			Test name ("NC","NZ","P","PO","C","Z","M","PE") (/8)
+//	$TTEST 			Expression implementing above (/8)
+//	$RST 			RST address, 2 hex digits
+//	$IOPORT			Port address, 2 hex digits
+//
+//	Add 3 to cycles for 80-FE where last three bits are 111.
+//
+//	Macros: 		READ(),  WRITE(), READPORT(), WRITEPORT()
+//
+// *******************************************************************************************************
+
+:static BYTE8 		A,B,C,D,E,H,L,HaltFlag,Carry,PCIX,PSZValue,MB;			// Used variables.
+:static WORD16 		PCR[8],Cycles,MA,temp16;
+
+:#define HL()		MA = ((((WORD16)H) << 8) | L) & 0x3FFF					// Combine HL, 14 bit put in MA
+
+:#define PCTR		PCR[PCIX]												// Current program counter
+:#define POP()		PCIX = (PCIX-1) & 7										// Pop off stack
+:#define PUSH() 	PCIX = (PCIX+1) & 7										// Push on stack
+:#define FETCH() 	MA = PCTR & 0x3FFF;READ();PCTR = (MA + 1) & 0x3FFF 		// 8 bit Fetch.
+:#define FETCH16()	FETCH();temp16 = MB;FETCH();temp16 |= (((WORD16)MB)<<8)	// 16 bit Fetch.
+
+:#define CYCLES(n)	Cycles += n
+
+:static void CPU8008Reset(void) {
+:	A = B= C = D = E = H = L = HaltFlag = Carry = Cycles = PCIX = PSZValue = 0;
+:	for (BYTE8 n = 0;n < 8;n++) PCR[n] = 0;
+:}
+
+// *******************************************************************************************************
+//										Index Register Instructions
+// *******************************************************************************************************
+
+C0-F7 	5 	"MOV $DST,$SRC"		$DST = $SCODE 								// Reg->Reg and Mem->Reg
+F8-FE 	7	"MOV M,$SRC"		HL();MB = $SCODE;WRITE()					// Reg->Mem
+
+06-36,8 8 	"MVI $DST,@1"		FETCH();$DST = MB							// Move immediate to register
+3E 		9	"MVI M,@1"			FETCH();HL();WRITE()						// Move immediate to memory
+
+08-30,8 5 	"INR $DST"			$DST = PSZValue = ($DST + 1) & 0xFF 		// Increment Register
+09-31,8 5 	"DCR $DST"			$DST = PSZValue = ($DST - 1) & 0xFF 		// Decrement Register
+
+:static BYTE8 _ReadHL() {
+:	HL();READ();return MB;
+:}
+
+// *******************************************************************************************************
+//									  Accumulator Group Instructions
+// *******************************************************************************************************
+
+80-87 	5 	"ADD $SRC"			Carry = 0;A = PSZValue = _Add($SCODE)		// Add without carry in.
+88-8F 	5 	"ADC $SRC"			A = PSZValue = _Add($SCODE)					// Add with carry in.
+90-97 	5 	"SUB $SRC"			Carry = 0;A = PSZValue = _Sub($SCODE)		// Sub without borrow in.
+98-9F 	5 	"SBB $SRC"			A = PSZValue = _Sub($SCODE)					// Sub with borrow in.
+A0-A7 	5	"AND $SRC"			Carry = 0;A = PSZValue = A & $SCODE 		// Logical And
+A8-AF 	5	"XRA $SRC"			Carry = 0;A = PSZValue = A ^ $SCODE 		// Logical Xor
+B0-B7 	5	"ORA $SRC"			Carry = 0;A = PSZValue = A | $SCODE 		// Logical Or
+B8-BF 	5 	"CMP $SRC"			Carry = 0;PSZValue = _Sub($SCODE)			// Sub without borrow in, preserve A
+
+:static BYTE8 _Add(BYTE8 n) {
+:	temp16 = A + n + Carry; Carry = temp16 >> 8;
+:	return temp16 & 0xFF;
+:}
+
+:static BYTE8 _Sub(BYTE8 n) {
+:	temp16 = A - n - Carry; Carry = temp16 >> 8;
+:	return temp16 & 0xFF;
+:}
+
+04 		8 	"ADI @1"			FETCH();Carry = 0;A = PSZValue = _Add(MB)	// Add without carry in.
+0C 		8 	"ACI @1"			FETCH();A = PSZValue = _Add(MB)				// Add with carry in.
+14 		8 	"SUI @1"			FETCH();Carry = 0;A = PSZValue = _Sub(MB)	// Sub without borrow in.
+1C 		8 	"SBI @1"			FETCH();A = PSZValue = _Sub(MB)				// Sub with borrow in.
+24 		8	"ANI @1"			FETCH();Carry = 0;A = PSZValue = A & MB 	// Logical And
+2C 		8	"XRI @1"			FETCH();Carry = 0;A = PSZValue = A ^ MB 	// Logical Xor
+34 		8	"ORI @1"			FETCH();Carry = 0;A = PSZValue = A | MB 	// Logical Or
+3C 		8 	"CPI @1"			FETCH();Carry = 0;PSZValue = _Sub(MB)		// Sub without borrow in, preserve A
+
+																			// Rotate A left, A7 -> Carry
+02 		5	"RLC"				Carry = (A >> 7);A = ((A << 1) | Carry) & 0xFF
+																			// Rotate A right, A0 -> Carry
+0A 		5 	"RRC"				Carry = A & 1;A = (A >> 1) | (Carry << 7)
+																			// Rotate left through carry
+12 		5 	"RAL"				temp16 = (A << 1) | Carry;A = temp16 & 0xFF;Carry = temp16 >> 8
+																			// Rotate right through carry
+1A 		5 	"RAR"				temp16 = A | (Carry << 8);A = temp16 >> 1;Carry = temp16 & 1
+
+// *******************************************************************************************************
+//								Program Counter and Stack Control instructions
+// *******************************************************************************************************
+
+44-7C,8	11	"JMP @2"			FETCH16();PCTR = temp16 					// Unconditional Jump
+40-78,8 10 	"J$TNAME @2"		FETCH16();if ($TTEST) PCTR = temp16 		// Conditional Jump
+
+46-7E,8	11 	"CALL @2"			FETCH16();PUSH();PCTR = temp16 				// Unconditional Call
+42-7A,8 10 	"C$TNAME @2"		FETCH16();if ($TTEST) {PUSH();PCTR=temp16;}	// Conditional Call
+
+07-3F,8 5 	"RET"				POP()										// Unconditional Return
+03-3B,8 5 	"R$TNAME"			if ($TTEST) POP()							// Conditional Return
+
+05-3D,8	5 	"RST $RST"			PUSH();PCTR = 0x$RST 						// Quick call
+
+:static BYTE8 _Parity(BYTE8 n) {
+:	BYTE8 p = 0;
+:	while (n != 0) {
+:		if ((n & 1) != 0) p ^= 1;
+:		n = n >> 1;
+:	}
+:	return p;
+:}
+// *******************************************************************************************************
+//										Input/Output instructions
+// *******************************************************************************************************
+
+41-4F,2	8	"IN $IOPORT"		READPORT$IOPORT();A = MB					// Read I/O
+51-7F,2 6 	"OUT $IOPORT"		MB = A;WRITEPORT$IOPORT()					// Write I/O
+
+// *******************************************************************************************************
+//											Machine instruction
+// *******************************************************************************************************
+
+00-01 	4	"HLT"				HaltFlag = 1								// Set Halt flag.
+FF 	 	4	"HLT"				HaltFlag = 1

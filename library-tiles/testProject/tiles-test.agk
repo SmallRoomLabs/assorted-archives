@@ -1,0 +1,15 @@
+
+[projectfiles]
+FILE_0=main.agc;-1
+FILE_1=tmx_square.agc;-1
+FILE_2=..%2Flibrary-tiles.agc;-1
+FILE_3=tmx_isometric.agc;-1
+
+[files]
+FILE_NAME_0=1;main.agc;1536;0
+FILE_NAME_1=0;tmx_square.agc;7797;1
+FILE_NAME_2=0;..%2Flibrary-tiles.agc;18775;2
+FILE_NAME_3=0;tmx_isometric.agc;1237;3
+
+[project]
+description=

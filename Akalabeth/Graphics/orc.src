@@ -1,0 +1,14 @@
+// *************************************************************************
+//
+//                                  Draw Orc
+//
+// *************************************************************************
+330       hplot y.m,x.m to y.m - 15 / dI,x.m to y.m - 8 / dI,x.m - 8 / dI to y.m - 8 / dI,x.m - 15 / dI to y.m - 15 / dI,x.m - 23 / dI to y.m - 15 / dI,x.m - 15 / dI to y.m - 23 / dI,x.m - 23 / dI
+331       hplot to y.m - 23 / dI,x.m - 45 / dI to y.m - 15 / dI,x.m - 53 / dI to y.m - 8 / dI,x.m - 53 / dI to y.m - 15 / dI,x.m - 68 / dI to y.m - 8 / dI,x.m - 75 / dI to y.m,x.m - 75 / dI
+332       hplot y.m,x.m to y.m + 15 / dI,x.m to y.m + 8 / dI,x.m - 8 / dI to y.m + 8 / dI,x.m - 15 / dI to y.m + 15 / dI,x.m - 23 / dI to y.m + 15 / dI,x.m - 15 / dI to y.m + 23 / dI,x.m - 23 / dI
+333       hplot to y.m + 23 / dI,x.m - 45 / dI to y.m + 15 / dI,x.m - 53 / dI to y.m + 8 / dI,x.m - 53 / dI to y.m + 15 / dI,x.m - 68 / dI to y.m + 8 / dI,x.m - 75 / dI to y.m,x.m - 75 / dI
+334       hplot y.m - 15 / dI,x.m - 68 / dI to y.m + 15 / dI,x.m - 68 / dI:
+          hplot y.m - 8 / dI,x.m - 53 / dI to y.m + 8 / dI,x.m - 53 / dI:
+          hplot y.m - 23 / dI,x.m - 15 / dI to y.m + 8 / dI,x.m - 45 / dI
+335       hplot y.m - 8 / dI,x.m - 68 / dI to y.m,x.m - 60 / dI to y.m + 8 / dI,x.m - 68 / dI to y.m + 8 / dI,x.m - 60 / dI to y.m - 8 / dI,x.m - 60 / dI to y.m - 8 / dI,x.m - 68 / dI
+336       hplot y.m,x.m - 38 / dI to y.m - 8 / dI,x.m - 38 / dI to y.m + 8 / dI,x.m - 53 / dI to y.m + 8 / dI,x.m - 45 / dI to y.m + 15 / dI,x.m - 45 / dI to y.m,x.m - 30 / dI to y.m,x.m - 38 / dI

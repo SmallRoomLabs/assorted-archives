@@ -1,0 +1,151 @@
+// ***********************************************************************************************************
+// ***********************************************************************************************************
+//
+//										CDC160 Processor Core
+//
+// ***********************************************************************************************************
+// ***********************************************************************************************************
+//
+//	A		12 bit accumulator
+//	P 		12 bit program counter
+//	Z 		12 bit link register between I/O Devices and Core Storage
+//	S 		12 bit memory address register
+//
+//	Opcodes 10-57 add 1 cycle if last two bits are 01 (e.g. it is indirect)
+//
+//	$M 		Mode (D,I,F,B) based on mod 4
+//	$EAC	EAC based on mod 4 - converts to EACD() EACI() EACF() EACB() which are macros
+//	$J 		Jump name based on mod 4 (ZJ,NZ,PJ,NJ)
+//	$C 		Condition name (Z,NZ,PL,MI)
+//	$T 		Expression testing that jump.
+//	$A 		Mode (%D,@%D,@F,@B) based on mod 4.
+//
+//	READ()	WRITE()		using Z,S
+//	IOTRANSFER(d)		using Z, returns -1 on transfer failure.
+//	IOEXTERNAL()		using Z
+//
+// ***********************************************************************************************************
+
+// ***********************************************************************************************************
+//											Globals / Initialisation
+// ***********************************************************************************************************
+
+:static WORD16 A,P,Z,S,cycles;														// Registers
+:static BYTE8  halt; 																// Halt flag
+
+:static void CDC160Reset(void) {
+:	A = P = Z = S = cycles = 0;														// Clear the internal registers
+:	halt = 0;																		// Clear the halt flag.
+:}
+
+// ***********************************************************************************************************
+//										12 bit One's complement adder
+// ***********************************************************************************************************
+
+:#define ADD() 		CDC160Add()														// Add Z to A
+
+:static void CDC160Add(void) {
+:	if (A != 07777 && Z != 07777) {													// If A and Z are -0 leave A
+:		A += Z;																		// Work out the sum.
+:		A += (A >> 12);																// Add the end-around carry
+:		if (A == 07777) A = 0;														// "-0 fix"
+:	}
+:}
+
+// ***********************************************************************************************************
+//										Effectove address calculations
+// ***********************************************************************************************************
+
+:#define EACD()		S = Z & 077 													// Direct mode
+:#define EACI() 	S = Z & 077;READ();S = Z 										// Indirect mode
+:#define EACF() 	S = ((P + (Z & 077)) & 0777)									// Forward mode
+:#define EACB() 	S = ((P - (Z & 077)) & 0777)									// Backward mode
+
+// ***********************************************************************************************************
+//													Instruction set
+// ***********************************************************************************************************
+
+00		1	"ERR/ERR %D"	halt = 1;$N												// Error, both these stop the
+77		1 	"HLT/HLT %D" 	halt = 1;$N												// processor.
+
+01 		1	"SHA/SHA %D"	CDC160Shift();$N										// SHA operation.
+
+:#define ROTATEA() 	A = ((A << 1) | (A >> 11)) & 07777 								// Rotate A left once.
+
+:static void CDC160Shift() {
+:	switch(Z) {
+:		case 0102:																	// 0102 Rotate A once
+:			ROTATEA();break;
+:		case 0110:																	// 0110 Rotate A three times
+:			ROTATEA();ROTATEA();ROTATEA();break;
+:		case 0112:																	// 0112 Multiply by 10
+:			ROTATEA();Z = A;ROTATEA();ROTATEA();ADD();break;						// Add 2 x A to 8 x A
+:	}	
+:}
+
+02 		1	"LPN/AND #%D "	A = A & (Z & 077);$N									// AND immediate
+10-13 	2	"LP$M/AND $A"	$EAC;READ();A = A & Z;$N 								// AND memory
+
+03 		1	"LSN/XOR #%D"	A = A ^ (Z & 077);$N									// XOR immediate
+14-17 	2	"LS$M/XOR $A"	$EAC;READ();A = A ^ Z;$N 								// XOR memory
+
+04 		1	"LDN/LDA #%D"	A = (Z & 077);$N										// Load immediate
+20-23 	2	"LD$M/LDA $A"	$EAC;READ();A = Z;$N 									// Load memory
+
+05 		1	"LCN/LCA #%D"	A = (Z & 077) ^ 07777;$N								// Load complement immediate
+24-27 	2	"LC$M/LCA $A"	$EAC;READ();A = Z ^ 07777;$N							// Load complement memory
+
+06 		1 	"ADN/ADD #%D"	Z = Z & 077;ADD();$N									// Add immediate
+30-33 	2 	"AD$M/ADD $A"	$EAC;READ();ADD();$N									// Add memory
+
+07 		1 	"SBN/SUB #%D"	Z = (Z & 077) ^ 07777;ADD();$N							// Sub immediate
+34-37 	2 	"SB$M/SUB $A"	$EAC;READ();Z = Z ^ 07777;ADD();$N						// Sub memory
+
+40-43 	3	"ST$M/STA $A"	$EAC;Z = A;WRITE();$N									// Write to memory
+
+44-47 	3	"SR$M/RML $A"	$EAC;READ();A = Z;ROTATEA();Z = A;WRITE();$N 			// Read to A, rotate, write back
+
+50-53 	3 	"RA$M/ADM $A"	$EAC;READ();ADD();Z = A;WRITE();$N 						// Add memory to A, write back
+
+54-57 	3 	"AO$M/ILD $A"	$EAC;READ();A = 1;ADD();Z = A;WRITE();$N				// Add 1 to memory, copy to A.
+
+60-63 	1 	"$JF/J$C %F"	if ($T) { EACF();P = S; } else { $N; }					// Jump conditional forward
+64-67 	1 	"$JB/J$C %B"	if ($T) { EACB();P = S; } else { $N; }					// Jump conditional forward
+
+70 		2 	"JPI/JMP @%D"	EACI();P = S											// Jump indirect
+71 		2 	"JFI/JMP @%F"	EACF();READ();P = Z 									// Jump forward indirect
+
+72 		2 	"INP/INP %F"	if (CDC160DataReady()) { CDC160BlockTransfer('I');$N;} 	// Block transfer in.
+73 		2 	"OUT/OUT %F"	CDC160BlockTransfer('O');$N 							// Block transfer out.
+
+74 		1 	"OTN/OTC #%D"	Z = Z & 077;S = IOTRANSFER('O');$N						// Output direct.
+75 		2 	"EXF/EXF %F"	EACF();READ();IOEXTERNAL();$N							// External Function.
+76		1 	"INA/INA"		if (CDC160DataReady()) { S = IOTRANSFER('I');A = Z;$N;}	// Input to A.
+
+// ***********************************************************************************************************
+//											Block transfer code
+// ***********************************************************************************************************
+
+:static void CDC160BlockTransfer(char direction) {
+:	BYTE8 error;
+:	EACF();																			// 1) P added to E -> starting address
+:	READ();A = Z;																	// 2) Read starting address into A
+:	P = (P + 1) & 07777;															// 3) P is increased by one -> terminating addr
+:	do {
+:		cycles += 2;																// Each loop iteration takes 2 m/c cycles.
+:		if (direction == 'I') {
+:			error = IOTRANSFER('R');S = A;WRITE();									// 4a) Data read and stored at address A
+:		} else {
+:			S = A;READ();error = IOTRANSFER('W');									// 4b) Get address a and output it.
+:		}
+:		A = (A + 1) & 07777;														// 5) A is increased by one.
+:		S = P;READ();																// 6) (i) Compare A against Memory[P]
+:	} while (A != Z && error == 0);													// 6) (ii) go back to 4 if different.
+:																					// 6) *also* exits on a transfer error.		
+:}
+
+:static BYTE8 CDC160DataReady(void) {												// Is data ready for this device.
+:	if (HWMIsStatusPending() != 0) return 1; 										// If status pending, always available.
+:	BYTE8 error = IOTRANSFER('Q');													// Send it a 'Q' message.
+:	return (error == 0);	
+:}

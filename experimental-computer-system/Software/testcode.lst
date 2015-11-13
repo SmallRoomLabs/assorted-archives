@@ -1,0 +1,434 @@
+ AS V1.42 Beta [Bld 102] - source file testcode.asm - page 1 - 9/21/2015 19:13:39
+
+
+       1/       0 :                     ; **************************************************************************************************************
+       2/       0 :                     ;
+       3/       0 :                     ;                                         "El Dump" (ECS 1-1)
+       4/       0 :                     ;
+       5/       0 :                     ; **************************************************************************************************************
+       6/       0 :                     
+       7/       0 :                     	cpu 	8008new
+       8/       0 :                     
+       9/       0 : =8H                 Display_Port = 8
+      10/       0 : =40H                Display_SetY = 100o
+      11/       0 : =81H                Display_ScreenOff = 201o
+      12/       0 : =82H                Display_Set = 202o
+      13/       0 : =83H                Display_Clear = 203o
+      14/       0 : =84H                Display_SetAdv = 204o
+      15/       0 : =85H                Display_ClearAdv = 205o
+      16/       0 : =87H                Display_ScreenOn = 207o
+      17/       0 :                     
+      18/       0 :                     Type    macro
+      19/       0 :                         rst     30o
+      20/       0 :                         endm
+      21/       0 :                     OctOut  macro
+      22/       0 :                         rst     40o
+      23/       0 :                         endm
+      24/       0 :                     
+      25/       0 :                     
+      26/     240 :                     	org 	011o*64
+      27/     240 :                     
+      28/     240 :                     EDStart:
+      29/     240 : 06 02                   mvi     a,2                                                 ; turn interrupts off
+      30/     242 : 41                      in      0   
+      31/     243 :                     
+      32/     243 :                     EDElDumpo:
+      33/     243 : 2E 00                   mvi     h,Counter/256                                       ; point HL to counter
+      34/     245 : 36 05                   mvi     l,Counter & 255 
+      35/     247 : D7                      mov     c,m                                                 ; dec counter, zero if exit
+      36/     248 : 11                      dcr     c 
+      37/     249 : 68 86 02                jz      EDExit
+      38/     24C : FA                      mov     m,c                                                 ; write it back
+      39/     24D :                     
+      40/     24D :                     ;    mov    a,a                                                 ; three NOPs for TTY.
+      41/     24D :                     ;    mov    a,a
+      42/     24D :                     ;    mov    a,a
+      43/     24D :                     
+      44/     24D : 36 06                   mvi     l,MemoryAddress & 255                               ; point HL to memory address
+      45/     24F : CF                      mov     b,m                                                 ; load into BC.
+      46/     250 : 30                      inr     l
+      47/     251 : D7                      mov     c,m
+      48/     252 : 10                      inr     c                                                   ; go to next memory address
+      49/     253 : FA                      mov     m,c                                                 ; write it back.
+      50/     254 : 48 58 02                jnz     EDNoOverflow
+      51/     257 : 08                      inr     b                                                   ; overflow, increment and write back
+      52/     258 :                     EDNoOverflow:
+      53/     258 : 31                      dcr     l
+      54/     259 : F9                      mov     m,b
+      55/     25A : 06 0D                   mvi     a,0Dh                                               ; print carriage return
+      56/     25C : 46 02 01                call    PrintCharacter
+      57/     25F : 06 0A                   mvi     a,0Ah                                               ; print line feed
+      58/     261 : 46 02 01                call    PrintCharacter
+      59/     264 :                     
+      60/     264 : 36 02                   mvi     l,2                                                 ; note, using L here.
+ AS V1.42 Beta [Bld 102] - source file testcode.asm - page 2 - 9/21/2015 19:13:39
+
+
+      61/     266 : 46 95 02                call    EDSpaces                                            ; draw 10 spaces.
+      62/     269 : C1                      mov     a,b
+      63/     26A : 46 87 02                call    EDTByteOctal                                        ; print MSB
+      64/     26D : 06 5C                   mvi     a,'\\'                                              ; print seperator
+      65/     26F : (MACRO)                 Type
+      65/     26F : 1D                      rst     30o
+      66/     270 : C2                      mov     a,c                                                 ; print LSB
+      67/     271 : 46 87 02                call    EDTByteOctal
+      68/     274 : 06 3D                   mvi     a,'='                                               ; print equals
+      69/     276 : (MACRO)                 Type
+      69/     276 : 1D                      rst     30o
+      70/     277 : 06 20                   mvi     a, ' '                                              ; print space.
+      71/     279 : (MACRO)                 Type
+      71/     279 : 1D                      rst     30o
+      72/     27A : E9                      mov     h,b                                                 ; address into HL
+      73/     27B : F2                      mov     l,c
+      74/     27C : C7                      mov     a,m                                                 ; read it
+      75/     27D : 46 87 02                call    EDTByteOctal
+      76/     280 : 43                      in      1                                                   ; scan keyboard
+      77/     281 : 3C FF                   cpi     377o                                                ; no key pressed
+      78/     283 : 68 43 02                jz      EDElDumpo                                           ; go back if no key pressed
+      79/     286 :                     
+      80/     286 :                     EDExit:
+      81/     286 : 00                      hlt
+      82/     287 :                     
+      83/     287 :                     EDTByteOctal:
+      84/     287 : F0                      mov     l,a 
+      85/     288 : 02                      rlc     
+      86/     289 : 02                      rlc     
+      87/     28A : 24 03                   ani     3
+      88/     28C : (MACRO)                 OctOut
+      88/     28C : 25                      rst     40o
+      89/     28D : C6                      mov     a,l
+      90/     28E : 0A                      rrc
+      91/     28F : 0A                      rrc
+      92/     290 : 0A                      rrc
+      93/     291 : (MACRO)                 OctOut
+      93/     291 : 25                      rst     40o
+      94/     292 : C6                      mov     a,l
+      95/     293 : (MACRO)                 OctOut
+      95/     293 : 25                      rst     40o
+      96/     294 : 07                      ret
+      97/     295 :                     
+      98/     295 :                     EDSpaces:
+      99/     295 : 06 20                   mvi     a,' '
+     100/     297 : (MACRO)                 Type
+     100/     297 : 1D                      rst     30o
+     101/     298 : 31                      dcr     l
+     102/     299 : 48 95 02                jnz     EDSpaces
+     103/     29C : 07                      ret
+     104/     29D :                     
+     105/       0 :                         org     0
+     106/       0 : 44 40 02                jmp     EDStart
+     107/       3 :                     
+     108/       3 :                     
+     109/       3 : =6H                 MemoryAddress = 6
+     110/       3 : =5H                 Counter = 5
+     111/       3 :                     
+     112/      18 :                         org     030o
+     113/      18 : 44 02 01                jmp     PrintCharacter
+ AS V1.42 Beta [Bld 102] - source file testcode.asm - page 3 - 9/21/2015 19:13:39
+
+
+     114/      1B :                     
+     115/      20 :                         org     040o
+     116/      20 :                     OctOut:
+     117/      20 : 24 07                   ani     7
+     118/      22 : 34 30                   ori     '0'
+     119/      24 : 1D                      rst     30o
+     120/      25 : 07                      ret 
+     121/      26 :                     
+     122/      26 :                     
+     123/      26 :                         include display.asm
+(1)    1/      26 :                     ; **************************************************************************************************************
+(1)    2/      26 :                     ; **************************************************************************************************************
+(1)    3/      26 :                     ;
+(1)    4/      26 :                     ;                   Character Display Routine and Font for Hogenson Oscilloscope Display
+(1)    5/      26 :                     ;                   ====================================================================
+(1)    6/      26 :                     ;
+(1)    7/      26 :                     ;   Note: Carl Helmers original code TTYOUT only breaks D ; preserving all the registers isn't possible without 
+(1)    8/      26 :                     ;         hardware add-ons a la Martin Research. Modifications to the code may be required because of this.
+(1)    9/      26 :                     ;         (e.g. Spaces routine in El Dumpo)
+(1)   10/      26 :                     ;
+(1)   11/      26 :                     ;   Self modifies both on the reload of HL at the end and in the storing of the X and Y drawing positions
+(1)   12/      26 :                     ;   which are immediate instructions at PCXPositionLoader and PCYPositionLoader
+(1)   13/      26 :                     ;
+(1)   14/      26 :                     ;   These routines (currently 254 bytes) should ideally be on a page on their own, alternatively the Character
+(1)   15/      26 :                     ;   Table can be moved to ROM.
+(1)   16/      26 :                     ;
+(1)   17/      26 :                     ; **************************************************************************************************************
+(1)   18/      26 :                     ; **************************************************************************************************************
+(1)   19/      26 :                     
+(1)   20/      26 :                         align 256
+(1)   21/     100 :                     
+(1)   22/     100 : =8H                 CDControl_Port = 8
+(1)   23/     100 : =40H                CDControl_SetY = 100o
+(1)   24/     100 : =81H                CDControl_ScreenOff = 201o
+(1)   25/     100 : =82H                CDControl_Set = 202o
+(1)   26/     100 : =83H                CDControl_Clear = 203o
+(1)   27/     100 : =84H                CDControl_SetAdv = 204o
+(1)   28/     100 : =85H                CDControl_ClearAdv = 205o
+(1)   29/     100 : =87H                CDControl_ScreenOn = 207o
+(1)   30/     100 :                     
+(1)   31/     100 :                     ; **************************************************************************************************************
+(1)   32/     100 :                     ;
+(1)   33/     100 :                     ;                                       Print a Carriage Return / Line Feed
+(1)   34/     100 :                     ;   
+(1)   35/     100 :                     ; **************************************************************************************************************
+(1)   36/     100 :                     
+(1)   37/     100 :                     PrintCRLF:
+(1)   38/     100 : 06 0D                   mvi     a,0Dh                                               ; set A to 13 and drop through.
+(1)   39/     102 :                     
+(1)   40/     102 :                     ; **************************************************************************************************************
+(1)   41/     102 :                     ;
+(1)   42/     102 :                     ;                                       Print A - breaks DE, preserves BCHL. 
+(1)   43/     102 :                     ;
+(1)   44/     102 :                     ; **************************************************************************************************************
+(1)   45/     102 :                     
+(1)   46/     102 :                     PrintCharacter:
+(1)   47/     102 : DD                      mov     d,h                                                 ; put HL into DE to save it
+(1)   48/     103 : E6                      mov     e,l
+(1)   49/     104 : 36 4C                   mvi     l,(PCReloadRegisters+2) & 255                       ; point to the restore instructions
+(1)   50/     106 : 2E 01                   mvi     h,(PCReloadRegisters+2) / 256   
+ AS V1.42 Beta [Bld 102] - source file testcode.asm(display.asm) - page 4 - 9/21/2015 19:13:39
+
+
+(1)   51/     108 : FB                      mov     m,d                                                 ; and change them to reload HL
+(1)   52/     109 : 30                      inr     l                                                   ; these are mov a,d mvi h,nn and mvi l,nn
+(1)   53/     10A : 30                      inr     l
+(1)   54/     10B : FC                      mov     m,e
+(1)   55/     10C : D8                      mov     d,a                                                 ; save character to print into D
+(1)   56/     10D :                     
+(1)   57/     10D : 3C 0D                   cpi     13                                                  ; is it a carriage return
+(1)   58/     10F : 68 50 01                jz      PCNewLineCode                                       ; if so, do a carriage return.
+(1)   59/     112 : 3C 20                   cpi     32                                                  ; don't print control characters.
+(1)   60/     114 : 60 4A 01                jc      PCReloadRegisters
+(1)   61/     117 :                     PCYPositionLoader:
+(1)   62/     117 : 26 00                   mvi     e,0                                                 ; fetch the Y coordinate into E
+(1)   63/     119 : 24 3F                   ani     03Fh                                                ; convert to 6 bit ASCII
+(1)   64/     11B : 80                      add     a                                                   ; double it as words.
+(1)   65/     11C : 04 7E                   adi     CharacterTable & 255                                ; now a pointer into character data
+(1)   66/     11E : F0                      mov     l,a                                                 ; because H has been set in the register saving code.
+(1)   67/     11F : C7                      mov     a,m                                                 ; read Low byte in
+(1)   68/     120 : 30                      inr     l
+(1)   69/     121 : EF                      mov     h,m                                                 ; high byte straight into H
+(1)   70/     122 : F0                      mov     l,a                                                 ; graphic data now in HL.
+(1)   71/     123 :                     
+(1)   72/     123 :                     PCNextCharacterRow:
+(1)   73/     123 :                     
+(1)   74/     123 :                     PCXPositionLoader:
+(1)   75/     123 : 06 00                   mvi     a,0                                                 ; fetch the X coordinate
+(1)   76/     125 : 51                      out     CDControl_Port
+(1)   77/     126 : C4                      mov     a,e                                                 ; get the Y coordinate
+(1)   78/     127 : 24 3F                   ani     3Fh                                                 ; force into range 0-63
+(1)   79/     129 : 34 40                   ori     CDControl_SetY                                      ; make into a SET-Y command
+(1)   80/     12B : 51                      out     CDControl_Port
+(1)   81/     12C :                     
+(1)   82/     12C : 46 71 01                call    NextBit                                             ; output the three bits
+(1)   83/     12F : 46 71 01                call    NextBit
+(1)   84/     132 : 46 71 01                call    NextBit
+(1)   85/     135 : 20                      inr     e                                                   ; next row down.
+(1)   86/     136 : C5                      mov     a,h                                                 ; finish when this is $80. 
+(1)   87/     137 : B6                      ora     l
+(1)   88/     138 : 2C 80                   xri     080h                                                ; will be zero if was $80
+(1)   89/     13A : 48 23 01                jnz     PCNextCharacterRow
+(1)   90/     13D :                     
+(1)   91/     13D : 36 24                   mvi     l,(PCXPositionLoader+1) & 255                       ; set HL to point to X position value 
+(1)   92/     13F : 2E 01                   mvi     h,(PCXPositionLoader+1) / 256                       ; (H was changed by the drawing code)
+(1)   93/     141 : C7                      mov     a,m                                                 ; shift four to the lft.
+(1)   94/     142 : 04 04                   adi     4
+(1)   95/     144 : 24 3F                   ani     3Fh
+(1)   96/     146 : F8                      mov     m,a                                                 ; write it back.
+(1)   97/     147 : 68 50 01                jz      PCNewLineCode                                       ; if zero, do a new line.
+(1)   98/     14A :                     PCReloadRegisters:
+(1)   99/     14A : C3                      mov     a,d                                                 ; restore character that was printed.
+(1)  100/     14B : 2E 00                   mvi     h,0                                                 ; these are self modified.
+(1)  101/     14D : 36 00                   mvi     l,0 
+(1)  102/     14F : 07                      ret
+(1)  103/     150 :                     ;
+(1)  104/     150 :                     ;   New line, on entry H points to page.
+(1)  105/     150 :                     ;
+(1)  106/     150 :                     PCNewLineCode:
+(1)  107/     150 : A8                      xra     a                                                   ; output the X writing position (LHS)
+(1)  108/     151 : 51                      out     CDControl_Port
+(1)  109/     152 : 36 18                   mvi     l,(PCYPositionLoader+1) & 255                       ; point HL to the Y Position Loader.
+(1)  110/     154 : C7                      mov     a,m                                                 ; read the Y position into A
+ AS V1.42 Beta [Bld 102] - source file testcode.asm(display.asm) - page 5 - 9/21/2015 19:13:39
+
+
+(1)  111/     155 : 04 06                   adi     6                                                   ; six lines down.
+(1)  112/     157 : 3C 3C                   cpi     60                                                  ; have we space for another line ?
+(1)  113/     159 : 60 5D 01                jc      _PCNoHomeRequired
+(1)  114/     15C : A8                      xra     a                                                   ; home to line 0
+(1)  115/     15D :                     _PCNoHomeRequired:
+(1)  116/     15D : F8                      mov     m,a                                                 ; write it back.
+(1)  117/     15E : 34 40                   ori     CDControl_SetY                                      ; make it a display:setY instruction
+(1)  118/     160 : 51                      out     CDControl_Port
+(1)  119/     161 : 26 C0                   mvi     e,6*64/2                                            ; number of writes to do to clear the next line.
+(1)  120/     163 : 06 85                   mvi     a,CDControl_ClearAdv
+(1)  121/     165 :                     PCNewLineClear:
+(1)  122/     165 : 51                      out     CDControl_Port                                      ; doing it in twos is quicker and also use byte counter
+(1)  123/     166 : 51                      out     CDControl_Port
+(1)  124/     167 : 21                      dcr     e
+(1)  125/     168 : 48 65 01                jnz     PCNewLineClear  
+(1)  126/     16B : 36 24                   mvi     l,(PCXPositionLoader+1) & 255                       ; zero the X position
+(1)  127/     16D : FC                      mov     m,e
+(1)  128/     16E : 44 4A 01                jmp     PCReloadRegisters                                   ; Reload registers and exit.
+(1)  129/     171 :                      
+(1)  130/     171 :                     ;   Output the top bit from HL to the display, shifting the whole thing left.
+(1)  131/     171 :                     ;
+(1)  132/     171 :                     NextBit:
+(1)  133/     171 : C6                      mov     a,l                                                 ; shift L right into H
+(1)  134/     172 : 80                      add     a
+(1)  135/     173 : F0                      mov     l,a
+(1)  136/     174 : C5                      mov     a,h                                                 ; shift H right into Carry
+(1)  137/     175 : 88                      adc     a
+(1)  138/     176 : E8                      mov     h,a                                                 ; carry has bit to draw.
+(1)  139/     177 : 06 00                   mvi     a,0                                                 ; clear A
+(1)  140/     179 : 1C 7B                   sbi     (0-CDControl_ClearAdv) & 255                          ; make A into 204/205 using borrow because it's backwards.
+(1)  141/     17B : 51                      out     CDControl_Port
+(1)  142/     17C : 07                      ret
+(1)  143/     17D :                     
+(1)  144/     17D :                     ; *************************************************************************************************************
+(1)  145/     17D :                     ;
+(1)  146/     17D :                     ;                                 3 x 5 font, occupies 128 bytes of memory
+(1)  147/     17D :                     ;
+(1)  148/     17D :                     ; *************************************************************************************************************
+(1)  149/     17D :                     
+(1)  150/     17D :                         align   2                       ; must be on an even address as we just use INR L to get 2nd byte.
+(1)  151/     17E :                     CharacterTable:
+(1)  152/     17E :                         include fonttable.asm
+(2)    1/     17E : CF 56                 dw 22223
+(2)    2/     180 : DB F7                 dw 63451
+(2)    3/     182 : 5F F7                 dw 63327
+(2)    4/     184 : 4F F2                 dw 62031
+(2)    5/     186 : DD D6                 dw 55005
+(2)    6/     188 : CF F3                 dw 62415
+(2)    7/     18A : C9 F3                 dw 62409
+(2)    8/     18C : DF F2                 dw 62175
+(2)    9/     18E : DB B7                 dw 47067
+(2)   10/     190 : 2F E9                 dw 59695
+(2)   11/     192 : DF E4                 dw 58591
+(2)   12/     194 : 5B B7                 dw 46939
+(2)   13/     196 : 4F 92                 dw 37455
+(2)   14/     198 : DB BF                 dw 49115
+(2)   15/     19A : DB F6                 dw 63195
+(2)   16/     19C : DF F6                 dw 63199
+(2)   17/     19E : C9 F7                 dw 63433
+(2)   18/     1A0 : 93 F7                 dw 63379
+ AS V1.42 Beta [Bld 102] - source file testcode.asm(fonttable.asm) - page 6 - 9/21/2015 19:13:39
+
+
+(2)   19/     1A2 : EB F7                 dw 63467
+(2)   20/     1A4 : 9F F3                 dw 62367
+(2)   21/     1A6 : 25 E9                 dw 59685
+(2)   22/     1A8 : DF B6                 dw 46815
+(2)   23/     1AA : D5 B6                 dw 46805
+(2)   24/     1AC : FB B7                 dw 47099
+(2)   25/     1AE : 5B B5                 dw 46427
+(2)   26/     1B0 : 25 B5                 dw 46373
+(2)   27/     1B2 : 4F E5                 dw 58703
+(2)   28/     1B4 : 4F F2                 dw 62031
+(2)   29/     1B6 : 13 91                 dw 37139
+(2)   30/     1B8 : 9F E4                 dw 58527
+(2)   31/     1BA : 25 5D                 dw 23845
+(2)   32/     1BC : 0F 00                 dw 15
+(2)   33/     1BE : 01 00                 dw 1
+(2)   34/     1C0 : 05 49                 dw 18693
+(2)   35/     1C2 : 01 B4                 dw 46081
+(2)   36/     1C4 : FB BE                 dw 48891
+(2)   37/     1C6 : 75 5E                 dw 24181
+(2)   38/     1C8 : 4B A5                 dw 42315
+(2)   39/     1CA : 57 57                 dw 22359
+(2)   40/     1CC : 01 48                 dw 18433
+(2)   41/     1CE : 23 29                 dw 10531
+(2)   42/     1D0 : 29 89                 dw 35113
+(2)   43/     1D2 : AB AB                 dw 43947
+(2)   44/     1D4 : A5 4B                 dw 19365
+(2)   45/     1D6 : 29 00                 dw 41
+(2)   46/     1D8 : 81 03                 dw 897
+(2)   47/     1DA : 21 00                 dw 33
+(2)   48/     1DC : 49 25                 dw 9545
+(2)   49/     1DE : DF F6                 dw 63199
+(2)   50/     1E0 : 2F 59                 dw 22831
+(2)   51/     1E2 : CF E7                 dw 59343
+(2)   52/     1E4 : 9F E7                 dw 59295
+(2)   53/     1E6 : 93 B7                 dw 46995
+(2)   54/     1E8 : 9F F3                 dw 62367
+(2)   55/     1EA : DF F3                 dw 62431
+(2)   56/     1EC : 93 E4                 dw 58515
+(2)   57/     1EE : DF F7                 dw 63455
+(2)   58/     1F0 : 9F F7                 dw 63391
+(2)   59/     1F2 : 21 08                 dw 2081
+(2)   60/     1F4 : 29 08                 dw 2089
+(2)   61/     1F6 : 23 2A                 dw 10787
+(2)   62/     1F8 : 71 1C                 dw 7281
+(2)   63/     1FA : A9 88                 dw 34985
+(2)   64/     1FC : 85 E5                 dw 58757
+(1)  153/     1FE :                     
+(1)  154/     1FE :                     
+ AS V1.42 Beta [Bld 102] - source file testcode.asm - page 7 - 9/21/2015 19:13:39
+
+
+  symbol table (* = unused):
+  ------------------------
+
+*ARCHITECTURE :  i386-unknown-win32 - | *BIGENDIAN :                      0 - |
+*BRANCHEXT :                      0 - | *CASESENSITIVE :                  0 - |
+*CDCONTROL_CLEAR :               83 - |  CDCONTROL_CLEARADV :            85 - |
+ CDCONTROL_PORT :                 8 - | *CDCONTROL_SCREENOFF :           81 - |
+*CDCONTROL_SCREENON :            87 - | *CDCONTROL_SET :                 82 - |
+*CDCONTROL_SETADV :              84 - |  CDCONTROL_SETY :                40 - |
+ CHARACTERTABLE :               17E C | *CONSTPI :        3.141592653589793 - |
+ COUNTER :                        5 - | *DATE :                   9/21/2015 - |
+*DISPLAY_CLEAR :                 83 - | *DISPLAY_CLEARADV :              85 - |
+*DISPLAY_PORT :                   8 - | *DISPLAY_SCREENOFF :             81 - |
+*DISPLAY_SCREENON :              87 - | *DISPLAY_SET :                   82 - |
+*DISPLAY_SETADV :                84 - | *DISPLAY_SETY :                  40 - |
+ EDELDUMPO :                    243 C |  EDEXIT :                       286 C |
+ EDNOOVERFLOW :                 258 C |  EDSPACES :                     295 C |
+ EDSTART :                      240 C |  EDTBYTEOCTAL :                 287 C |
+*FALSE :                          0 - | *FULLPMMU :                       1 - |
+*HAS64 :                          1 - | *HASDSP :                         0 - |
+*HASFPU :                         0 - | *HASPMMU :                        0 - |
+*INEXTMODE :                      0 - | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - | *LISTON :                         1 - |
+*MACEXP :                         1 - |  MEMORYADDRESS :                  6 - |
+*MOMCPU :                     8008E - | *MOMCPUNAME :               8008NEW - |
+*NESTMAX :                      100 - |  NEXTBIT :                      171 C |
+*OCTOUT :                        20 C | *PACKING :                        0 - |
+*PADDING :                        1 - |  PCNEWLINECLEAR :               165 C |
+ PCNEWLINECODE :                150 C |  PCNEXTCHARACTERROW :           123 C |
+ PCRELOADREGISTERS :            14A C |  PCXPOSITIONLOADER :            123 C |
+ PCYPOSITIONLOADER :            117 C |  PRINTCHARACTER :               102 C |
+*PRINTCRLF :                    100 C | *RELAXED :                        0 - |
+*TIME :                    19:13:39 - | *TRUE :                           1 - |
+*VERSION :                     142F - |  _PCNOHOMEREQUIRED :            15D C |
+
+     64 symbols
+     43 unused symbols
+
+ AS V1.42 Beta [Bld 102] - source file testcode.asm - page 8 - 9/21/2015 19:13:39
+
+
+  defined macros:
+  ---------------
+
+OCTOUT                                | TYPE                                 
+
+      2 macros
+
+ AS V1.42 Beta [Bld 102] - source file testcode.asm - page 9 - 9/21/2015 19:13:39
+
+
+  codepages:
+  ----------
+
+STANDARD (0 changed characters)
+
+
+0.06 seconds assembly time
+
+    341 lines source file
+    348 lines incl. macro expansions
+      2 passes
+      0 errors
+      0 warnings

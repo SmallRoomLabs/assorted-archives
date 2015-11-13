@@ -1,0 +1,389 @@
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 1 - 9/25/2015 12:21:35
+
+
+       1/       0 :                     ; ******************************************************************************************************************
+       2/       0 :                     ;
+       3/       0 :                     ;											Octal Monitor with Display.
+       4/       0 :                     ;
+       5/       0 :                     ; ******************************************************************************************************************
+       6/       0 :                     
+       7/       0 : =$0                 AddressHigh = 0 														; 0x800 Address 
+       8/       0 : =$1                 AddressLow = 1 															; 0x801 Address Low
+       9/       0 : =$2                 Cursor = 2 																; 0x802 Vertical Cursor position
+      10/       0 : =$3                 Counter = 3 															; 0x803 Counter of horizontal screen position.
+      11/       0 : =$4                 DigitCount = 4 															; 0x804 Digits to print
+      12/       0 : =$5                 RowCount = 5 															; 0x805 Rows to print
+      13/       0 : =$6                 DigitsHigh = 6 															; 0x806 Digits (High)
+      14/       0 : =$7                 DigitsLow = 7 															; 0x807 Digits (Low)
+      15/       0 : =$8                 LineCounter = 8 														; 0x808 Line Counter 
+      16/       0 : =$9                 LinesToDraw = 9 														; 0x809 Number of lines to draw
+      17/       0 :                     
+      18/       0 :                     		cpu	sc/mp
+      19/       0 :                     
+      20/       0 :                     		org 	0x0000
+      21/       0 : 08                  		nop
+      22/       1 : 06                  		csa 															; short beep.
+      23/       2 : DC 04               		ori 	0x04
+      24/       4 : 07                  		cas
+      25/       5 : 8F FF               		dly 	0xFF
+      26/       7 : D4 F8               		ani 	0xF8
+      27/       9 : 07                  		cas
+      28/       A :                     
+      29/       A :                     ; ******************************************************************************************************************
+      30/       A :                     ;												Clear the screen
+      31/       A :                     ; ******************************************************************************************************************
+      32/       A :                     
+      33/       A : C4 00               		ldi 	0x00 													; set P1 to screen top.
+      34/       C : 31                  		xpal 	p1
+      35/       D : C4 1C               		ldi 	0x0C ! 0x10 						
+      36/       F :                     ClearScreen:															; fill 0C00 to 0FFF
+      37/       F : 35                  		xpah 	p1
+      38/      10 : C4 00               		ldi 	0
+      39/      12 : CD 01               		st 		@1(p1)
+      40/      14 : 35                  		xpah 	p1
+      41/      15 : E4 10               		xri 	0x10
+      42/      17 : 9C F6               		jnz 	ClearScreen
+      43/      19 :                     
+      44/      19 : C4 08               		ldi 	0x08													; Set P1 to point to 0x800
+      45/      1B : 35                  		xpah 	p1
+      46/      1C :                     
+      47/      1C :                     ; ******************************************************************************************************************
+      48/      1C :                     ;										Set up to edit from 0x8010 onwards
+      49/      1C :                     ; ******************************************************************************************************************
+      50/      1C :                     
+      51/      1C : C4 10               		ldi 	0x10 													; set start address to 0x810
+      52/      1E : C9 01               		st 		AddressLow(p1)
+      53/      20 : C4 00               		ldi 	0x00
+      54/      22 : C9 00               		st 		AddressHigh(p1)
+      55/      24 : C4 00               		ldi 	0x00													; reset cursor
+      56/      26 : C9 02               		st 		Cursor(p1) 		
+      57/      28 : 90 12               		jmp 	RedrawScreen
+      58/      2A :                     
+      59/      2A :                     CharacterSet:
+      60/      2A :                     		include ..\fonts\octal_mon_font.asm
+ AS V1.42 Beta [Bld 102] - source file test.asm(octal_mon_font.asm) - page 2 - 9/25/2015 12:21:35
+
+
+(1)    1/      2A :                     ;
+(1)    2/      2A :                     ; octal_mon_font.asm characters "01234567:"
+(1)    3/      2A :                     ;
+(1)    4/      2A : 6F FB                   dw 64367
+(1)    5/      2C : 9A F4                   dw 62618
+(1)    6/      2E : E7 F3                   dw 62439
+(1)    7/      30 : E7 F9                   dw 63975
+(1)    8/      32 : ED C9                   dw 51693
+(1)    9/      34 : CF F9                   dw 63951
+(1)   10/      36 : CF FB                   dw 64463
+(1)   11/      38 : 27 C9                   dw 51495
+(1)   12/      3A : 10 84                   dw 33808
+(1)   13/      3C :                     
+      61/      3C :                     
+      62/      3C :                     ; ******************************************************************************************************************
+      63/      3C :                     ;											Redraw the whole display
+      64/      3C :                     ; ******************************************************************************************************************
+      65/      3C :                     
+      66/      3C :                     RedrawScreen:
+      67/      3C : C4 00               		ldi 	0														; clear line counter
+      68/      3E : C9 08               		st 		LineCounter(p1)
+      69/      40 : C4 0C               		ldi 	0x0C 													; point P2 to 0xC3C - 2nd line (6 lines of 5)
+      70/      42 : 36                  		xpah 	p2														; last character
+      71/      43 : C4 5D               		ldi 	0x5C+1
+      72/      45 : 32                  		xpal 	p2
+      73/      46 : C4 05               		ldi 	5														; reset the number to draw.
+      74/      48 : C9 09               		st 		LinesToDraw(p1)
+      75/      4A :                     
+      76/      4A :                     ; ******************************************************************************************************************
+      77/      4A :                     ;												Do next line
+      78/      4A :                     ; ******************************************************************************************************************
+      79/      4A :                     
+      80/      4A :                     NextLine:
+      81/      4A : C4 01               		ldi 	1 														; printing two digits.
+      82/      4C : C9 03               		st 		Counter(p1)
+      83/      4E :                     
+      84/      4E :                     ; ******************************************************************************************************************
+      85/      4E :                     ;												Do next number
+      86/      4E :                     ; ******************************************************************************************************************
+      87/      4E :                     
+      88/      4E :                     DrawLoop:
+      89/      4E : C1 01               		ld 		AddressLow(p1) 											; put address+counter in digits and P3
+      90/      50 : 02                  		ccl 
+      91/      51 : F1 08               		add 	LineCounter(p1)
+      92/      53 : C9 07               		st 		DigitsLow(p1)
+      93/      55 : 33                  		xpal 	p3
+      94/      56 : C1 00               		ld 		AddressHigh(p1)
+      95/      58 : F4 00               		adi 	0
+      96/      5A : C9 06               		st 		DigitsHigh(p1)
+      97/      5C : 37                  		xpah 	p3
+      98/      5D : C1 03               		ld 		Counter(p1)												; get counter 0: Address 1:Data
+      99/      5F : 98 08               		jz 		DrawDigits
+     100/      61 : C3 00               		ld 		0(p3) 													; read data at address
+     101/      63 : C9 07               		st 		DigitsLow(p1)
+     102/      65 : C4 00               		ldi  	0														; MSB is zero.
+     103/      67 : C9 06               		st 		DigitsHigh(p1)
+     104/      69 :                     DrawDigits:
+     105/      69 : C1 03               		ld 		Counter(p1) 											; 0 address 1 data
+     106/      6B : E4 03               		xri 	3 														; 3 address, 2 data
+     107/      6D : C9 04               		st 		DigitCount(p1) 											; number of times we print it.
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 3 - 9/25/2015 12:21:35
+
+
+     108/      6F :                     
+     109/      6F :                     ; ******************************************************************************************************************
+     110/      6F :                     ;													Do next digit.
+     111/      6F :                     ; ******************************************************************************************************************
+     112/      6F :                     
+     113/      6F :                     NextDigit:		
+     114/      6F : C4 05               		ldi 	5														; rows to print
+     115/      71 : C9 05               		st 		RowCount(p1)
+     116/      73 :                     
+     117/      73 : C1 07               		ld 		DigitsLow(p1) 											; read digits low into A
+     118/      75 : 02                  		ccl
+     119/      76 : F1 07               		add 	DigitsLow(p1) 											; double it
+     120/      78 : D4 0F               		ani		15 														; lower 3 bits
+     121/      7A : 02                  		ccl
+     122/      7B : F4 AB               		adi 	CharacterSet-LoadPoint-1								; offset from character - loadpoint
+     123/      7D : 01                  		xae 															; put in E.
+     124/      7E :                     LoadPoint:
+     125/      7E : C0 80               		db 		0xC0,0x80 	; LD E(P0)									; read the low byte, put in P3.L
+     126/      80 : 33                  		xpal 	p3
+     127/      81 : 01                  		xae 
+     128/      82 : 03                  		scl 	
+     129/      83 : FC 07               		cai 	7
+     130/      85 : 01                  		xae
+     131/      86 : C0 80               		db 		0xC0,0x80 	; LD E(P0)									; read the high byte, put in P3.H
+     132/      88 : 37                  		xpah 	p3
+     133/      89 :                     
+     134/      89 :                     ; ******************************************************************************************************************
+     135/      89 :                     ;													Output bit data
+     136/      89 :                     ; ******************************************************************************************************************
+     137/      89 :                     
+     138/      89 :                     outbit 	macro 	after
+     139/      89 :                     		xpah 	p3
+     140/      89 :                     		rrl
+     141/      89 :                     		xpah 	p3
+     142/      89 :                     		xpal 	p3
+     143/      89 :                     		st 		@after(p2)
+     144/      89 :                     		rrl 	
+     145/      89 :                     		xpal 	p3
+     146/      89 :                     		endm
+     147/      89 :                     
+     148/      89 :                     DrawRow:
+     149/      89 : (MACRO)             		outbit	1														; output 3 bits, at end go to next row.
+     149/      89 : 37                                  xpah    p3
+     149/      8A : 1F                                  rrl
+     149/      8B : 37                                  xpah    p3
+     149/      8C : 33                                  xpal    p3
+     149/      8D : CE 01                               st              @1(p2)
+     149/      8F : 1F                                  rrl     
+     149/      90 : 33                                  xpal    p3
+     150/      91 : (MACRO)             		outbit 	1
+     150/      91 : 37                                  xpah    p3
+     150/      92 : 1F                                  rrl
+     150/      93 : 37                                  xpah    p3
+     150/      94 : 33                                  xpal    p3
+     150/      95 : CE 01                               st              @1(p2)
+     150/      97 : 1F                                  rrl     
+     150/      98 : 33                                  xpal    p3
+     151/      99 : (MACRO)             		outbit 	30
+     151/      99 : 37                                  xpah    p3
+     151/      9A : 1F                                  rrl
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 4 - 9/25/2015 12:21:35
+
+
+     151/      9B : 37                                  xpah    p3
+     151/      9C : 33                                  xpal    p3
+     151/      9D : CE 1E                               st              @30(p2)
+     151/      9F : 1F                                  rrl     
+     151/      A0 : 33                                  xpal    p3
+     152/      A1 : B9 05               		dld 	rowCount(p1) 											; do it 5 times
+     153/      A3 : 9C E4               		jnz 	DrawRow
+     154/      A5 : C6 9C               		ld 		@-100(p2) 												; back 32 x 5 + 4 = 164
+     155/      A7 : C6 C0               		ld 		@-64(p2)												; previous character on start row.
+     156/      A9 :                     
+     157/      A9 : C4 03               		ldi 	3 														; shift the number right 3 times
+     158/      AB : C9 05               		st 		rowCount(p1)
+     159/      AD :                     ShiftRight:
+     160/      AD : C1 06               		ld 		DigitsHigh(p1)
+     161/      AF : 1F                  		rrl
+     162/      B0 : C9 06               		st 		DigitsHigh(p1)
+     163/      B2 : C1 07               		ld 		DigitsLow(p1)
+     164/      B4 : 1F                  		rrl
+     165/      B5 : C9 07               		st 		DigitsLow(p1)
+     166/      B7 : 1F                  		rrl
+     167/      B8 : B9 05               		dld 	rowCount(p1)
+     168/      BA : 9C F1               		jnz 	ShiftRight
+     169/      BC :                     
+     170/      BC :                     
+     171/      BC : B9 04               		dld		DigitCount(p1)
+     172/      BE : 94 AF               		jp 		NextDigit 												; do the next digit.
+     173/      C0 :                     
+     174/      C0 : C6 FE               		ld 		@-2(p2) 												; space between digits.
+     175/      C2 : B9 03               		dld 	Counter(p1) 											; decrement counter
+     176/      C4 : 94 88               		jp 		DrawLoop 												; do the next item.
+     177/      C6 :                     
+     178/      C6 : C6 6E               		ld 		@110(p2) 												; point to next line
+     179/      C8 : C6 72               		ld 		@114(p2)
+     180/      CA : A9 08               		ild 	LineCounter(p1) 										; next line
+     181/      CC : B9 09               		dld 	LinesToDraw(p1)
+     182/      CE : 98 03               		jz 		RepaintCursor
+     183/      D0 : C4 49               		ldi 	(NextLine-1) & 255 										; jump to Nextline, same page
+     184/      D2 : 30                  		xpal 	p0
+     185/      D3 :                     
+     186/      D3 :                     ; ******************************************************************************************************************
+     187/      D3 :                     ;													Redraw the marker
+     188/      D3 :                     ; ******************************************************************************************************************
+     189/      D3 :                     
+     190/      D3 :                     RepaintCursor:
+     191/      D3 : C4 00               		ldi 	0x00
+     192/      D5 : 32                  		xpal 	p2
+     193/      D6 : C4 1C               		ldi 	0xC!0x10 												; repoint P2 to video
+     194/      D8 :                     _ClearCursor:
+     195/      D8 : 36                  		xpah 	p2
+     196/      D9 : C4 00               		ldi 	0x00 													; now clear the 2 pixels on the RHS.
+     197/      DB : CE 01               		st 		@1(p2)
+     198/      DD : CE 1F               		st 		@31(p2)
+     199/      DF : 36                  		xpah 	p2
+     200/      E0 : E4 10               		xri 	0x10
+     201/      E2 : 9C F4               		jnz 	_ClearCursor
+     202/      E4 :                     
+     203/      E4 : 32                  		xpal 	p2
+     204/      E5 : C4 0C               		ldi 	0x0C 													; P2 back to video start
+     205/      E7 : 36                  		xpah 	p2
+     206/      E8 :                     
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 5 - 9/25/2015 12:21:35
+
+
+     207/      E8 :                     ; ******************************************************************************************************************
+     208/      E8 :                     ;												Draw the actual marker
+     209/      E8 :                     ; ******************************************************************************************************************
+     210/      E8 :                     		
+     211/      E8 : C1 02               		ld 		Cursor(p1) 												; read cursor
+     212/      EA :                     _FindCursorPos
+     213/      EA : 98 0B               		jz 		_FoundCursorPos
+     214/      EC : 01                  		xae 															; save in E
+     215/      ED : C6 60               		ld 		@96(p2)													; down 6 lines.
+     216/      EF : C6 60               		ld 		@96(p2)
+     217/      F1 : 01                  		xae 															; get back.
+     218/      F2 : 03                  		scl 															; subtract one
+     219/      F3 : FC 01               		cai 	1 														
+     220/      F5 : 90 F3               		jmp 	_FindCursorPos
+     221/      F7 :                     _FoundCursorPos:
+     222/      F7 : C6 60               		ld 		@96(p2)													; now redraw the cursor.
+     223/      F9 : C4 01               		ldi 	1	
+     224/      FB : CA 00               		st 		0(p2)
+     225/      FD : CA 20               		st 		32(p2)
+     226/      FF : CA 21               		st 		33(p2)
+     227/     101 : CA 40               		st 		64(p2)
+     228/     103 :                     
+     229/     103 :                     ; ******************************************************************************************************************
+     230/     103 :                     ;												Handle player input
+     231/     103 :                     ; ******************************************************************************************************************
+     232/     103 :                     
+     233/     103 :                     WaitRelease:															; wait for SA, SB and Keypad to be released.
+     234/     103 : 06                  		csa
+     235/     104 : D4 30               		ani 	0x30
+     236/     106 : 9C FB               		jnz 	WaitRelease
+     237/     108 : 32                  		xpal 	p2
+     238/     109 : C4 0C               		ldi 	0x0C 													; wait for toggle release
+     239/     10B : 36                  		xpah 	p2
+     240/     10C : C2 00               		ld 		0(p2)													; read them
+     241/     10E : 9C F3               		jnz 	WaitRelease
+     242/     110 :                     
+     243/     110 :                     WaitKey:
+     244/     110 : 06                  		csa 															; check if A pressed
+     245/     111 : D4 10               		ani 	0x10
+     246/     113 : 9C 02               		jnz 	APressed
+     247/     115 : 90 F9               		jmp 	WaitKey 												; still waiting .....
+     248/     117 :                     
+     249/     117 :                     
+     250/     117 :                     ; ******************************************************************************************************************
+     251/     117 :                     ;										Handle pressing of 'A' (advance)
+     252/     117 :                     ; ******************************************************************************************************************
+     253/     117 :                     
+     254/     117 :                     APressed:
+     255/     117 : A9 02               		ild 	Cursor(p1)												; increment cursor
+     256/     119 : E4 05               		xri 	5 														; reached 6
+     257/     11B : 9C B6               		jnz 	RepaintCursor 											; no, repaint it.
+     258/     11D : C9 02               		st 		Cursor(p1) 												; zero cursor
+     259/     11F : 02                  		ccl
+     260/     120 : C1 01               		ld 		AddressLow(p1)											; add four to address
+     261/     122 : F4 04               		adi 	4
+     262/     124 : C9 01               		st 		AddressLow(p1)
+     263/     126 : C1 00               		ld 		AddressHigh(p1)
+     264/     128 : F4 00               		adi 	0
+     265/     12A : C9 00               		st 		AddressHigh(p1)
+     266/     12C : C4 3B               		ldi 	(RedrawScreen-1) & 255 									; long jump back to redraw the whole screen.
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 6 - 9/25/2015 12:21:35
+
+
+     267/     12E : 32                  		xpal 	p2
+     268/     12F : C4 00               		ldi 	(RedrawScreen-1) / 256
+     269/     131 : 36                  		xpah  	p2
+     270/     132 : 3E                  		xppc 	p2
+     271/     133 : 90 FE               Wait:	jmp 	Wait
+     272/     135 :                     
+     273/     135 :                     
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 7 - 9/25/2015 12:21:35
+
+
+  symbol table (* = unused):
+  ------------------------
+
+ ADDRESSHIGH :                    0 - |  ADDRESSLOW :                     1 - |
+ APRESSED :                     117 C | *ARCHITECTURE :  i386-unknown-win32 - |
+*BIGENDIAN :                      0 - | *BRANCHEXT :                      0 - |
+*CASESENSITIVE :                  0 - |  CHARACTERSET :                  2A C |
+ CLEARSCREEN :                    F C | *CONSTPI :        3.141592653589793 - |
+ COUNTER :                        3 - |  CURSOR :                         2 - |
+*DATE :                   9/25/2015 - |  DIGITCOUNT :                     4 - |
+ DIGITSHIGH :                     6 - |  DIGITSLOW :                      7 - |
+ DRAWDIGITS :                    69 C |  DRAWLOOP :                      4E C |
+ DRAWROW :                       89 C | *FALSE :                          0 - |
+*FULLPMMU :                       1 - | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+*INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
+ LINECOUNTER :                    8 - |  LINESTODRAW :                    9 - |
+*LISTON :                         1 - |  LOADPOINT :                     7E C |
+*MACEXP :                         1 - | *MOMCPU :                         C - |
+*MOMCPUNAME :                 SC/MP - | *NESTMAX :                      100 - |
+ NEXTDIGIT :                     6F C |  NEXTLINE :                      4A C |
+*PACKING :                        0 - | *PADDING :                        1 - |
+ REDRAWSCREEN :                  3C C | *RELAXED :                        0 - |
+ REPAINTCURSOR :                 D3 C |  ROWCOUNT :                       5 - |
+ SHIFTRIGHT :                    AD C | *TIME :                    12:21:35 - |
+*TRUE :                           1 - | *VERSION :                     142F - |
+ WAIT :                         133 C |  WAITKEY :                      110 C |
+ WAITRELEASE :                  103 C |  _CLEARCURSOR :                  D8 C |
+ _FINDCURSORPOS :                EA C |  _FOUNDCURSORPOS :               F7 C |
+
+     56 symbols
+     28 unused symbols
+
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 8 - 9/25/2015 12:21:35
+
+
+  defined macros:
+  ---------------
+
+OUTBIT                                |
+
+      1 macro
+
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 9 - 9/25/2015 12:21:35
+
+
+  codepages:
+  ----------
+
+STANDARD (0 changed characters)
+
+
+0.00 seconds assembly time
+
+    286 lines source file
+    307 lines incl. macro expansions
+      2 passes
+      0 errors
+      0 warnings

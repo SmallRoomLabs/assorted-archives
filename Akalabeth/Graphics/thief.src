@@ -1,0 +1,8 @@
+// *************************************************************************
+//
+//                                 Draw Thief
+//
+// *************************************************************************
+310       hplot y.m,x.m - 56 / dI to y.m,x.m - 8 / dI to y.m + 10 / dI,x.m to y.m + 30 / dI,x.m to y.m + 30 / dI,x.m - 45 / dI to y.m + 10 / dI,x.m - 64 / dI to y.m,x.m - 56 / dI
+311       hplot to y.m - 10 / dI,x.m - 64 / dI to y.m - 30 / dI,x.m - 45 / dI to y.m - 30 / dI,x.m to y.m - 10 / dI,x.m to y.m,x.m - 8 / dI
+312       hplot y.m - 10 / dI,x.m - 64 / dI to y.m - 10 / dI,x.m - 75 / dI to y.m,x.m - 83 / dI to y.m + 10 / dI,x.m - 75 / dI to y.m,x.m - 79 / dI to y.m - 10 / dI,x.m - 75 / dI to y.m,x.m - 60 / dI to y.m + 10 / dI,x.m - 75 / dI to y.m + 10 / dI,x.m - 64 / dI

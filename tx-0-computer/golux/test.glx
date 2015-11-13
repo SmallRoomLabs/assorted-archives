@@ -1,0 +1,24 @@
+this is the title of the golux test program
+
+| comment
+
+counter	= 34
+.
+
+
+20|		cla
+		add 	c44
+		sto 	counter
+
+loop,	cla
+		add 	counter
+		add 	c1
+		sto 	counter
+		trn 	loop
+		
+		opr 	30000
+
+c1,		1
+c44,	400000
+
+start 	20

@@ -1,0 +1,68 @@
+//
+//		Group 1 Microinstructions
+//
+7000 	NOP			10 		;															// No operation
+7001	IAC			10 		AC = (AC + 1) & 07777;if (AC == 0) L ^= 1;					// Increment AC, carry comp L
+7004 	RAL 		15 		temp8 = AC >> 11;AC = ((AC << 1) | L) & 07777;L = temp8		// Rotate A:L left
+7006 	RTL			15 		@RAL;@RAL													// Rotate A:L left twice
+7010 	RAR 		15 		temp8 = AC & 1;AC = (AC >> 1) | (L << 11);L = temp8 		// Rotate A:L right
+7012 	RTR			15 		@RAR;@RAR													// Rotate R:L right twice
+7002 	BSW 		15 		AC = ((AC >> 6) | (AC << 6)) & 07777						// Swap upper/lower bits
+7020 	CML 		10		L ^= 1 														// Complement link
+7040 	CMA			10 		AC ^= 07777													// Complement Accumulator
+7041	CIA 		10 		@CMA;@IAC 													// 2's complement accumulator
+7100 	CLL 		10 		L = 0														// Clear L
+7104 	@			15 		@CLL;@RAL 													// Clear Link/Rotate Left
+7106 	@			15 		@CLL;@RTL 													// Clear Link/Rotate Left x 2
+7110 	@			15 		@CLL;@RAR 													// Clear Link/Rotate Right
+7112 	@			15 		@CLL;@RTR 													// Clear Link/Rotate Right x 2
+7120 	STL 		10		L = 1 														// Set Link
+7200	CLA 		10 		AC = 0														// Clear Acc
+7201 	@			10 		@CLA;@IAC 													// Clear and Inc Accumulator
+7204 	GTL			15 		@CLA;@RAL 													// Link -> Acc
+7300 	@			10 		@CLA;@CLL													// Clear Link and Accumulator
+7240 	STA 		10 		@CLA;@CMA 													// Set Accumulator to all 1s
+//
+//		Group 2 Microinstructions
+//
+7400	NOP 		10 		;															// Do nothing
+7402 	HLT 		10 		HALT = 1													// Stop processor
+7404 	OSR 		15 		AC |= SWITCHREGISTER() 										// OR AC with Switch Register (keypad)
+
+7410	SKP			10 		SKIP(1)														// Skip always
+7420 	SNL 		10 		SKIP(L != 0)												// Skip non zero link
+7430 	SZL 		10 		SKIP(L == 0)												// Skip zero link
+7440 	SZA 		10 		SKIP(AC == 0)												// Skip zero acc
+7450 	SNA 		10 		SKIP(AC != 0)												// Skip non zero acc
+7460  	SZA SNL 	10 		SKIP((AC == 0) || (L != 0))									// Skip zero acc OR non zero link
+7470  	SNA SZL 	10 		SKIP((AC != 0) && (L == 0))									// Skip non zero acc AND zero link
+
+7500 	SMA 		10 		SKIP(SIGN(AC) != 0)											// Skip on minus
+7510 	SPA 		10 		SKIP(SIGN(AC) == 0)											// Skip on plus
+7520 	SMA SNL		10 		SKIP((SIGN(AC) != 0) || (L != 0))							// Skip on Minus OR non zero link
+7530 	SPA SZL 	10 		SKIP((SIGN(AC) == 0) && (L == 0))							// Skip on plus AND zero link
+7540 	SMA SZA		10 		SKIP((SIGN(AC) != 0) || (AC == 0))							// Skip on Minus OR zero accumulator
+7550 	SPA SNA		10 		SKIP((SIGN(AC) == 0) && (AC != 0))							// Skip on plus AND non zero accumulator
+7560 	SMA SZA SNL	10 		SKIP((SIGN(AC) != 0) || (AC == 0) || (L != 0))				// Skip on minus OR zacc OR nzlink
+7570 	SPA SNA SZL	10 		SKIP((SIGN(AC) == 0) && (AC != 0) && (L == 0))				// Skip on plus AND nzacc AND zlink
+
+7600 	CLA 		10		AC = 0														// Clear accumulator
+7604 	LAS 		15		@CLA;@OSR 													// Load accumulator with switch reg
+
+7640 	@		 	10 		@SZA;@CLA 													// Skip on zero and clear
+7650 	@		 	10 		@SNA;@CLA 													// Skip on non zero and clear
+7700 	@		 	10 		@SMA;@CLA 													// Skip on minus and clear
+7710 	@		 	10 		@SPA;@CLA 													// Skip on plus and clear
+//
+//		Group 3 Microinstructions
+//
+7401 	NOP 		10 		;															// No operation
+7421 	MQL 		10 		MQ = AC; AC = 0 											// AC load into MQ, AC cleared
+7501	MQA			10 		AC |= MQ 													// Or MQ into AC
+7521 	SWP 		10 		temp16 = AC;AC = MQ;MQ = temp16 							// Swap AC and MQ
+7601 	CLA 		10 		AC = 0 														// Clear A
+7621 	CAM 		10 		@CLA;@MQL 													// Clear A and MQ
+7701 	ACM 		10 		@CLA;@MQA 													// Load MQ into AC
+7721 	@ 			10 		@CLA;@SWP 													// Clear Acc and Swap MQ,AC
+
+

@@ -1,0 +1,19 @@
+// *************************************************************************
+//
+//                                 Draw Balrog
+//
+// *************************************************************************
+390       hplot y.m + 6 / dI,x.m - 60 / dI to y.m + 30 / dI,x.m - 90 / dI to y.m + 60 / dI,x.m - 30 / dI to y.m + 60 / dI,x.m - 10 / dI to y.m + 30 / dI,x.m - 40 / dI to y.m + 15 / dI,x.m - 40 / dI
+391       hplot y.m - 6 / dI,x.m - 60 / dI to y.m - 30 / dI,x.m - 90 / dI to y.m - 60 / dI,x.m - 30 / dI to y.m - 60 / dI,x.m - 10 / dI to y.m - 30 / dI,x.m - 40 / dI to y.m - 15 / dI,x.m - 40 / dI
+392       hplot y.m,x.m - 25 / dI to y.m + 6 / dI,x.m - 25 / dI to y.m + 10 / dI,x.m - 20 / dI to y.m + 12 / dI,x.m - 10 / dI to y.m + 10 / dI,x.m - 6 / dI to y.m + 10 / dI,x.m to y.m + 14 / dI,x.m to y.m + 15 / dI,x.m - 5 / dI to y.m + 16 / dI,x.m to y.m + 20 / dI,x.m
+393       hplot to y.m + 20 / dI,x.m - 6 / dI to y.m + 18 / dI,x.m - 10 / dI to y.m + 18 / dI,x.m - 20 / dI to y.m + 15 / dI,x.m - 30 / dI to y.m + 15 / dI,x.m - 45 / dI to y.m + 40 / dI,x.m - 60 / dI to y.m + 40 / dI,x.m - 70 / dI
+394       hplot to y.m + 10 / dI,x.m - 55 / dI to y.m + 6 / dI,x.m - 60 / dI to y.m + 10 / dI,x.m - 74 / dI to y.m + 6 / dI,x.m - 80 / dI to y.m + 4 / dI + .5,x.m - 80 / dI to y.m + 3 / dI + .5,x.m - 82 / dI to y.m + 2 / dI + .5,x.m - 80 / dI to y.m,x.m - 80 / dI
+395       hplot y.m,x.m - 25 / dI to y.m - 6 / dI,x.m - 25 / dI to y.m - 10 / dI,x.m - 20 / dI to y.m - 12 / dI,x.m - 10 / dI to y.m - 10 / dI,x.m - 6 / dI to y.m - 10 / dI,x.m to y.m - 14 / dI,x.m to y.m - 15 / dI,x.m - 5 / dI to y.m - 16 / dI,x.m to y.m - 20 / dI,x.m
+396       hplot to y.m - 20 / dI,x.m - 6 / dI to y.m - 18 / dI,x.m - 10 / dI to y.m - 18 / dI,x.m - 20 / dI to y.m - 15 / dI,x.m - 30 / dI to y.m - 15 / dI,x.m - 45 / dI to y.m - 40 / dI,x.m - 60 / dI to y.m - 40 / dI,x.m - 70 / dI
+397       hplot to y.m - 10 / dI,x.m - 55 / dI to y.m - 6 / dI,x.m - 60 / dI to y.m - 10 / dI,x.m - 74 / dI to y.m - 6 / dI,x.m - 80 / dI to y.m - 4 / dI + .5,x.m - 80 / dI to y.m - 3 / dI + .5,x.m - 82 / dI to y.m - 2 / dI + .5,x.m - 80 / dI to y.m,x.m - 80 / dI
+398       hplot y.m - 6 / dI,x.m - 25 / dI to y.m,x.m - 6 / dI to y.m + 10 / dI,x.m to y.m + 4 / dI + .5,x.m - 8 / dI to y.m + 6 / dI,x.m - 25 / dI:
+          hplot y.m - 40 / dI,x.m - 64 / dI to y.m - 40 / dI,x.m - 90 / dI to y.m - 52 / dI,x.m - 80 / dI to y.m - 52 / dI,x.m - 40 / dI
+399       hplot y.m + 40 / dI,x.m - 86 / dI to y.m + 38 / dI,x.m - 92 / dI to y.m + 42 / dI,x.m - 92 / dI to y.m + 40 / dI,x.m - 86 / dI to y.m + 40 / dI,x.m - 50 / dI
+400       hplot y.m + 4 / dI + .5,x.m - 70 / dI to y.m + 6 / dI,x.m - 74 / dI:
+          hplot y.m - 4 / dI + .5,x.m - 70 / dI to y.m - 6 / dI,x.m - 74 / dI:
+          hplot y.m,x.m - 64 / dI to y.m,x.m - 60 / dI:

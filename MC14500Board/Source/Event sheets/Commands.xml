@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Commands</name>
+    <events>
+        <event-group description="Handles OnXXXX sent from the interface, also executes program code in free running mode." sid="9846218638207688" title="Command Execution" />
+        <comment>Load PC copies the PC switches into the 8 bit address counter</comment>
+        <event-block sid="5588341911301218">
+            <conditions>
+                <condition id="0" name="On function" sid="715379765045884" type="Function">
+                    <param id="0" name="Name">&quot;OnLoadPC&quot;</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="-9" name="Set value" sid="4363707167473746" type="System">
+                    <param id="0" name="Variable">programCounter</param>
+                    <param id="1" name="Value">InterfaceData.Get(&quot;addressswitches&quot;)</param>
+                </action>
+            </actions>
+        </event-block>
+        <comment>Reset ICU, Program Counter and Output Latches, stop free running.</comment>
+        <event-block sid="3383789137842767">
+            <conditions>
+                <condition id="0" name="On function" sid="5672650641368449" type="Function">
+                    <param id="0" name="Name">&quot;OnReset&quot;</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="-9" name="Set value" sid="9879979239903882" type="System">
+                    <param id="0" name="Variable">programCounter</param>
+                    <param id="1" name="Value">0</param>
+                </action>
+                <action id="-9" name="Set value" sid="2262931576280262" type="System">
+                    <param id="0" name="Variable">outputLatches</param>
+                    <param id="1" name="Value">0</param>
+                </action>
+                <action id="-9" name="Set value" sid="1827393223170782" type="System">
+                    <param id="0" name="Variable">ienFlag</param>
+                    <param id="1" name="Value">0</param>
+                </action>
+                <action id="-9" name="Set value" sid="8803171254431829" type="System">
+                    <param id="0" name="Variable">oenFlag</param>
+                    <param id="1" name="Value">0</param>
+                </action>
+                <action id="-9" name="Set value" sid="7357407256104921" type="System">
+                    <param id="0" name="Variable">resultRegister</param>
+                    <param id="1" name="Value">0</param>
+                </action>
+                <action id="-9" name="Set value" sid="9306896297313298" type="System">
+                    <param id="0" name="Variable">isFreeRunning</param>
+                    <param id="1" name="Value">0</param>
+                </action>
+            </actions>
+        </event-block>
+        <comment>Single step executes one instruction or prefetches the instruction into the latch.</comment>
+        <event-block sid="3893526602739707">
+            <conditions>
+                <condition id="0" name="On function" sid="5085880121713791" type="Function">
+                    <param id="0" name="Name">&quot;OnSingleStep&quot;</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="0" name="Call function" sid="3994893515471847" type="Function">
+                    <param id="0" name="Name">&quot;ExecuteOne&quot;</param>
+                    <param id="1" name="Parameter {n}"></param>
+                </action>
+            </actions>
+        </event-block>
+        <comment>Load Data loads switches into the program memory</comment>
+        <event-block sid="6895206541614347">
+            <conditions>
+                <condition id="0" name="On function" sid="9987208382796326" type="Function">
+                    <param id="0" name="Name">&quot;OnLoadData&quot;</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="2" name="Set at X" sid="4671388614406618" type="programMemory">
+                    <param id="0" name="X">programCounter</param>
+                    <param id="1" name="Value">InterfaceData.Get(&quot;dataswitches&quot;)</param>
+                </action>
+            </actions>
+        </event-block>
+        <comment>Run mode starts running if not in step mode</comment>
+        <event-block sid="8009870715375999">
+            <conditions>
+                <condition id="0" name="On function" sid="4208365801436774" type="Function">
+                    <param id="0" name="Name">&quot;OnRunMode&quot;</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="4921555642761396">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="5900533619089929" type="System">
+                            <param id="0" name="Variable">isInRunMode</param>
+                            <param id="1" name="Comparison">1</param>
+                            <param id="2" name="Value">0</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="6369389344704509" type="System">
+                            <param id="0" name="Variable">isFreeRunning</param>
+                            <param id="1" name="Value">1</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Run if in free running mode</comment>
+        <event-block sid="2349641061277671">
+            <conditions>
+                <condition id="-14" name="Compare variable" sid="5891948256568298" type="System">
+                    <param id="0" name="Variable">isFreeRunning</param>
+                    <param id="1" name="Comparison">1</param>
+                    <param id="2" name="Value">0</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="0" name="Call function" sid="1253479922247547" type="Function">
+                    <param id="0" name="Name">&quot;ExecuteOne&quot;</param>
+                    <param id="1" name="Parameter {n}"></param>
+                </action>
+            </actions>
+        </event-block>
+    </events>
+</c2eventsheet>

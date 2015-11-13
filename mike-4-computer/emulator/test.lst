@@ -1,0 +1,487 @@
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 1 - 9/29/2015 12:10:30
+
+
+       1/       0 :                     	
+       2/       0 :                     		cpu		8008new
+       3/       0 :                     
+       4/       0 : =2000H              RAMSpace = 02000h 											; RAM starts here.
+       5/       0 :                     
+       6/       0 : =2000H              characterBuffer = RAMSpace+0 								; 32 byte buffer for display and input.
+       7/       0 : =2020H              labelTable = RAMSpace + 32 									; 16 labels, 2 bytes each.
+       8/       0 : =2030H              resetVectors = RAMSpace + 48 								; 8 reset vectors, 7 bytes each.
+       9/       0 :                     
+      10/       0 : =2045H              workSpace = RAMSpace + 69
+      11/       0 : =2045H              tempHL_RS = workSpace	 									; temporary store for HL (RefreshScope screen)
+      12/       0 : =2047H              tempHL_PC = workSpace+2 									; temporary store for HL (Print character)
+      13/       0 : =2049H              cursor = workSpace+4 										; position of cursor.
+      14/       0 : =204AH              currentAddress = workSpace+5 								; current active address
+      15/       0 : =204CH              newAddress = workSpace+7 									; new entered address.
+      16/       0 : =204EH              commandWord = workSpace+9 									; 5 bit packed command word (has to come after newAddress)
+      17/       0 :                     
+      18/       0 :                     
+      19/       0 :                     		org 	0h
+      20/       0 : C0                  		mov 	a,a 										; disables the interrupt, as it executes LAA.
+      21/       1 : 46 6A 01            		call 	PatchVectors 								; patch the vectors in.
+      22/       4 : 44 3D 00            		jmp 	MainLoop 									; go to start
+      23/       7 : 07                  Unused:	ret 												; unassigned vectors go here.
+      24/       8 :                     
+      25/       8 :                     vector 	macro 	rstNumber,defaultValue
+      26/       8 :                     		org 	rstNumber * 8 								; this is where the reset is.
+      27/       8 :                     		jmp 	resetVectors+(rstNumber-1)*3 				; this is the code it executes on RST 8 etc.
+      28/       8 :                     		dw 		defaultValue 								; default value immediately follows.
+      29/       8 :                     		endm
+      30/       8 :                     
+      31/       8 : =8H                 PrintCharacter = 8 											; RST 08 : Print Character
+      32/       8 : (MACRO)             		vector 	1,_PrintCharacter 							; 8 reset vectors.
+      32/       8 :                                     org     1 * 8                                                           ; this is where the reset is.
+      32/       8 : 44 30 20                            jmp     resetVectors+(1-1)*3                            ; this is the code it executes on RST 8 etc.
+      32/       B : CB 00                               dw              _PRINTCHARACTER                                                            ; default value immediately follows.
+      33/       D :                     
+      34/       D : (MACRO)             		vector 	2,Unused
+      34/      10 :                                     org     2 * 8                                                           ; this is where the reset is.
+      34/      10 : 44 33 20                            jmp     resetVectors+(2-1)*3                            ; this is the code it executes on RST 8 etc.
+      34/      13 : 07 00                               dw              UNUSED                                                            ; default value immediately follows.
+      35/      15 : (MACRO)             		vector 	3,Unused
+      35/      18 :                                     org     3 * 8                                                           ; this is where the reset is.
+      35/      18 : 44 36 20                            jmp     resetVectors+(3-1)*3                            ; this is the code it executes on RST 8 etc.
+      35/      1B : 07 00                               dw              UNUSED                                                            ; default value immediately follows.
+      36/      1D : (MACRO)             		vector 	4,Unused
+      36/      20 :                                     org     4 * 8                                                           ; this is where the reset is.
+      36/      20 : 44 39 20                            jmp     resetVectors+(4-1)*3                            ; this is the code it executes on RST 8 etc.
+      36/      23 : 07 00                               dw              UNUSED                                                            ; default value immediately follows.
+      37/      25 : (MACRO)             		vector 	5,Unused
+      37/      28 :                                     org     5 * 8                                                           ; this is where the reset is.
+      37/      28 : 44 3C 20                            jmp     resetVectors+(5-1)*3                            ; this is the code it executes on RST 8 etc.
+      37/      2B : 07 00                               dw              UNUSED                                                            ; default value immediately follows.
+      38/      2D : (MACRO)             		vector 	6,Unused
+      38/      30 :                                     org     6 * 8                                                           ; this is where the reset is.
+      38/      30 : 44 3F 20                            jmp     resetVectors+(6-1)*3                            ; this is the code it executes on RST 8 etc.
+      38/      33 : 07 00                               dw              UNUSED                                                            ; default value immediately follows.
+      39/      35 : (MACRO)             		vector 	7,Unused
+      39/      38 :                                     org     7 * 8                                                           ; this is where the reset is.
+      39/      38 : 44 42 20                            jmp     resetVectors+(7-1)*3                            ; this is the code it executes on RST 8 etc.
+      39/      3B : 07 00                               dw              UNUSED                                                            ; default value immediately follows.
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 2 - 9/29/2015 12:10:30
+
+
+      40/      3D :                     
+      41/      3D :                     
+      42/      3D :                     ; *******************************************************************************************************************
+      43/      3D :                     ;				
+      44/      3D :                     ;												Main Command Loop
+      45/      3D :                     ;
+      46/      3D :                     ; *******************************************************************************************************************
+      47/      3D :                     MainLoop:
+      48/      3D : 06 0C               		mvi 	a,12 										; clear screen
+      49/      3F : 0D                  		rst 	PrintCharacter
+      50/      40 : 06 09               		mvi 	a,9 										; tab across twice
+      51/      42 : 0D                  		rst 	PrintCharacter
+      52/      43 : 06 09               		mvi 	a,9
+      53/      45 : 0D                  		rst 	PrintCharacter
+      54/      46 : 46 5F 00            		call	PrintCurrentAddress 						; print the current address
+      55/      49 : 46 82 00            		call 	ReadStringNoClear							; read input line without clearing line.
+      56/      4C :                     
+      57/      4C : 44 4C 00            Wait: 	jmp 	Wait
+      58/      4F :                     
+      59/      4F :                     ; *******************************************************************************************************************
+      60/      4F :                     ;
+      61/      4F :                     ;			Parse command in character buffer into 15 bit 5-bit command and a new address, possibly.
+      62/      4F :                     ;	
+      63/      4F :                     ; *******************************************************************************************************************
+      64/      4F :                     
+      65/      4F :                     ParseInputCommand:
+      66/      4F : 2E 20               		mvi 	h,newAddress / 256
+      67/      51 : 36 4C               		mvi 	l,newAddress & 255 							; set new address to 0xFFFF (e.g. none entered)
+      68/      53 : 3E FF               		mvi 	m,0FFh
+      69/      55 : 30                  		inr 	l
+      70/      56 : 3E FF               		mvi 	m,0FFh
+      71/      58 : 30                  		inr 	l 											; zero the command word.
+      72/      59 : A8                  		xra 	a
+      73/      5A : F8                  		mov 	m,a
+      74/      5B : 30                  		inr 	l
+      75/      5C : F8                  		mov 	m,a
+      76/      5D : C8                  		mov 	b,a  										; B is an index into the command line.
+      77/      5E :                     _PICCommand:
+      78/      5E :                     		; check for A-Z 0-9 if so shift into command else skip.
+      79/      5E :                     
+      80/      5E :                     _PICAddress:
+      81/      5E :                     		; check for 0-9 A-F if so shift into newaddress else skip, zeroing if -ve.
+      82/      5E :                     		; special case of '='
+      83/      5E : 07                  		ret
+      84/      5F :                     
+      85/      5F :                     ; *******************************************************************************************************************
+      86/      5F :                     ;
+      87/      5F :                     ;							Print current address as hex number, breaks ABCDE
+      88/      5F :                     ;
+      89/      5F :                     ; *******************************************************************************************************************
+      90/      5F :                     
+      91/      5F :                     PrintCurrentAddress:
+      92/      5F : 2E 20               		mvi 	h,(currentAddress+1)/256 					; point to current address high
+      93/      61 : 36 4B               		mvi 	l,(currentAddress+1) & 255
+      94/      63 : C7                  		mov 	a,m 										; read and print it
+      95/      64 : 46 69 00            		call 	PrintHex
+      96/      67 : 31                  		dcr 	l
+      97/      68 : C7                  		mov 	a,m 										; read it and fall through to print it.
+      98/      69 :                     
+      99/      69 :                     ; *******************************************************************************************************************
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 3 - 9/29/2015 12:10:30
+
+
+     100/      69 :                     ;
+     101/      69 :                     ;									Print A as Hex Number, breaks ABCDE
+     102/      69 :                     ;	
+     103/      69 :                     ; *******************************************************************************************************************
+     104/      69 :                     PrintHex:
+     105/      69 : C8                  		mov 	b,a 										; save in B
+     106/      6A : 0A                  		rrc 												; shift right 4
+     107/      6B : 0A                  		rrc
+     108/      6C : 0A                  		rrc
+     109/      6D : 0A                  		rrc
+     110/      6E : 46 72 00            		call 	_PHPrintHex 								; print it
+     111/      71 : C1                  		mov 	a,b 										; get LSB
+     112/      72 :                     _PHPrintHex:
+     113/      72 : 24 0F               		ani 	0Fh 										; lower 4 bits only
+     114/      74 : 3C 0A               		cpi 	10 											; < 10, skip 
+     115/      76 : 60 7B 00            		jc 		_PHIsDigit
+     116/      79 : 04 07               		adi 	7
+     117/      7B :                     _PHIsDigit:
+     118/      7B : 04 30               		adi 	'0' 										; make ascii
+     119/      7D : 0D                  		rst 	PrintCharacter 								; print it.
+     120/      7E : 07                  		ret
+     121/      7F :                     
+     122/      7F :                     ; *******************************************************************************************************************
+     123/      7F :                     ;
+     124/      7F :                     ;						Read string into Character Buffer, Breaks DEA, returns HL pointing to text
+     125/      7F :                     ;
+     126/      7F :                     ; *******************************************************************************************************************
+     127/      7F :                     
+     128/      7F :                     ReadString:
+     129/      7F : 06 0C               		mvi 	a,12 										; clear display ready for input.
+     130/      81 : 0D                  		rst 	PrintCharacter
+     131/      82 :                     ReadStringNoClear:
+     132/      82 : 2E 20               		mvi 	h,cursor/256 								; set the cursor to home
+     133/      84 : 36 49               		mvi 	l,cursor&255 								; so we start from the beginning whatever is in the
+     134/      86 : 3E 00               		mvi 	m,0 										; buffer.
+     135/      88 :                     RSLoop:
+     136/      88 : 46 B7 00            		call 	RSSetHLCursor
+     137/      8B : 3E 5D               		mvi 	m,']'										; put ] at cursor
+     138/      8D : C6                  		mov 	a,l 										; reached the end - 1 ??
+     139/      8E : 3C 1F               		cpi 	31											; then exit.
+     140/      90 : 68 AD 00            		jz 		RSExit 										
+     141/      93 : 46 30 01            		call 	RefreshScope 								; refresh the display.
+     142/      96 : 00                  		hlt 												; get character
+     143/      97 : 46 B7 00            		call	RSSetHLCursor
+     144/      9A : 3E 20               		mvi 	m,' '										; put space at cursor
+     145/      9C : 4D                  		in 		6 											; read character.
+     146/      9D : 3C 0D               		cpi 	13
+     147/      9F : 68 AD 00            		jz 		RSExit 										; if it is CR, return.
+     148/      A2 : 3C 60               		cpi 	96 											; convert upper to lower case.
+     149/      A4 : 60 A9 00            		jc 		RSNotLower
+     150/      A7 : 14 20               		sui 	32
+     151/      A9 :                     RSNotLower:
+     152/      A9 : 0D                  		rst 	PrintCharacter 								; print character
+     153/      AA : 44 88 00            		jmp 	RSLoop 
+     154/      AD :                     RSExit:	
+     155/      AD : 46 30 01            		call 	RefreshScope 								; RefreshScope and exit.
+     156/      B0 : 46 B7 00            		call 	RSSetHLCursor 								; HL now points to the cursor position.
+     157/      B3 : 3E 00               		mvi 	m,0 										; make ASCIIZ string
+     158/      B5 : F7                  		mov 	l,m 										; clear L, now points to start of string
+     159/      B6 : 07                  		ret
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 4 - 9/29/2015 12:10:30
+
+
+     160/      B7 :                     ;
+     161/      B7 :                     ;		Set HL to point to the cursor.
+     162/      B7 :                     ;
+     163/      B7 :                     RSSetHLCursor:
+     164/      B7 : 2E 20               		mvi 	h,Cursor/256 								; point HL to cursor
+     165/      B9 : 36 49               		mvi 	l,Cursor&255
+     166/      BB : F7                  		mov		l,m 										; HL now points to cursor
+     167/      BC : 07                  		ret
+     168/      BD :                     
+     169/      BD :                     ; *******************************************************************************************************************
+     170/      BD :                     ;
+     171/      BD :                     ;										Print String. Breaks DEA, HL points to zero
+     172/      BD :                     ;
+     173/      BD :                     ; *******************************************************************************************************************
+     174/      BD :                     
+     175/      BD :                     PrintString:
+     176/      BD : C7                  		mov 	a,m 										; read character
+     177/      BE : B0                  		ora 	a 											; exit if zero via RefreshScope
+     178/      BF : 68 30 01            		jz 		RefreshScope
+     179/      C2 : 0D                  		rst 	PrintCharacter 								; print character
+     180/      C3 : 30                  		inr 	l 											; bump HL
+     181/      C4 : 48 BD 00            		jnz 	PrintString
+     182/      C7 : 28                  		inr 	h
+     183/      C8 : 44 BD 00            		jmp 	PrintString
+     184/      CB :                     
+     185/      CB :                     ; *******************************************************************************************************************
+     186/      CB :                     ;
+     187/      CB :                     ;												Print Character. Breaks DEA
+     188/      CB :                     ;
+     189/      CB :                     ;	Understands 8 (Backspace) 9 (Tab) 12 (Clear) 13 (Carriage Return)
+     190/      CB :                     ;	On CR or reaching end of the single line, it pauses for a key stroke then clears the screen.
+     191/      CB :                     ; *******************************************************************************************************************
+     192/      CB :                     
+     193/      CB :                     _PrintCharacter:
+     194/      CB : E6                  		mov 	e,l 										; copy HL to DE
+     195/      CC : DD                  		mov 	d,h
+     196/      CD : 2E 20               		mvi 	h,tempHL_PC/256 							; point HL to save area.
+     197/      CF : 36 47               		mvi 	l,tempHL_PC&255
+     198/      D1 : FC                  		mov 	m,e 										; save DE (originally HL)
+     199/      D2 : 30                  		inr 	l	
+     200/      D3 : FB                  		mov 	m,d
+     201/      D4 : 36 49               		mvi 	l,cursor & 255 								; point HL to cursor.
+     202/      D6 :                     
+     203/      D6 : 3C 08               		cpi 	8 											; is it backspace ?
+     204/      D8 : 68 0C 01            		jz 		_PCBackspace
+     205/      DB : 3C 09               		cpi 	9											; is it tab ?
+     206/      DD : 68 1A 01            		jz 		_PCTab 										
+     207/      E0 : 3C 0C               		cpi 	12 											; is it clear screen ?
+     208/      E2 : 68 FA 00            		jz 		_PCClear
+     209/      E5 : 3C 0D               		cpi 	13 											; is it CR ?
+     210/      E7 : 68 F6 00            		jz 		_PCReturn
+     211/      EA :                     
+     212/      EA : F7                  		mov 	l,m 										; L now points to the character buffer cursor position
+     213/      EB : F8                  		mov 	m,a 										; save in character buffer at cursor position
+     214/      EC : 30                  		inr 	l 											; increment L - next character position.
+     215/      ED : C6                  		mov 	a,l 										; put in A
+     216/      EE : 36 49               		mvi 	l,cursor & 255 								; point HL to cursor.
+     217/      F0 : F8                  		mov 	m,a 										; write it back from A
+     218/      F1 : 3C 20               		cpi 	32 											; done the whole line, do we need a key & clear
+     219/      F3 : 60 07 01            		jc 		PCExit 										; exit if we don't.
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 5 - 9/29/2015 12:10:30
+
+
+     220/      F6 :                     _PCReturn:
+     221/      F6 : 46 30 01            		call 	RefreshScope 								; update the screen.
+     222/      F9 : 00                  		hlt 												; pause for a key to be pressed.
+     223/      FA :                     _PCClear:
+     224/      FA : 3E 00               		mvi 	m,0 										; home cursor
+     225/      FC : 36 1F               		mvi 	l,(characterBuffer+31) & 255 				; HL points to last character of buffer
+     226/      FE :                     _PCClearLoop:
+     227/      FE : 3E 20               		mvi 	m,' ' 										; fill buffer with spaces
+     228/     100 : 31                  		dcr 	l
+     229/     101 : 50 FE 00            		jp 		_PCClearLoop
+     230/     104 : 46 30 01            		call 	RefreshScope 								; Refresh the screen, which is now clear.
+     231/     107 : 36 47               PCExit:	mvi 	l,tempHL_PC & 255 							; point HL to save area
+     232/     109 : 44 65 01            		jmp 	RestoreHLFromHL
+     233/     10C :                     
+     234/     10C :                     _PCBackSpace:
+     235/     10C : C7                  		mov 	a,m 										; read cursor
+     236/     10D : B0                  		ora 	a 											; if zero, can't backspace
+     237/     10E : 68 07 01            		jz 		PCExit
+     238/     111 : 14 01               		sui 	1 											; back 1 character
+     239/     113 : F8                  		mov 	m,a
+     240/     114 : F0                  		mov 	l,a 										; HL points to character in buffer.
+     241/     115 : 3E 20               		mvi 	m,' '										; clear it as we've just backspaced
+     242/     117 : 44 07 01            		jmp 	PCExit 										; and exit
+     243/     11A :                     
+     244/     11A : F7                  _PCTab:	mov 	l,m 										; HL now points to cursor position.	
+     245/     11B : 3E 20               		mvi 	m,' '										; write space there.
+     246/     11D : 30                  		inr 	l 											; increment it
+     247/     11E : C6                  		mov 	a,l 										; new cursor position in A
+     248/     11F : 36 49               		mvi 	l,cursor & 255 								; HL points to cursor
+     249/     121 : F8                  		mov 	m,a 										; update cursor
+     250/     122 : 24 07               		ani 	7 											; jump back if not on a tab stop
+     251/     124 : 48 1A 01            		jnz 	_PCTab
+     252/     127 : C7                  		mov 	a,m 										; check if end.
+     253/     128 : 3C 20               		cpi 	32 
+     254/     12A : 68 F6 00            		jz 		_PCReturn
+     255/     12D : 44 07 01            		jmp 	PCExit 										; no, exit.
+     256/     130 :                     
+     257/     130 :                     ; *******************************************************************************************************************
+     258/     130 :                     ;
+     259/     130 :                     ;								RefreshScope Screen from Character Buffer. Breaks DEA.
+     260/     130 :                     ;
+     261/     130 :                     ; *******************************************************************************************************************
+     262/     130 :                     
+     263/     130 : =DH                 SCWLoad = 	0Dh												; port allocation.
+     264/     130 : =EH                 SCWWrite = 	0Eh
+     265/     130 : =10H                SCWOsc = 	10h
+     266/     130 : =11H                SCWData = 	11h
+     267/     130 :                     
+     268/     130 :                     RefreshScope:
+     269/     130 : E6                  		mov 	e,l 										; copy HL to DE
+     270/     131 : DD                  		mov 	d,h
+     271/     132 : 2E 20               		mvi 	h,tempHL_RS/256 							; point HL to save area.
+     272/     134 : 36 45               		mvi 	l,tempHL_RS&255
+     273/     136 : FC                  		mov 	m,e 										; save DE (originally HL)
+     274/     137 : 30                  		inr 	l	
+     275/     138 : FB                  		mov 	m,d
+     276/     139 :                     
+     277/     139 : 36 00               		mvi 	l,characterBuffer & 255						; point HL to character buffer.
+     278/     13B :                     
+     279/     13B : 1E 20               		mvi 	d,32 										; characters to write.
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 6 - 9/29/2015 12:10:30
+
+
+     280/     13D : 06 20               		mvi 	a,040o 										; 00 100 000
+     281/     13F :                     
+     282/     13F : 5B                  		out 	SCWLoad 									; reset load
+     283/     140 : 63                  		out 	SCWData 									; output blank
+     284/     141 : 61                  		out 	SCWOsc										; output osc (osc on)
+     285/     142 : 5D                  		out 	SCWWrite									; output write (Clear memory)
+     286/     143 :                     
+     287/     143 : 26 04               		mvi 	e,4 										; delay 150us
+     288/     145 :                     RFShortDelay1:
+     289/     145 : 21                  		dcr 	e
+     290/     146 : 48 45 01            		jnz 	RFShortDelay1
+     291/     149 :                     
+     292/     149 : 06 01               		mvi 	a,1 										; output pb
+     293/     14B : 61                  		out 	SCWOsc
+     294/     14C :                     RFChar:
+     295/     14C : C7                  		mov 	a,m 										; output character
+     296/     14D : 63                  		out 	SCWData
+     297/     14E : 06 01               		mvi 	a,1 										; pulse load
+     298/     150 : 5B                  		out 	SCWLoad 	
+     299/     151 :                     
+     300/     151 : 26 04               		mvi 	e,4 										; delay 150us
+     301/     153 :                     RFShortDelay2:
+     302/     153 : 21                  		dcr 	e
+     303/     154 : 48 53 01            		jnz 	RFShortDelay2
+     304/     157 : A8                  		xra  	a											; end pulse
+     305/     158 : 5B                  		out 	SCWLoad
+     306/     159 : 30                  		inr 	l 											; advance pointer
+     307/     15A : 19                  		dcr 	d 											; do all 32 characters.
+     308/     15B : 48 4C 01            		jnz 	RFChar 
+     309/     15E :                     
+     310/     15E : 06 01               		mvi 	a,1 										; set re 
+     311/     160 : 5D                  		out 	SCWWrite
+     312/     161 : A8                  		xra 	a 											; output osc 
+     313/     162 : 61                  		out 	SCWOsc
+     314/     163 : 36 45               		mvi 	l,tempHL_RS & 255							; restore HL.
+     315/     165 :                     RestoreHLFromHL:
+     316/     165 : E7                  		mov 	e,m 										
+     317/     166 : 30                  		inr 	l
+     318/     167 : EF                  		mov 	h,m
+     319/     168 : F4                  		mov 	l,e
+     320/     169 : 07                  		ret
+     321/     16A :                     
+     322/     16A :                     ; *******************************************************************************************************************
+     323/     16A :                     ;
+     324/     16A :                     ;									Create vector jump table for RST8-38
+     325/     16A :                     ;	
+     326/     16A :                     ; *******************************************************************************************************************
+     327/     16A :                     
+     328/     16A :                     PatchVectors:
+     329/     16A : 0E 07               		mvi 	b,7 										; patch all the reset vectors.
+     330/     16C :                     
+     331/     16C :                     PVPatchVectors:
+     332/     16C : C1                  		mov 	a,b 										; get vector #
+     333/     16D : 80                  		add 	a 											; x 8
+     334/     16E : 80                  		add		a
+     335/     16F : 80                  		add 	a
+     336/     170 : 04 03               		adi 	3 											; now points to default value
+     337/     172 : F0                  		mov 	l,a 										; make HL point to default value
+     338/     173 : 2E 00               		mvi 	h,0 
+     339/     175 : E7                  		mov 	e,m 										; copy default into DE
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 7 - 9/29/2015 12:10:30
+
+
+     340/     176 : 30                  		inr 	l
+     341/     177 : DF                  		mov 	d,m
+     342/     178 :                     
+     343/     178 : C1                  		mov 	a,b 										; get vector #
+     344/     179 : 80                  		add 	a 											; x 3
+     345/     17A : 81                  		add 	b
+     346/     17B : 04 2D               		adi 	(resetVectors-3) & 255 						; point HL to correct reset vectors
+     347/     17D : F0                  		mov 	l,a
+     348/     17E : 2E 20               		mvi 	h,resetVectors/256 	
+     349/     180 : 3E 44               		mvi 	m,044h 										; write $44 (JMP)
+     350/     182 : 30                  		inr 	l
+     351/     183 : FC                  		mov 	m,e 										; and the default vector
+     352/     184 : 30                  		inr 	l
+     353/     185 : FB                  		mov 	m,d
+     354/     186 : 09                  		dcr 	b 											; do for all vectors except RST $00 obviously
+     355/     187 : 48 6C 01            		jnz 	PVPatchVectors
+     356/     18A : 07                  		ret
+     357/     18B :                     ;
+     358/     18B :                     ;	A [xxxx] 	set address to xxxx
+     359/     18B :                     ; 	D [xxxx] 	disassemble from address xxxx
+     360/     18B :                     ;	L [xxxx] 	Assign xxxx to label 
+     361/     18B :                     ;	I [xxxx] 	Inject byte xxxx using previous address and bump it.
+     362/     18B :                     ;	S [xxxx] 	show from address and advance to byte after [xxxx:xx xx xx xx xx xx xx xx]
+     363/     18B :                     ;	R [xxxx]	run from address xxxx
+     364/     18B :                     ;	
+     365/     18B :                     ;	(note, cannot use V and W because of the compressor)
+     366/     18B :                     ;	
+     367/     18B :                     ; 	aaa [xxxx] 	micro assembler of aaa with operand xxxx [assembled code e.g. xxxx:xx xx xx] and advance to byte after
+     368/     18B :                     ;	(note RST, INP and OUT are different)
+     369/     18B :                     ;
+     370/     18B :                     ;	[x] = 		Label as a constant e.g. you can write 47= and the value will be label 47.
+     371/     18B :                     ; 	
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 8 - 9/29/2015 12:10:30
+
+
+  symbol table (* = unused):
+  ------------------------
+
+*ARCHITECTURE :  i386-unknown-win32 - | *BIGENDIAN :                      0 - |
+*BRANCHEXT :                      0 - | *CASESENSITIVE :                  0 - |
+ CHARACTERBUFFER :             2000 - | *COMMANDWORD :                 204E - |
+*CONSTPI :        3.141592653589793 - |  CURRENTADDRESS :              204A - |
+ CURSOR :                      2049 - | *DATE :                   9/29/2015 - |
+*FALSE :                          0 - | *FULLPMMU :                       1 - |
+*HAS64 :                          1 - | *HASDSP :                         0 - |
+*HASFPU :                         0 - | *HASPMMU :                        0 - |
+*INEXTMODE :                      0 - | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - | *LABELTABLE :                  2020 - |
+*LISTON :                         1 - | *MACEXP :                         1 - |
+ MAINLOOP :                      3D C | *MOMCPU :                     8008E - |
+*MOMCPUNAME :               8008NEW - | *NESTMAX :                      100 - |
+ NEWADDRESS :                  204C - | *PACKING :                        0 - |
+*PADDING :                        1 - | *PARSEINPUTCOMMAND :             4F C |
+ PATCHVECTORS :                 16A C |  PCEXIT :                       107 C |
+ PRINTCHARACTER :                 8 - |  PRINTCURRENTADDRESS :           5F C |
+ PRINTHEX :                      69 C |  PRINTSTRING :                   BD C |
+ PVPATCHVECTORS :               16C C |  RAMSPACE :                    2000 - |
+*READSTRING :                    7F C |  READSTRINGNOCLEAR :             82 C |
+ REFRESHSCOPE :                 130 C | *RELAXED :                        0 - |
+ RESETVECTORS :                2030 - |  RESTOREHLFROMHL :              165 C |
+ RFCHAR :                       14C C |  RFSHORTDELAY1 :                145 C |
+ RFSHORTDELAY2 :                153 C |  RSEXIT :                        AD C |
+ RSLOOP :                        88 C |  RSNOTLOWER :                    A9 C |
+ RSSETHLCURSOR :                 B7 C |  SCWDATA :                       11 - |
+ SCWLOAD :                        D - |  SCWOSC :                        10 - |
+ SCWWRITE :                       E - |  TEMPHL_PC :                   2047 - |
+ TEMPHL_RS :                   2045 - | *TIME :                    12:10:30 - |
+*TRUE :                           1 - |  UNUSED :                         7 C |
+*VERSION :                     142F - |  WAIT :                          4C C |
+ WORKSPACE :                   2045 - |  _PCBACKSPACE :                 10C C |
+ _PCCLEAR :                      FA C |  _PCCLEARLOOP :                  FE C |
+ _PCRETURN :                     F6 C |  _PCTAB :                       11A C |
+ _PHISDIGIT :                    7B C |  _PHPRINTHEX :                   72 C |
+*_PICADDRESS :                   5E C | *_PICCOMMAND :                   5E C |
+ _PRINTCHARACTER :               CB C |
+
+     75 symbols
+     34 unused symbols
+
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 9 - 9/29/2015 12:10:30
+
+
+  defined macros:
+  ---------------
+
+VECTOR                                |
+
+      1 macro
+
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 10 - 9/29/2015 12:10:30
+
+
+  codepages:
+  ----------
+
+STANDARD (0 changed characters)
+
+
+0.01 seconds assembly time
+
+    371 lines source file
+    392 lines incl. macro expansions
+      2 passes
+      0 errors
+      0 warnings

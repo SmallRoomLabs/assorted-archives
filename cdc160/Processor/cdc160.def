@@ -1,0 +1,64 @@
+// ********************************************************************************************************************************************
+//
+//	Line substitution:
+//
+//		$D 		Address mode descriptor ("%C","(%C)","%F","%B") based on 2 x LSB of opcode.
+//		$EAC 	Effective address calculation to Z based on 2 x LSB of opcode. Initially replaces with $EACF,$EACI,$EACD,$EACB
+//				Note 'I' increments cycles by 1 if cycle value is -ve. The $EACx are replaced by the code.
+//		$J 		Jump type based on 2 x LSB of opcode (ZJ,NZ,PK,NJ)
+//		$K		Modern jump type on 2 x LSB of opcode (Z,NZ,P,M)
+//		$M 		Address mode (D I F B) based on 2 x LSB of opcode.
+//
+//		
+//	Mnemonic substitution (in debugger):
+//
+//		%B 		Backward address
+//		%C 		Constant value 00-77 	
+//		%F 		Forward address
+//		%S 		SHA substitution 	(rol rol3 and mul10)
+//	
+// ********************************************************************************************************************************************
+
+00		1	"ERR %C"	"ERR %C"		haltFlag = 1									// Halt and Error are identical
+77		1	"HLT %C"	"HLT %C"		haltFlag = 1
+
+01 		1	"SHA %C"	"%S"			SHIFTINSTRUCTION();$INC;						// Execute appropriate SHA instruction
+
+02 		1 	"LPN %C"	"AND #%C"		A &= (Z & 077);$INC;							// And constant
+10-13 	-2	"LP$M %C"	"AND $D"		$EAC;READ();A &= Z;$INC;						// And memory
+
+03 		1 	"LSN %C"	"XOR #%C"		A ^= (Z & 077);$INC;							// Xor constant
+14-17 	-2	"LS$M %C"	"XOR $D"		$EAC;READ();A ^= Z;$INC;						// Xor memory
+
+04 		1 	"LDN %C"	"LDA #%C"		A = (Z & 077);$INC;								// Load constant
+20-23 	-2	"LD$M %C"	"LDA $D"		$EAC;READ();A = Z;$INC;							// Load memory
+
+05 		1 	"LCN %C"	"LDM #%C"		A = (Z & 077) ^ 07777;$INC;						// Load constant
+24-27 	-2	"LC$M %C"	"LDM $D"		$EAC;READ();A = Z ^ 07777;$INC;					// Load memory
+
+06 		1 	"ADN %C"	"ADD #%C"		ADD(Z & 077);;$INC;								// Add constant
+30-33 	-2	"AD$M %C"	"ADD $D"		$EAC;READ();ADD(Z);;$INC;						// Add Memory
+
+07 		1 	"SBN %C"	"SUB #%C"		ADD((Z & 077) ^ 07777);;$INC;					// Add constant
+34-37 	-2	"SB$M %C"	"SUB $D"		$EAC;READ();ADD(Z ^ 07777);;$INC;				// Add Memory
+
+40-43 	-3 	"ST$M %C"	"STA $D"		$EAC;Z = A;WRITE();;$INC;						// Store to Memory
+
+44-47 	-3 	"SR$M %C"	"SHR $D"		$EAC;READ();A = Z = (ROTATE1(Z));WRITE();;$INC;	// Read memory, rotate left once and copy to A and memory
+
+50-53 	-3 	"RA$M %C"	"RAD $D"		$EAC;READ();ADD(Z);Z = A;WRITE();$INC; 			// Add Memory to A and write back.
+
+54-57 	-3 	"AO$M %C"	"ILD $D"		$EAC;READ();A = 1;ADD(Z);Z = A;WRITE();$INC;	// Add 1 to Memory, copy to A and write back.
+
+60-63 	1 	"$JF %C"	"J$K %F"		if ($TEST) { $EA_F;P = S; } else $INC;			// Jump forward on test
+64-67 	1 	"$JB %C"	"J$K %B"		if ($TEST) { $EA_B;P = S; } else $INC;			// Jump backward on test
+
+70 		2	"JPI %C"	"JMP (%C)"		$EA_I; P = S;$INC; 								// Jump indirect
+71 		2 	"JFI %C"	"JMP (%F)"		$EA_F;READ();P = Z;$INC;						// Jump forward indirect
+
+72 		2 	"INP %C"	"INB (%F)"		BLOCKTRANSFER('I');$INC;						// Input Block transfer from selected device
+73 		2	"OUT %C"	"OUTB (%F)"		BLOCKTRANSFER('O');$INC;						// Output Block transfer to selected device
+
+74 		1	"OTN %C"	"OUT #%C"		Z = Z & 077;IOTRANSFER('O');$INC;				// Output immediate to selected device
+75 		2 	"EXF %C"	"EXF (%F)"		$EA_F;READ();IOFUNCTIONCODE();$INC;				// Transmit external function (in Z)
+76 		1 	"INA %C"	"INP"			IOTRANSFER('I');A = Z;$INC;						// Input from selected device to A

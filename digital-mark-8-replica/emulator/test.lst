@@ -1,0 +1,268 @@
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 1 - 9/29/2015 21:00:27
+
+
+       1/       0 :                     	
+       2/       0 :                     		cpu		8008new
+       3/       0 :                     		org 	0
+       4/       0 :                     
+       5/       0 :                     lxi 	macro 	address
+       6/       0 :                     		mvi 	l,address & 255
+       7/       0 :                     		mvi 	h,address / 256
+       8/       0 :                     		endm
+       9/       0 :                     
+      10/       0 : =EH                 vduPort   = 14
+      11/       0 : (MACRO)             		lxi 	message
+      11/       0 : 36 13                               mvi     l,MESSAGE & 255
+      11/       2 : 2E 00                               mvi     h,MESSAGE / 256
+      12/       4 : C7                  loop:	mov 	a,m
+      13/       5 : B0                  		ora 	a
+      14/       6 : 68 10 00            		jz 		Wait
+      15/       9 : 46 24 00            		call 	PrintCharacter
+      16/       C : 30                  		inr 	l
+      17/       D : 44 04 00            		jmp 	loop
+      18/      10 :                     
+      19/      10 : 44 10 00            Wait:	jmp 	Wait
+      20/      13 :                     
+      21/      13 :                     message:;
+      22/      13 :                     		;db		12,"Hello world !",13,"Line 2",13,13,13,13,13,13,"]>>",13,"Scrolled Line",8,8,"Hello",0
+      23/      13 : 0C 4D 61 72 6B 2D   		db 		12,"Mark-8 OS v1.0",13,0	
+                    38 20 4F 53 20 76 
+                    31 2E 30 0D 00 
+      24/      24 :                     PrintCharacter:
+      25/      24 : DD                  		mov 	d,h 												; copy HL to DE
+      26/      25 : E6                  		mov 	e,l
+      27/      26 : (MACRO)             		lxi 	_pcTempHL 											; point HL to save point
+      27/      26 : 36 01                               mvi     l,_PCTEMPHL & 255
+      27/      28 : 2E 01                               mvi     h,_PCTEMPHL / 256
+      28/      2A : FC                  		mov 	m,e 												; save old HL in temporary
+      29/      2B : 30                  		inr 	l
+      30/      2C : FB                  		mov 	m,d
+      31/      2D :                     
+      32/      2D : 36 00               		mvi 	l,cursor & 255 										; point HL to the cursor.
+      33/      2F :                     
+      34/      2F : 3C 08               		cpi 	8 													; 8 (Backspace)
+      35/      31 : 68 CF 00            		jz 		_PCBackspace
+      36/      34 : 3C 0C               		cpi 	12 													; 12 (Clear Screen)
+      37/      36 : 68 5F 00            		jz 		_PCClearScreen	
+      38/      39 : 3C 0D               		cpi 	13													; 13 (Carriage Return)
+      39/      3B : 68 96 00            		jz 		_PCReturn 
+      40/      3E : 3C 20               		cpi 	32 													; ignore other control characters
+      41/      40 : 60 56 00            		jc 		_PCExit
+      42/      43 :                     
+      43/      43 : E0                  		mov 	e,a 												; save character in E
+      44/      44 : 34 80               		ori 	080h 												; output it to the VDU
+      45/      46 : 5D                  		out 	vduPort
+      46/      47 : A8                  		xra 	a
+      47/      48 : 5D                  		out 	vduPort
+      48/      49 : DF                  		mov 	d,m 												; read cursor position
+      49/      4A : 18                  		inr 	d 													; bump and write back
+      50/      4B : FB                  		mov 	m,d
+      51/      4C :                     
+      52/      4C : F3                  		mov 	l,d 												; HL now points to the cursor shadow memory
+      53/      4D : 31                  		dcr 	l 													; unpick the write.
+      54/      4E : 2E 02               		mvi 	h,shadowVDU / 256
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 2 - 9/29/2015 21:00:27
+
+
+      55/      50 : FC                  		mov 	m,e 												; write the character out.
+      56/      51 : C3                  		mov 	a,d 												; get the new cursor value back
+      57/      52 : B0                  		ora 	a 													; if it is zero we need to scroll.
+      58/      53 : 68 AD 00            		jz 		_PCScrollScreen 
+      59/      56 :                     _PCExit:															; exit print.
+      60/      56 : (MACRO)             		lxi 	_pcTempHL
+      60/      56 : 36 01                               mvi     l,_PCTEMPHL & 255
+      60/      58 : 2E 01                               mvi     h,_PCTEMPHL / 256
+      61/      5A :                     LoadHLFromHL:														; Load HL from (HL) using E.
+      62/      5A : E7                  		mov 	e,m
+      63/      5B : 30                  		inr 	l
+      64/      5C : EF                  		mov 	h,m
+      65/      5D : F4                  		mov 	l,e
+      66/      5E : 07                  		ret
+      67/      5F :                     ;
+      68/      5F :                     ;		Clear Screen
+      69/      5F :                     ;
+      70/      5F :                     _PCClearScreen:
+      71/      5F : (MACRO)             		lxi		shadowVDU 											; point HL to shadow VDU
+      71/      5F : 36 00                               mvi     l,SHADOWVDU & 255
+      71/      61 : 2E 02                               mvi     h,SHADOWVDU / 256
+      72/      63 :                     _PCCSFill:
+      73/      63 : 3E 20               		mvi 	m,' '												; fill shadow memory with spaces.
+      74/      65 : 30                  		inr 	l
+      75/      66 : 48 63 00            		jnz 	_PCCSFill
+      76/      69 : 46 7D 00            		call	_PCRepaintWholeScreen 								; repaint the screen 
+      77/      6C : 46 72 00            		call 	_PCHomeCursor 										; home cursor
+      78/      6F : 44 56 00            		jmp 	_PCExit 											; and exit.
+      79/      72 :                     ;
+      80/      72 :                     ;		Home Cursor
+      81/      72 :                     ;
+      82/      72 :                     _PCHomeCursor:
+      83/      72 : 06 FF               		mvi 	a,0FFh 												; physically home the cursor
+      84/      74 : 5D                  		out 	vduPort
+      85/      75 : A8                  		xra 	a
+      86/      76 : 5D                  		out		vduPort 	
+      87/      77 :                     _PCSaveAToCursor:
+      88/      77 : (MACRO)             		lxi 	cursor 												; point HL to cursor
+      88/      77 : 36 00                               mvi     l,CURSOR & 255
+      88/      79 : 2E 01                               mvi     h,CURSOR / 256
+      89/      7B : F8                  		mov 	m,a 												; write it.
+      90/      7C : 07                  		ret
+      91/      7D :                     ;
+      92/      7D :                     ;		Repaint whole screen
+      93/      7D :                     ;
+      94/      7D :                     _PCRepaintWholeScreen:
+      95/      7D : A8                  		xra 	a
+      96/      7E :                     ;
+      97/      7E :                     ;		Repaint the screen as until the physical cursor = A (e.g. A = 0 = whole screen)
+      98/      7E :                     ;
+      99/      7E :                     _PCRepaintScreenToA:
+     100/      7E : E0                  		mov 	e,a 												; save target in E.
+     101/      7F : 46 72 00            		call	_PCHomeCursor 										; home cursor first.
+     102/      82 : C4                  		mov 	a,e
+     103/      83 : 46 77 00            		call 	_PCSaveAToCursor 									; set where the cursor is going.
+     104/      86 : (MACRO)             		lxi 	shadowVDU 											; point HL to shadow VDU
+     104/      86 : 36 00                               mvi     l,SHADOWVDU & 255
+     104/      88 : 2E 02                               mvi     h,SHADOWVDU / 256
+     105/      8A :                     _PCRSTALoop:
+     106/      8A : C7                  		mov 	a,m 												; copy shadow memory to display
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 3 - 9/29/2015 21:00:27
+
+
+     107/      8B : 34 80               		ori 	80h
+     108/      8D : 5D                  		out 	vduPort
+     109/      8E : A8                  		xra 	a
+     110/      8F : 5D                  		out 	vduPort
+     111/      90 : 30                  		inr 	l 													; next cell
+     112/      91 : 21                  		dcr 	e 	 												; done all of them.
+     113/      92 : 48 8A 00            		jnz 	_PCRSTALoop
+     114/      95 : 07                  		ret
+     115/      96 :                     ;
+     116/      96 :                     ;		Carriage return.
+     117/      96 :                     ;
+     118/      96 :                     _PCReturn:
+     119/      96 : F7                  		mov 	l,m 												; L contains cursor position
+     120/      97 : 2E 02               		mvi 	h,shadowVDU / 256 									; HL points to shadow.
+     121/      99 :                     _PCEndOfLine:
+     122/      99 : 06 A0               		mvi 	a,' '+80h 											; print a space.
+     123/      9B : 5D                  		out 	vduPort
+     124/      9C : A8                  		xra 	a
+     125/      9D : 5D                  		out 	vduPort
+     126/      9E : 30                  		inr 	l 													; next column
+     127/      9F : C6                  		mov 	a,l
+     128/      A0 : 24 1F               		ani 	1Fh 												; reached end of line
+     129/      A2 : 48 99 00            		jnz 	_PCEndOfLine
+     130/      A5 : C6                  		mov 	a,l 												; get position
+     131/      A6 : 46 77 00            		call 	_PCSaveAToCursor 									; save in cursor position
+     132/      A9 : B0                  		ora 	a 
+     133/      AA : 48 56 00            		jnz 	_PCExit 											; exit if not at bottom of screen.
+     134/      AD :                     ;
+     135/      AD :                     ;		Scroll whole screen up one line.
+     136/      AD :                     ;
+     137/      AD :                     _PCScrollScreen:
+     138/      AD : 26 20               		mvi 	e,020h 												; point H to shadow RAM, E is pointer.
+     139/      AF : 2E 02               		mvi 	h,shadowVDU / 256 									
+     140/      B1 :                     _PCCopyUp:
+     141/      B1 : F4                  		mov 	l,e 												; HL points to byte to copy
+     142/      B2 : DF                  		mov 	d,m 												; read into D.
+     143/      B3 : C4                  		mov 	a,e 												; work out where it goes, one line up
+     144/      B4 : 14 20               		sui 	20h
+     145/      B6 : F0                  		mov 	l,a 												
+     146/      B7 : FB                  		mov 	m,d
+     147/      B8 : 20                  		inr 	e
+     148/      B9 : 48 B1 00            		jnz 	_PCCopyUp 											; do the whole screen.
+     149/      BC : 36 E0               		mvi 	l,0E0h  											; erase the bottom line
+     150/      BE :                     _PCClearBottom:
+     151/      BE : 3E 20               		mvi 	m,' '
+     152/      C0 : 30                  		inr 	l
+     153/      C1 : 48 BE 00            		jnz 	_PCClearBottom
+     154/      C4 : 46 7D 00            		call	_PCRepaintWholeScreen 								; repaint the whole screen.
+     155/      C7 : 06 E0               		mvi 	a,0E0h 												; and do it again, put cursor on bottom line.
+     156/      C9 : 46 7E 00            		call 	_PCRepaintScreenToA
+     157/      CC : 44 56 00            		jmp 	_PCExit
+     158/      CF :                     ;
+     159/      CF :                     ;		Backspace
+     160/      CF :                     ;
+     161/      CF :                     _PCBackSpace:
+     162/      CF : C7                  		mov 	a,m 												; get cursor position
+     163/      D0 : B0                  		ora 	a 													; if zero, top of screen, so can't backspace.
+     164/      D1 : 68 56 00            		jz 		_PCExit
+     165/      D4 : 14 01               		sui 	1
+     166/      D6 : 46 7E 00            		call 	_PCRepaintScreenToA 								; reposition cursor
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 4 - 9/29/2015 21:00:27
+
+
+     167/      D9 : 44 56 00            		jmp 	_PCExit
+     168/      DC :                     
+     169/      DC :                     
+     170/      DC :                     		align 	256
+     171/     100 :                     cursor: 
+     172/     100 : 00                  		db 		0 													; physical position of cursor.
+     173/     101 :                     _pcTempHL:
+     174/     101 : 00 00               		dw 		0 													; HL saved during print character.
+     175/     103 :                     
+     176/     103 :                     		align 	256
+     177/     200 :                     shadowVDU: 															; shadows the memory inside the TVT so we can scroll etc.
+     178/     200 :                     		ds 		256
+     179/     300 :                     
+     180/     300 :                     
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 5 - 9/29/2015 21:00:27
+
+
+  symbol table (* = unused):
+  ------------------------
+
+*ARCHITECTURE :  i386-unknown-win32 - | *BIGENDIAN :                      0 - |
+*BRANCHEXT :                      0 - | *CASESENSITIVE :                  0 - |
+*CONSTPI :        3.141592653589793 - |  CURSOR :                       100 C |
+*DATE :                   9/29/2015 - | *FALSE :                          0 - |
+*FULLPMMU :                       1 - | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+*INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
+*LISTON :                         1 - | *LOADHLFROMHL :                  5A C |
+ LOOP :                           4 C | *MACEXP :                         1 - |
+ MESSAGE :                       13 C | *MOMCPU :                     8008E - |
+*MOMCPUNAME :               8008NEW - | *NESTMAX :                      100 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+ PRINTCHARACTER :                24 C | *RELAXED :                        0 - |
+ SHADOWVDU :                    200 C | *TIME :                    21:00:27 - |
+*TRUE :                           1 - |  VDUPORT :                        E - |
+*VERSION :                     142F - |  WAIT :                          10 C |
+ _PCBACKSPACE :                  CF C |  _PCCLEARBOTTOM :                BE C |
+ _PCCLEARSCREEN :                5F C |  _PCCOPYUP :                     B1 C |
+ _PCCSFILL :                     63 C |  _PCENDOFLINE :                  99 C |
+ _PCEXIT :                       56 C |  _PCHOMECURSOR :                 72 C |
+ _PCREPAINTSCREENTOA :           7E C |  _PCREPAINTWHOLESCREEN :         7D C |
+ _PCRETURN :                     96 C |  _PCRSTALOOP :                   8A C |
+ _PCSAVEATOCURSOR :              77 C |  _PCSCROLLSCREEN :               AD C |
+ _PCTEMPHL :                    101 C |
+
+     51 symbols
+     29 unused symbols
+
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 6 - 9/29/2015 21:00:27
+
+
+  defined macros:
+  ---------------
+
+LXI                                   |
+
+      1 macro
+
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 7 - 9/29/2015 21:00:27
+
+
+  codepages:
+  ----------
+
+STANDARD (0 changed characters)
+
+
+0.00 seconds assembly time
+
+    180 lines source file
+    192 lines incl. macro expansions
+      2 passes
+      0 errors
+      0 warnings

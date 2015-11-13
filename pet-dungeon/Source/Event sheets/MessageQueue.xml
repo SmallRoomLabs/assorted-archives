@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>MessageQueue</name>
+    <events>
+        <event-group description="" sid="1581799771444969" title="Message Queue" />
+        <comment>How long message is displayed for</comment>
+        <variable comment="How long message displayed for" constant="1" name="MESSAGE_TIME" sid="3317098534310036" static="0" type="number">2</variable>
+        <comment>Initialise on layout load</comment>
+        <event-block sid="9872432775352268">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="3735825966140831" type="System" />
+            </conditions>
+            <actions>
+                <action id="-3" name="Set position" sid="33302889797855" type="MessageText">
+                    <param id="0" name="X">0</param>
+                    <param id="1" name="Y">34</param>
+                </action>
+                <action id="0" name="Set text" sid="2182238423142799" type="MessageText">
+                    <param id="0" name="Text">&quot;&quot;</param>
+                </action>
+            </actions>
+        </event-block>
+        <event-block sid="3587286623531415">
+            <conditions>
+                <condition id="-1" name="Every tick" sid="4888395393650562" type="System" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <comment>If the message time has elapsed, erase the message and set it in prepartion for the next one</comment>
+                <event-block sid="2859375847426533">
+                    <conditions>
+                        <condition id="-7" name="Compare instance variable" sid="476002064935229" type="MessageText">
+                            <param id="0" name="Instance variable">changeTime</param>
+                            <param id="1" name="Comparison">2</param>
+                            <param id="2" name="Value">time</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Set text" sid="7200502210574703" type="MessageText">
+                            <param id="0" name="Text">&quot;&quot;</param>
+                        </action>
+                        <action id="-10" name="Set value" sid="6603622419187067" type="MessageText">
+                            <param id="0" name="Instance variable">changeTime</param>
+                            <param id="1" name="Value">-1</param>
+                        </action>
+                        <action id="-13" name="Set boolean" sid="7821430699584522" type="MessageText">
+                            <param id="0" name="Instance variable">isDisplaying</param>
+                            <param id="1" name="Value">0</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>Time for a message change, and there&apos;s a message in the queue.</comment>
+                <event-block sid="4648959249336188">
+                    <conditions>
+                        <condition id="-7" name="Compare instance variable" sid="5168349155210528" type="MessageText">
+                            <param id="0" name="Instance variable">changeTime</param>
+                            <param id="1" name="Comparison">2</param>
+                            <param id="2" name="Value">time</param>
+                        </condition>
+                        <condition id="-7" name="Compare instance variable" sid="797501076853221" type="MessageText">
+                            <param id="0" name="Instance variable">queue</param>
+                            <param id="1" name="Comparison">1</param>
+                            <param id="2" name="Value">&quot;&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-10" name="Set value" sid="5727217396045794" type="MessageText">
+                            <param id="0" name="Instance variable">changeTime</param>
+                            <param id="1" name="Value">time+2</param>
+                        </action>
+                        <action id="0" name="Set text" sid="971828173150924" type="MessageText">
+                            <param id="0" name="Text">tokenat(MessageText.queue,0,&quot;:&quot;)</param>
+                        </action>
+                        <action id="-10" name="Set value" sid="9582696178574696" type="MessageText">
+                            <param id="0" name="Instance variable">queue</param>
+                            <param id="1" name="Value">mid(MessageText.queue,len(tokenat(MessageText.queue,0,&quot;:&quot;))+1,9999)</param>
+                        </action>
+                        <action id="-13" name="Set boolean" sid="9196486663761415" type="MessageText">
+                            <param id="0" name="Instance variable">isDisplaying</param>
+                            <param id="1" name="Value">1</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Add a message to the message queue</comment>
+        <event-block sid="4207378561318753">
+            <conditions>
+                <condition id="0" name="On function" sid="7675496530380191" type="Function">
+                    <param id="0" name="Name">&quot;AddMessageToQueue&quot;</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="6690661406413904">
+                    <conditions>
+                        <condition id="-7" name="Compare instance variable" sid="7288527169364929" type="MessageText">
+                            <param id="0" name="Instance variable">queue</param>
+                            <param id="1" name="Comparison">1</param>
+                            <param id="2" name="Value">&quot;&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-10" name="Set value" sid="3833165592950512" type="MessageText">
+                            <param id="0" name="Instance variable">queue</param>
+                            <param id="1" name="Value">MessageText.queue &amp; &quot;:&quot; &amp; Function.Param(0)</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="4281305477829295">
+                    <conditions>
+                        <condition id="-22" name="Else" sid="774791206930959" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-10" name="Set value" sid="671254731837125" type="MessageText">
+                            <param id="0" name="Instance variable">queue</param>
+                            <param id="1" name="Value">Function.Param(0)</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+    </events>
+</c2eventsheet>

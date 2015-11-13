@@ -1,0 +1,591 @@
+     MICROCOMPUTER ANIMATED GRAPHICS INTERFACE CONSULTANTS
+
+         To:            BALLY BASIC Users
+         From:          Jay Fenton
+         Subject:       New and Improved BALLY BASIC
+
+     This document describes the new features available
+in the New and Improved version of BALLY BASIC, to be
+released this spring.  As it was necessary to remove some
+features to make room for the improvements a list of
+deletions is provided.  Generally, these deletions involve
+facilities that were not documented in the instruction
+manual provided with the original cassette.
+     I believe you will be excited and amazed by these
+improvements.
+
+New Features
+------------
+
+                       *( ) ARRAY ADDED
+
+     A second array has been provided.  It works like the
+@( ) array, except that it refers to the free memory area in
+reverse order starting at the end of the program storage
+area.  This was done in response to complaints about the
+behavior of @( ), which would change values as statements
+were added or deleted.  The memory area used by *( ) overlaps
+the area used by @( ).  Thus low *( ) indexes correspond to
+high @( ) indexes.  No check is performed to prevent *( ) from
+overstoring @( ).
+
+                         TRACE FEATURE
+
+     A statement be statement trace listing may be
+obtained while program is executing by holding down the
+LIST key in the upper right hand corner of the keypad.  Each
+statement is listed before it is executed, thus the entire
+text of IF statements is listed if the condition was
+false.
+
+                        EDITOR FEATURE
+
+     An editing feature has been added.  Pressing the PAUSE
+key will retrieve a character from a statement in program
+storage.  This feature is used as follows:
+     1) Type the line number of the line you wish to
+correct.
+     2) Press the PAUSE key once to recall the next
+character from the line in storage.  Repeated pressing of
+PAUSE will scan across the stored line.
+     3) A character drawn by PAUSE looks to the computer
+just like a character entered directly from the keypad.  This
+means ERASE can be used to discard unwanted characters from
+the stored line.
+     4) Additions can be entered at any time, intermixed
+as desired.
+     5) If PAUSE runs off the end of the stored line, it
+will have the same effect as pressing the GO key.  The key
+sequence WORDS-SPACE will also activate this feature.  An
+earlier version of Improved BASIC worked using this
+sequence.
+
+              2000 BAUD AUDIO CASSETTE INTERFACE
+
+     The biggest change in this version of BASIC is the
+2000 baud audio cassette interface.  Since the production of
+the original BASIC we have developed an inexpensive circuit
+that implements a high-speed tape interface which is small
+enough to integrate directly into the BASIC ROM cassette.
+This has made necessary changes in the commends relating to
+tape storage and retrieval.
+
+                            :PRINT
+
+     The :PRINT command causes the stored program, the
+screen image, the values in @( ) and *( ), and the
+values of all the variables to be written out.  This process
+will take between 10 and 20 seconds.  As only one jack is
+provided on the BASIC ROM cassette, it is necessary for the
+user to manually connect the audio cable to the MIC jack of
+the cassette recorder.
+     To write out blocks of data, a second form for
+:PRINT is provided:
+
+     :PRINT (start-address),(#-of-words)
+
+     This will write a block of indicated length
+beginning at the specified address.  For example, to write
+out the first 100 words of the @( ) array: :PRINT @(0),100
+     When writing blocks from *( ) we must cite the LAST
+word in the block rather than the first.  This is because *( )
+runs backwards.
+     The recording will consist of a 3 second leader
+tone, then the data block, followed by a 1/2 second trailer
+tone.  The tone frequencies are derived from software timing
+loops accurate to plus or minus one microsecond.
+
+                            :INPUT
+
+      To load programs, use :INPUT.  This will retrieve the
+program, the screen image, the arrays and variables from
+audio tape.  It is necessary to 'cue up' the audio tape on
+the three second leaden tone, and switch the cable over to
+EARPHONE before loading.
+      The accuracy of the load is verified using a
+checksum.  If a checksum error is detected, a question mark
+will be typed out just before :INPUT returns.  It is possible
+that a checksum error could damage the program or system
+variables in such a way as to 'bomb' the computer.
+     As with :PRINT, there is a form of :INPUT for
+loading data blocks:
+
+     :INPUT <start-address>
+
+     Where <start address> specifies where the load is to
+begin.  Note that the size of the block was determined when
+it was written out.  The block read back will be one byte
+longer than the one written out.  The extra byte is the
+checksum byte.  Therefore, allow one word of 'slop' when
+reading into an array.
+
+                            :LIST
+
+     The :LIST command has been modified to perform a 
+verify function.  It no longer LISTS the data on tape, as the
+data rate is far too high.  Now :LIST will scan a digital
+recording and verify that the checksum is correct.  If
+incorrect, a question mark is printed just before the
+command returns.  This allows one to check recording
+integrity without damaging anything.
+     If problems arise, check the playback level on your
+cassette recorder.  We have found that maximum volume
+settings work best.  It is recommended that AC power be used
+if possible to minimize speed fluctuations.
+
+                             :RUN
+
+     The :RUN command is provided for loading machine
+language programs.  The load will begin at the top of the
+screen (4000H or 16484D).  When the load is completed,
+control will be transferred to this first address.  The block
+loaded is limited in size only by the need to avoid
+'stomping' on the stack area.
+
+                   ENHANCED EXECUTION SPEED
+
+     Internal changes have been made to speed up the
+execution of BASIC programs.  The speedup ranges from 50% to
+100% depending on the program.  In general, long programs
+with long statements will benefit the most.  The speedup is
+implemented by transferring the text of each line from pixel
+shared storage into the line input buffer before execution.
+This allows most 'searching' functions expedited access to
+the line.
+     This has forced the introduction of an
+incompatibility with the original version of BASIC.  The use
+of GOSUB statements in immediate mode (in a line without a
+line number) is now illegal.
+
+               MUSIC PROCESSOR DEVICE VARIABLES
+
+     A set of new device variables have been provided to
+facilitate access to the BALLY ARCADE music synthesizer.
+     The synthesizer can be divided into two sections.
+The first section, on the left hand of the block diagram, is
+concerned with controlling the master oscillator.  The master
+oscillator output is input to the other section which
+contains the 3 voice oscillators.  Thus changes made to the
+master oscillator effect all 3 voices.
+     The master oscillator is a programmable frequency
+divider.  It is a counter which is clocked at 1.789 Mhz.
+Each time it counts down to zero, the state of its output is
+toggled and the counter is reinitialized to the value set in
+MO.  The master oscillator frequency output is a square wave
+of frequency FM=1789 Khz/(MO+1).
+     By changing the value of NM (NOISE MODE) the
+behavior of the master oscillator man be modified.  Setting
+NM=1 causes noise to be added to MO.  This sum is used to
+reset the counter in the master oscillator.  The effect is
+that the frequency is varied by a random amount.  The amount
+of variation is controlled by the variable NV (NOISE
+VOLUME).
+     When NM=0, vibrato is enabled.  Vibrato works like
+noise modulation, except that the value added to MO varies
+over a programmable range 0-63.  This range is controlled by
+VR.  The rate at which this added value varies is determined
+by the vibrato frequency register VF.  VF can have four
+different values: 0 is fastest, 3 slowest.
+     The right side of the synthesizer consists of three
+frequency dividers (voices) with associated volume controls.
+Each divider is clocked by the output of the master
+oscillator.  The output frequency is given by the formula:
+
+        FV=FM/(2(Tn)+1).
+
+     Where Tn is TA, TB, or TC, for voices A, B, and C
+respectively.  Substituting in the formula for FM we have:
+
+        FV=894Khz/(MO+1)(Tn+1)
+
+     Each voice has a 4 bit volume control variable.  0 is
+quiet, 15 is full volume.  The volume in linearly
+proportional to the value of the variable.  VA corresponds to
+TA, VB to TB and VC to TC.
+     White noise can be mixed in with the output of
+voices A, B and C by setting NM=2. The volume of this noise
+is determined by NV.  Setting NM=3 sends noise both to MO and
+to final output.
+     A few notes about using these variables:
+     1) When NT>0 printing characters on the screen will
+change the values of MO, TA, and VA.  This effect can be
+disabled by setting NT=0.
+     2) Changes to these variables will be propagated 60
+times a second, like FC and BC.
+     3)  The use of &(16) to &(23) will conflict with using
+these variables.  To 'turn off' these variables set NT=-1.
+This will be necessary when running programs developed for
+the old BASIC.
+
+                 SILENCING THE MUSIC PROCESSOR
+
+     To minimize wear and tear on the nervous systems of
+BASIC programmers, an easy to type command has been
+installed which immediately silences the music processor.  It
+does this by zeroing out the music processor device
+variables.  The command is the single character 'down arrow.'
+If NT<0, 'down arrow' will have no effect.
+
+                     SCROLL MODE CONTROL
+
+     A variable called SM (SCROLL MODE) has been added to
+allow more user control of the scrolling process which
+occurs when printing reaches the bottom of the screen.
+        SM=0    Scrolls conventionally.
+        SM=1    Suppresses scrolling, cursor stays at bottom
+        SM=2    Holds cursor at screen bottom, clears after
+                each CR
+        SM=3    Clears the screen and resets cursor to
+                screen top.
+        SM=4    AUTO-PAUSE, release by pressing any key.
+                After release the screen will clear and
+                printing will resume from screen top.
+
+                 NEW SPECIAL VARIABLE SUMMARY
+
+        SM      Scroll mode
+        MO      Master Oscillator
+        TA      Tone A
+        TB      Tone B
+        TC      Tone C
+        VA      Volume A
+        VB      Volume B
+        VC      Volume C
+        VR      Vibrato range
+        VF      Vibrato frequency
+        NM      Noise mode
+        NV      Noise Volume
+        RM      Remainder
+        XY      Last X,Y from vector draw
+
+                        OTHER CHANGES
+
+                         LINE COMMAND
+
+      The LINE command now performs rudimentary clipping.
+The onscreen portion of the line is drawn.  Note that only
+the low order 8 bits of a coordinate are examined by LINE.
+Thus 256 is equivalent to 0 and so on.
+
+                         BOX COMMAND
+
+      The BOX command has been fixed to eliminate a
+problem with the off-screen detection logic.  BOX will still
+refuse to draw a box that is partially or totally off-screen.
+The bug used to cause a bug in the scrolling function where
+stripes from 'nowhere' would propagate up the screen.  This
+was exploited by some as a 'feature' to make video art.
+Sorry.
+
+                            RND( )
+
+      RND(0) has been defined to mean: return a random
+number between -32768 and 32767.  This saved ROM space.
+
+          INTERNAL CHANGES TO SUPPORT EXPERIMENTERS
+
+     To make it easier for Hackers to add hardware or
+software to the BALLY system several charges have been made:
+
+     1) HOOK VECTORS have been installed in RAM to allow
+the user to gain control at several strategic places within
+BASIC.  The hook vectors are jump instructions which reside
+in RAM.  All references to the specified routines jump into
+RAM, which then branches to the appropriate routine.  Hooks
+are provided for the following functions: 1) Screen
+Interrupt. 2) Light Pen Interrupt. 3) Character Read. 4)
+Character Print.
+
+     2) The STACK TOP is also reset on halt or stop from
+a word maintained in RAM.  This allows some stack space to be
+borrowed for assembly language routines.
+
+     3) The memory layout has been modified to leave the
+system RAM used by HVGSYS alone.  This allows HVGSYS routines
+such as the music interpreter to be exploited.
+
+     4) Light pen interrupts are always enabled.  The
+light pen interrupt routine is initialized as null, i.e.
+re-enable interrupts and return.  Therefore the coordinates of
+the most recent light pen hit are available from &(15) and
+&(14). As stated in the HACKERS GUIDE, the coordinates from
+&(14) and &(15) may be off by a constant amount due to time
+delays in the light pen circuits.  The addition or
+subtraction of a fudge factor may be needed.
+
+
+Carryovers from HACKERS GUIDE
+-----------------------------
+
+     This next section describes features of the original
+BASIC cassette that were not documented in the programmed
+instruction course booklet.  They were described in a handout
+called the BALLY BASIC HACKERS GUIDE.  Several BBHG features
+have been removed, those are listed in the Deletions
+section.
+
+                         ABS FUNCTION 
+
+     The absolute value function is available. It is
+typed in as 3 discrete keystrokes: "A", "B", and "S".
+
+                         STOP COMMAND
+
+     The STOP command halts the program.  It is typed in
+as four discrete keystrokes.
+
+                         RM VARIABLE
+
+     The special variable RM has as its value the
+remainder produced by the most recently executed integer
+division.
+
+                         XY VARIABLE
+
+     XY remembers the X, Y position specified in the
+latest LINE command.  The Y value occupies the high order
+byte of this word, X the lower byte.
+
+                            CALL N
+
+     The CALL command transfers control to an assembly
+Language subroutine.  This routine should terminate by
+executing a RET instruction.  Register DE contains a pointer
+to the line being interpreted, if needed it should be saved
+then restored before returning to BASIC.  Example:
+        500 CALL 0     ; Self destruct reset!
+
+                  IO PORT AND MEMORY ACCESS
+
+     The physical IO ports of the Arcade man be accessed
+through the &() construct.  &() is used much like @().  For
+example:
+
+        >&(10)=204
+
+     Will set the vertical blanking register to display
+the scratchpad memory area below the screen.
+     Ports may be read by using &() in place of any
+expression. For example:
+
+        10 PRINT &(23)
+        20 GOTO 10
+
+     Will loop sampling and reporting the status of the
+leftmost column of keys on your easy entry keypad.  Press any
+key in that column and see what happens.  Try combinations.
+     The physical memory of the Arcade may be read or
+written in a similar way using %().  This example prints the
+first 100 words of operating system ROM:
+
+        10 FOR A=0 TO 198 STEP 2
+        20 PRINT %(A)
+        30 NEXT A
+
+                     COLOR CONTROL PORTS 
+
+        &(0)    Color 0 right value
+        &(1)    Color 1 right value
+        &(2)    Color 2 right value
+        &(3)    Color 3 right value
+        &(9)    Horizontal color boundary
+        &(10)   Vertical blanking register
+
+     The format of the color registers is the same as the
+codes used with FC and BC (color times 8 + intensity).
+     &(0)-&(3) only have effect when the horizontal color
+boundary is set to a value less than 44.  This boundary is
+set to the byte number of where to switch from one set of
+colors to the other.  The colors for the left side of this
+boundary are defined by BC and FC.
+     The following program demonstrates these ideas:
+
+        10 &(0)=0
+        20 &(1)=123
+        30 &(2)=185
+        40 &(3)=251
+        50 FOR A=0 TO 255
+        60 &(9)=A
+        70 NEXT A
+        80 GOTO 50
+
+     If you halt the program while the black background
+is up and study the screen, you can see how the program is
+stored intermixed with the graphics. Try adding lines to the
+program.
+     You will also note that values greater than 64 will
+change the color of the 'frame' surrounding the active
+screen area.  64-127 will frame with color 1, 128-191 color
+2, and 192-255 color 3.
+     To hide the program but show the graphics set &(0) and
+&(1) to the background color; &(2) and &(3) to the
+foreground color.
+     The vertical blanking register, &(10) specifies how
+many scan lines of graphics are to be displayed.  All lines
+below the specified ones are shown in the background color.
+This resister acts like a curtain, which we can lower while
+we change scenery.  Its initial value is 176.
+
+                        HAND CONTROLS
+
+        &(16)   Player 1 joystick and trigger
+        &(17)   Player 2 joystick and trigger
+        &(18)   Player 3 joystick and trigger
+        &(19)   Player 4 joystick and trigger
+
+     The value returned is a bitstring of the following
+format:
+
+        BIT 0   joystick UP
+        BIT 1   joystick DOWN
+        BIT 2   joystick LEFT
+        BIT 3   joystick RIGHT
+        BIT 4   trigger
+
+     The gunhandle knob may also be read directly:
+
+        &(28)   Player 1 knob position
+        &(29)   Player 2 knob position
+        &(30)   Player 3 knob position
+        &(31)   Player 4 knob position
+
+     The value ranges from 0 (full clockwise) to 255 (full
+counterclockwise). 
+
+                        KEYPAD SENSING
+
+     While running a program you can check to see if a
+key has been pressed without going into wait.  &(23) senses
+the leftmost column of keys, &(20) the rightmost.  The 
+bitstring returned is 5 bits wide.  The low order bit
+corresponds to the uppermost key in a column, bit 5
+corresponds to the shift key.
+     Note that pressing PAUSE or LIST during execution
+will pause or trace!
+     For example to check for the 5 key on the easy entry
+keypad:
+
+        10 IF &(22)=4 PRINT "5 KEY PRESSED"
+        20 GOTO 10
+
+                  BASIC MEMORY CONFIGURATION
+
+     BALLY BASIC stores its program in the screen memory
+area intermixed with graphics data.  Each byte contains 4
+bits of program and 4 bits of graphics.  Program data
+occupies the bit positions corresponding to even powers of
+2.
+     Each byte of program data thus occupies 2 bytes of
+physical memory.  As described in the section ENHANCED
+EXECUTION SPEED each statement is "repacked" into the input
+buffer before execution.
+     Arrays also occupy this "pixel shared" zone.  @()
+starts at the program end and works up, while *() starts at
+the top end and works down.  To simplify manipulation of this
+zone several subroutines that load and store are used.  They
+check the memory address given, and if negative perform the
+bit manipulation needed to load or store.  This means that
+all memory addresses above 8000H wind up referring to actual
+locations below 8000H.
+     Program statements are stored in the following
+format.  Byte dimensions are given assuming 8 bit units:
+     2 byte line #         in binary
+     1 byte per stroke     (words use only one byte)
+     .
+     .
+     GO character          (to mark line end GO=13d)
+     This pattern repeats until the end of the program is
+reached.  The end is marked by a negative line number. 
+The end is pointed at by memory word TXTUNF.
+
+                   MEMORY AREAS OF INTEREST
+
+     The table following lists memory areas of interest
+to experimenters.  Many locations are different from those
+used in the original BASIC.  It is possible that later 
+revisions of BALLY BASIC will cause them to change again.
+
+                               Decimal         Hex
+On board ROM area              0-8191          0-1FFF
+BALLY BASIC ROM area           8192-12287      2000-2FFF
+Screen memory area             16384-20479     4000-4FFF
+Graphics/Program area          16384-19983     4000-4E10
+Scratchpad area                20000-20463     4E20-4FEF
+TXTUNF                         20000           4E20
+Variables start at             20002           4E22
+Stack area                     20258-20415     4F22-4FBF
+Text/Array area                -24576to-22777  A000-A70C
+Line input buffer              20154-20257     4EBA-4F21
+
+       HOOK VECTORS (3 bytes each)
+
+                               Decimal         Hex
+Light Pen interrupt            20114           4E92
+Screen interrupt               20117           4E95
+Input character                20120           4E98
+Output character               20123           4E9B
+Stack vector (2 bytes)         20126           4E9E
+
+
+Deleted Features
+----------------
+
+                           BCD MATH
+
+     The interface to 16 digit BCD math calculations ($
+command) has been kicked out.
+
+                        :INPUT <number>
+
+     The capability of specifying a match sentinel in the
+:INPUT command, used for awaiting a specific program in a
+set, has been removed.  This was done to save space and 
+because the new tape interface makes the technique
+unreliable.
+
+                     BALLY BASIC printout
+
+     BALLY BASIC in no longer printed out on reset, halt,
+or after an error. This saves not only ROM space but also
+screen space.  I don't think anyone will miss this.
+
+                        MUSICAL LETTERS
+
+     The assignment of well-tempered tones to the
+alphabetic characters on printing has been abandoned.
+Listing will now sound different.  Numbers will still sound
+Musical, and the pitch and octave shift functions still work
+as documented.
+
+                     IMMEDIATE MODE GOSUBS
+
+     As noted in the section on the execution speedup, it
+is necessary to prohibit immediate mode GOSUB.  An attempt
+to do so will produce an error message.
+
+                       MEMORY REARRANGED
+
+     The changes and additions have caused the internal
+subroutines and system variables to shift around.  Some
+programs which 'peek and poke' will have to be altered.
+
+            PRINTER INTERFACE INSTRUCTIONS OBSOLETE
+
+     The instructions for adding a printer published in
+the BALLY BASIC HACKERS GUIDE are inoperative.  The *PRINT
+command has been removed.  Crafty hackers are now referred to
+the section explaining EXPERIMENTER SUPPORT FEATURES for
+hints on how to add a custom character print routine.
+
+                   ERROR MESSAGES ELIMINATED
+
+     Error messages have been eliminated for certain
+situations.  It is now possible to print -32768.  Drawing
+boxes with negative sizes is no longer greeted by an error
+message.  Using PRINT format control (#) values that are
+outrageous is now allowed.  The worst that can happen is the
+127 spaces are printed before the number.
+
+  -- END OF DOCUMENT
+     Release 1.01 - September 14, 2002
+     Retyped by Adam Trionfo

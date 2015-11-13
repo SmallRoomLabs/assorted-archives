@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Globals</name>
+    <events>
+        <comment>Mnemonics for 14500B seperated by colons</comment>
+        <variable comment="Mnemonics seperated by :" constant="1" name="MNEMONICS" sid="2864570163511095" static="0" type="text">NOP:LD:LDC:AND:ANDC:OR:ORC:XNOR:STO:STOC:IEN:OEN:JUMP:RTN:SKZ:NOPF</variable>
+    </events>
+</c2eventsheet>

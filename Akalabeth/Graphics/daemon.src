@@ -1,0 +1,24 @@
+// *************************************************************************
+//
+//                                 Draw Daemon
+//
+// *************************************************************************
+380       hplot y.m - 14 / dI,x.m - 46 / dI to y.m - 12 / dI,x.m - 37 / dI to y.m - 20 / dI,x.m - 32 / dI to y.m - 30 / dI,x.m - 32 / dI to y.m - 22 / dI,x.m - 24 / dI to y.m - 40 / dI,x.m - 17 / dI to y.m - 40 / dI,x.m - 7 / dI to y.m - 38 / dI,x.m - 5 / dI to y.m - 40 / dI,x.m - 3 / dI to y.m - 40 / dI,x.m
+381       hplot to y.m - 36 / dI,x.m to y.m - 34 / dI,x.m - 2 / dI to y.m - 32 / dI,x.m to y.m - 28 / dI,x.m to y.m - 28 / dI,x.m - 3 / dI to y.m - 30 / dI,x.m - 5 / dI to y.m - 28 / dI,x.m - 7 / dI to y.m - 28 / dI,x.m - 15 / dI to y.m,x.m - 27 / dI
+382       hplot y.m + 14 / dI,x.m - 46 / dI to y.m + 12 / dI,x.m - 37 / dI to y.m + 20 / dI,x.m - 32 / dI to y.m + 30 / dI,x.m - 32 / dI to y.m + 22 / dI,x.m - 24 / dI to y.m + 40 / dI,x.m - 17 / dI to y.m + 40 / dI,x.m - 7 / dI to y.m + 38 / dI,x.m - 5 / dI to y.m + 40 / dI,x.m - 3 / dI to y.m + 40 / dI,x.m
+383       hplot to y.m + 36 / dI,x.m to y.m + 34 / dI,x.m - 2 / dI to y.m + 32 / dI,x.m to y.m + 28 / dI,x.m to y.m + 28 / dI,x.m - 3 / dI to y.m + 30 / dI,x.m - 5 / dI to y.m + 28 / dI,x.m - 7 / dI to y.m + 28 / dI,x.m - 15 / dI to y.m,x.m - 27 / dI
+384       hplot y.m + 6 / dI,x.m - 48 / dI to y.m + 38 / dI,x.m - 41 / dI to y.m + 40 / dI,x.m - 42 / dI to y.m + 18 / dI,x.m - 56 / dI to y.m + 12 / dI,x.m - 56 / dI to y.m + 10 / dI,x.m - 57 / dI to y.m + 8 / dI,x.m - 56 / dI to y.m - 8 / dI,x.m - 56 / dI to y.m - 10 / dI,x.m - 58 / dI to y.m + 14 / dI,x.m - 58 / dI to y.m + 16 / dI,x.m - 59 / dI
+385       hplot to y.m + 8 / dI,x.m - 63 / dI to y.m + 6 / dI,x.m - 63 / dI to y.m + 2 / dI + .5,x.m - 70 / dI to y.m + 2 / dI + .5,x.m - 63 / dI to y.m - 2 / dI + .5,x.m - 63 / dI to y.m - 2 / dI + .5,x.m - 70 / dI to y.m - 6 / dI,x.m - 63 / dI to y.m - 8 / dI,x.m - 63 / dI to y.m - 16 / dI,x.m - 59 / dI to y.m - 14 / dI,x.m - 58 / dI
+386       hplot to y.m - 10 / dI,x.m - 57 / dI to y.m - 12 / dI,x.m - 56 / dI to y.m - 18 / dI,x.m - 56 / dI to y.m - 36 / dI,x.m - 47 / dI to y.m - 36 / dI,x.m - 39 / dI to y.m - 28 / dI,x.m - 41 / dI to y.m - 28 / dI,x.m - 46 / dI to y.m - 20 / dI,x.m - 50 / dI to y.m - 18 / dI,x.m - 50 / dI to y.m - 14 / dI,x.m - 46 / dI
+// *************************************************************************
+//
+//                       Drawing the demon.... continued
+//
+// *************************************************************************
+3087      hplot y.m - 28 / dI,x.m - 41 / dI to y.m + 30 / dI,x.m - 55 / dI:
+          hplot y.m + 28 / dI,x.m - 58 / dI to y.m + 22 / dI,x.m - 56 / dI to y.m + 22 / dI,x.m - 53 / dI to y.m + 28 / dI,x.m - 52 / dI to y.m + 34 / dI,x.m - 54 / dI:
+          hplot y.m + 20 / dI,x.m - 50 / dI to y.m + 26 / dI,x.m - 47 / dI
+3088      hplot y.m + 10 / dI,x.m - 58 / dI to y.m + 10 / dI,x.m - 61 / dI to y.m + 4 / dI,x.m - 58 / dI:
+          hplot y.m - 10 / dI,x.m - 58 / dI to y.m - 10 / dI,x.m - 61 / dI to y.m - 4 / dI,x.m - 58 / dI:
+          hplot y.m + 40 / dI,x.m - 9 / dI to y.m + 50 / dI,x.m - 12 / dI to y.m + 40 / dI,x.m - 7 / dI
+3089      hplot y.m - 8 / dI,x.m - 25 / dI to y.m + 6 / dI,x.m - 7 / dI to y.m + 28 / dI,x.m - 7 / dI to y.m + 28 / dI,x.m - 9 / dI to y.m + 20 / dI,x.m - 9 / dI to y.m + 6 / dI,x.m - 25 / dI:

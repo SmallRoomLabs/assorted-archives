@@ -1,2 +1,2 @@
-# assorted-archives
-General Store
+# AssortedArchives
+Archives of old unused Repos

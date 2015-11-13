@@ -1,0 +1,4862 @@
+{
+"name": "App Game Kit 2",
+"scopeName": "source.agk",
+"fileTypes": ["agc"],
+"patterns": [{
+"match": "\\b[Aa][Cc][Oo][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Cc][Oo][Ss][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Ss][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Ss][Ii][Nn][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Tt][Aa][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Tt][Aa][Nn][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Tt][Aa][Nn][22][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Tt][Aa][Nn][Ff][Uu][Ll][Ll]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Tt][Aa][Nn][Ff][Uu][Ll][Ll][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Tt][Aa][Nn][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Bb][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Ee][Ss][Ss][Aa][Gg][Ee][Ff][Ll][Oo][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Ee][Ss][Ss][Aa][Gg][Ee][Ii][Nn][Tt][Ee][Gg][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Ee][Ss][Ss][Aa][Gg][Ee][Ss][Tt][Rr][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Cc][Oo][Ll][Oo][Rr][Kk][Ee][Yy][Ff][Rr][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ff][Oo][Rr][Cc][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ss][Cc][Aa][Ll][Ee][Kk][Ee][Yy][Ff][Rr][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Ss][Pp][Rr][Ii][Tt][Ee][Aa][Nn][Ii][Mm][Aa][Tt][Ii][Oo][Nn][Ff][Rr][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Hh][Aa][Pp][Ee][Bb][Oo][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Hh][Aa][Pp][Ee][Cc][Ii][Rr][Cc][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Hh][Aa][Pp][Ee][Pp][Oo][Ll][Yy][Gg][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn][Cc][Aa][Mm][Ee][Rr][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn][Cc][Hh][Aa][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn][Oo][Bb][Jj][Ee][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn][Tt][Ee][Xx][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Dd][Dd][Zz][Ii][Pp][Ee][Nn][Tt][Rr][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Aa][Ss][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Bb][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Bb][Rr][Ee][Aa][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Aa][Ll][Cc][Uu][Ll][Aa][Tt][Ee][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Cc][Oo][Mm]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ee][Ii][Ll]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Hh][Oo][Oo][Ss][Ee][Rr][Aa][Ww][Ff][Ii][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Hh][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Ee][Aa][Rr][Dd][Ee][Pp][Tt][Hh][Bb][Uu][Ff][Ff][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Ee][Aa][Rr][Ll][Ii][Gg][Hh][Tt][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn][Aa][Ll][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Ee][Aa][Rr][Ll][Ii][Gg][Hh][Tt][Pp][Oo][Ii][Nn][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Ee][Aa][Rr][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Cc][Oo][Ll][Oo][Rr][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Ee][Aa][Rr][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ff][Oo][Rr][Cc][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Ee][Aa][Rr][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ss][Cc][Aa][Ll][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Ee][Aa][Rr][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Ee][Aa][Rr][Ss][Pp][Rr][Ii][Tt][Ee][Aa][Nn][Ii][Mm][Aa][Tt][Ii][Oo][Nn][Ff][Rr][Aa][Mm][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Ee][Aa][Rr][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Hh][Aa][Pp][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Ee][Aa][Rr][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Oo][Nn][Ee][Oo][Bb][Jj][Ee][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Oo][Nn][Ee][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Oo][Ss][Ee][Ff][Ii][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Oo][Ss][Ee][Hh][Tt][Tt][Pp][Cc][Oo][Nn][Nn][Ee][Cc][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Oo][Ss][Ee][Nn][Ee][Tt][Ww][Oo][Rr][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Ll][Oo][Ss][Ee][Zz][Ii][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Oo][Mm][Pp][Ll][Ee][Tt][Ee][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Dd][Ee][Tt][Ee][Cc][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Oo][Pp][Yy][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Oo][Pp][Yy][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Oo][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Oo][Ss][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Oo][Uu][Nn][Tt][Ss][Tt][Rr][Ii][Nn][Gg][Tt][Oo][Kk][Ee][Nn][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Aa][Dd][Vv][Ee][Rr][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Aa][Dd][Vv][Ee][Rr][Tt][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Bb][Rr][Oo][Aa][Dd][Cc][Aa][Ss][Tt][Ll][Ii][Ss][Tt][Ee][Nn][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee][Jj][Oo][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Dd][Uu][Mm][Mm][Yy][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Ee][Dd][Ii][Tt][Bb][Oo][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Ff][Ii][Ll][Ee][Ff][Rr][Oo][Mm][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Ff][Uu][Ll][Ll][Ss][Cc][Rr][Ee][Ee][Nn][Aa][Dd][Vv][Ee][Rr][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Gg][Ee][Aa][Rr][Jj][Oo][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Hh][Tt][Tt][Pp][Cc][Oo][Nn][Nn][Ee][Cc][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Ii][Mm][Aa][Gg][Ee][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Ii][Mm][Aa][Gg][Ee][Ff][Rr][Oo][Mm][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Ll][Ii][Gg][Hh][Tt][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn][Aa][Ll]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Ll][Ii][Gg][Hh][Tt][Pp][Oo][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Ll][Ii][Nn][Ee][Jj][Oo][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ff][Rr][Oo][Mm][Ff][Ii][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ff][Rr][Oo][Mm][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ff][Rr][Oo][Mm][Ss][Oo][Uu][Nn][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Mm][Oo][Uu][Ss][Ee][Jj][Oo][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Ee][Ss][Ss][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Bb][Oo][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Cc][Oo][Nn][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Cc][Yy][Ll][Ii][Nn][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Pp][Ll][Aa][Nn][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Qq][Uu][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Ss][Pp][Hh][Ee][Rr][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ff][Oo][Rr][Cc][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Pp][Rr][Ii][Ss][Mm][Aa][Tt][Ii][Cc][Jj][Oo][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Pp][Uu][Ll][Ll][Ee][Yy][Jj][Oo][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Pp][Uu][Ll][Ll][Ee][Yy][Jj][Oo][Ii][Nn][Tt][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Rr][Ee][Nn][Dd][Ee][Rr][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Rr][Ee][Vv][Oo][Ll][Uu][Tt][Ee][Jj][Oo][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Ss][Oo][Uu][Nn][Dd][Ff][Rr][Oo][Mm][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Tt][Ee][Xx][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Tt][Ww][Ee][Ee][Nn][Cc][Aa][Mm][Ee][Rr][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Ww][Ee][Ll][Dd][Jj][Oo][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Cc][Rr][Ee][Aa][Tt][Ee][Zz][Ii][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Cc][Oo][Dd][Ee][Qq][Rr][Cc][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Aa][Dd][Vv][Ee][Rr][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Aa][Ll][Ll][Ii][Mm][Aa][Gg][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Aa][Ll][Ll][Oo][Bb][Jj][Ee][Cc][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Aa][Ll][Ll][Ss][Pp][Rr][Ii][Tt][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Aa][Ll][Ll][Tt][Ee][Xx][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Bb][Rr][Oo][Aa][Dd][Cc][Aa][Ss][Tt][Ll][Ii][Ss][Tt][Ee][Nn][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Ee][Dd][Ii][Tt][Bb][Oo][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Ff][Ii][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Ff][Oo][Ll][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Hh][Tt][Tt][Pp][Cc][Oo][Nn][Nn][Ee][Cc][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Jj][Oo][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Ll][Ii][Gg][Hh][Tt][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn][Aa][Ll]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Ll][Ii][Gg][Hh][Tt][Pp][Oo][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Mm][Uu][Ss][Ii][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Cc][Ll][Ii][Ee][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Ee][Ss][Ss][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ff][Oo][Rr][Cc][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Ss][Oo][Uu][Nn][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Tt][Ee][Xx][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Tt][Ww][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Vv][Ii][Dd][Ee][Oo]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Ee][Ll][Ee][Tt][Ee][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Oo][Ww][Nn][Ll][Oo][Aa][Dd][Ee][Xx][Pp][Aa][Nn][Ss][Ii][Oo][Nn][Ff][Ii][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Rr][Aa][Ww][Bb][Oo][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Rr][Aa][Ww][Ee][Ll][Ll][Ii][Pp][Ss][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Rr][Aa][Ww][Ll][Ii][Nn][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Rr][Aa][Ww][Oo][Bb][Jj][Ee][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Dd][Rr][Aa][Ww][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ee][Nn][Aa][Bb][Ll][Ee][Cc][Ll][Ee][Aa][Rr][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ee][Nn][Aa][Bb][Ll][Ee][Cc][Ll][Ee][Aa][Rr][Dd][Ee][Pp][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ee][Nn][Cc][Oo][Dd][Ee][Qq][Rr][Cc][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ee][Xx][Tt][Rr][Aa][Cc][Tt][Zz][Ii][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Mm][Oo][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Dd][Ee][Ss][Tt][Rr][Oo][Yy][Ll][Ii][Kk][Ee][Bb][Uu][Tt][Tt][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Dd][Oo][Ww][Nn][Ll][Oo][Aa][Dd][Ff][Rr][Ii][Ee][Nn][Dd][Ss][Pp][Hh][Oo][Tt][Oo]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Gg][Ee][Tt][Ff][Rr][Ii][Ee][Nn][Dd][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Gg][Ee][Tt][Ff][Rr][Ii][Ee][Nn][Dd][Ss][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Gg][Ee][Tt][Ff][Rr][Ii][Ee][Nn][Dd][Ss][Ii][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Gg][Ee][Tt][Ff][Rr][Ii][Ee][Nn][Dd][Ss][Nn][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Gg][Ee][Tt][Ff][Rr][Ii][Ee][Nn][Dd][Ss][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Gg][Ee][Tt][Uu][Ss][Ee][Rr][Ii][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Gg][Ee][Tt][Uu][Ss][Ee][Rr][Nn][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Ii][Nn][Vv][Ii][Tt][Ee][Ff][Rr][Ii][Ee][Nn][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Ll][Oo][Gg][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Ll][Oo][Gg][Oo][Uu][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Pp][Oo][Ss][Tt][Oo][Nn][Ff][Rr][Ii][Ee][Nn][Dd][Ss][Ww][Aa][Ll][Ll]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Pp][Oo][Ss][Tt][Oo][Nn][Mm][Yy][Ww][Aa][Ll][Ll]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Ss][Ee][Tt][Uu][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Ss][Hh][Oo][Ww][Ll][Ii][Kk][Ee][Bb][Uu][Tt][Tt][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Ii][Ll][Ee][Ee][Oo][Ff]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Ii][Ll][Ee][Ii][Ss][Oo][Pp][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Ii][Nn][Ii][Ss][Hh][Pp][Uu][Ll][Ll][Ee][Yy][Jj][Oo][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Ii][Xx][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Tt][Oo][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Ii][Xx][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Tt][Oo][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Ii][Xx][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Tt][Oo][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Ii][Xx][Ss][Pp][Rr][Ii][Tt][Ee][Tt][Oo][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Ii][Xx][Tt][Ee][Xx][Tt][Tt][Oo][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ff][Ll][Oo][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Aa][Mm][Ee][Cc][Ee][Nn][Tt][Ee][Rr][Aa][Cc][Hh][Ii][Ee][Vv][Ee][Mm][Ee][Nn][Tt][Ss][Rr][Ee][Ss][Ee][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Aa][Mm][Ee][Cc][Ee][Nn][Tt][Ee][Rr][Aa][Cc][Hh][Ii][Ee][Vv][Ee][Mm][Ee][Nn][Tt][Ss][Ss][Hh][Oo][Ww]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Aa][Mm][Ee][Cc][Ee][Nn][Tt][Ee][Rr][Ll][Oo][Gg][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Aa][Mm][Ee][Cc][Ee][Nn][Tt][Ee][Rr][Ss][Ee][Tt][Uu][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Aa][Mm][Ee][Cc][Ee][Nn][Tt][Ee][Rr][Ss][Hh][Oo][Ww][Ll][Ee][Aa][Dd][Ee][Rr][Bb][Oo][Aa][Rr][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Aa][Mm][Ee][Cc][Ee][Nn][Tt][Ee][Rr][Ss][Uu][Bb][Mm][Ii][Tt][Aa][Cc][Hh][Ii][Ee][Vv][Ee][Mm][Ee][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Aa][Mm][Ee][Cc][Ee][Nn][Tt][Ee][Rr][Ss][Uu][Bb][Mm][Ii][Tt][Ss][Cc][Oo][Rr][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][33][Dd][Vv][Ee][Cc][Tt][Oo][Rr][Xx][Ff][Rr][Oo][Mm][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][33][Dd][Vv][Ee][Cc][Tt][Oo][Rr][Yy][Ff][Rr][Oo][Mm][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][33][Dd][Vv][Ee][Cc][Tt][Oo][Rr][Zz][Ff][Rr][Oo][Mm][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Aa][Cc][Cc][Ee][Ll][Ee][Rr][Oo][Mm][Ee][Tt][Ee][Rr][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Aa][Pp][Pp][Nn][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Bb][Rr][Oo][Aa][Dd][Cc][Aa][Ss][Tt][Mm][Ee][Ss][Ss][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Bb][Uu][Tt][Tt][Oo][Nn][Pp][Rr][Ee][Ss][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Bb][Uu][Tt][Tt][Oo][Nn][Rr][Ee][Ll][Ee][Aa][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Bb][Uu][Tt][Tt][Oo][Nn][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Ll]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Aa][Nn][Gg][Ll][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Aa][Nn][Gg][Ll][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Aa][Nn][Gg][Ll][Ee][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Qq][Uu][Aa][Tt][Ww]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Qq][Uu][Aa][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Qq][Uu][Aa][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Qq][Uu][Aa][Tt][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Aa][Pp][Tt][Uu][Rr][Ee][Dd][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Hh][Oo][Ss][Ee][Nn][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Oo][Ll][Oo][Rr][Bb][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Oo][Ll][Oo][Rr][Gg][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Oo][Ll][Oo][Rr][Rr][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Oo][Nn][Tt][Aa][Cc][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ii][Dd][11]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Oo][Nn][Tt][Aa][Cc][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ii][Dd][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Oo][Nn][Tt][Aa][Cc][Tt][Ww][Oo][Rr][Ll][Dd][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Oo][Nn][Tt][Aa][Cc][Tt][Ww][Oo][Rr][Ll][Dd][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Uu][Rr][Rr][Ee][Nn][Tt][Dd][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Uu][Rr][Rr][Ee][Nn][Tt][Dd][Ii][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Uu][Rr][Rr][Ee][Nn][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Cc][Uu][Rr][Rr][Ee][Nn][Tt][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Aa][Yy][Oo][Ff][Ww][Ee][Ee][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Aa][Yy][Ss][Ff][Rr][Oo][Mm][Uu][Nn][Ii][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ee][Vv][Ii][Cc][Ee][Bb][Aa][Ss][Ee][Nn][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ee][Vv][Ii][Cc][Ee][Hh][Ee][Ii][Gg][Hh][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ee][Vv][Ii][Cc][Ee][Ii][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ee][Vv][Ii][Cc][Ee][Ii][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ee][Vv][Ii][Cc][Ee][Ll][Aa][Nn][Gg][Uu][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ee][Vv][Ii][Cc][Ee][Nn][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ee][Vv][Ii][Cc][Ee][Tt][Yy][Pp][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ee][Vv][Ii][Cc][Ee][Ww][Ii][Dd][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn][Ss][Pp][Ee][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Ii][Ss][Pp][Ll][Aa][Yy][Aa][Ss][Pp][Ee][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Oo][Cc][Uu][Mm][Ee][Nn][Tt][Ss][Pp][Aa][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Rr][Aa][Ww][Ii][Nn][Gg][Ss][Ee][Tt][Uu][Pp][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Dd][Rr][Aa][Ww][Ii][Nn][Gg][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Aa][Cc][Tt][Ii][Vv][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Cc][Hh][Aa][Nn][Gg][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Hh][Aa][Ss][Ff][Oo][Cc][Uu][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Hh][Ee][Ii][Gg][Hh][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Ll][Ii][Nn][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Tt][Ee][Xx][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Ww][Ii][Dd][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Rr][Rr][Oo][Rr][Oo][Cc][Cc][Uu][Rr][Rr][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Xx][Pp][Aa][Nn][Ss][Ii][Oo][Nn][Ff][Ii][Ll][Ee][Pp][Rr][Oo][Gg][Rr][Ee][Ss][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ee][Xx][Pp][Aa][Nn][Ss][Ii][Oo][Nn][Ff][Ii][Ll][Ee][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Dd][Oo][Ww][Nn][Ll][Oo][Aa][Dd][Ff][Ii][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Dd][Oo][Ww][Nn][Ll][Oo][Aa][Dd][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ff][Aa][Cc][Ee][Bb][Oo][Oo][Kk][Ll][Oo][Gg][Gg][Ee][Dd][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ff][Ii][Ll][Ee][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ff][Ii][Ll][Ee][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ff][Ii][Ll][Ee][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ff][Ii][Rr][Ss][Tt][Cc][Oo][Nn][Tt][Aa][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ff][Ii][Rr][Ss][Tt][Ff][Ii][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ff][Ii][Rr][Ss][Tt][Ff][Oo][Ll][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ff][Oo][Ll][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ff][Oo][Ll][Dd][Ee][Rr][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ff][Rr][Aa][Mm][Ee][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Gg][Pp][Ss][Ss][Ee][Nn][Ss][Oo][Rr][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Gg][Aa][Mm][Ee][Cc][Ee][Nn][Tt][Ee][Rr][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Gg][Aa][Mm][Ee][Cc][Ee][Nn][Tt][Ee][Rr][Ll][Oo][Gg][Gg][Ee][Dd][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Gg][Yy][Rr][Oo][Ss][Ee][Nn][Ss][Oo][Rr][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Hh][Tt][Tt][Pp][Ff][Ii][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Hh][Tt][Tt][Pp][Ff][Ii][Ll][Ee][Cc][Oo][Mm][Pp][Ll][Ee][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Hh][Tt][Tt][Pp][Ff][Ii][Ll][Ee][Pp][Rr][Oo][Gg][Rr][Ee][Ss][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Hh][Tt][Tt][Pp][Rr][Ee][Ss][Pp][Oo][Nn][Ss][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Hh][Tt][Tt][Pp][Rr][Ee][Ss][Pp][Oo][Nn][Ss][Ee][Rr][Ee][Aa][Dd][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Hh][Oo][Uu][Rr][Ss][Ff][Rr][Oo][Mm][Uu][Nn][Ii][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ii][Mm][Aa][Gg][Ee][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ii][Mm][Aa][Gg][Ee][Ff][Ii][Ll][Ee][Nn][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ii][Mm][Aa][Gg][Ee][Hh][Ee][Ii][Gg][Hh][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ii][Mm][Aa][Gg][Ee][Ww][Ii][Dd][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ii][Nn][Aa][Pp][Pp][Pp][Uu][Rr][Cc][Hh][Aa][Ss][Ee][Aa][Vv][Aa][Ii][Ll][Aa][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ii][Nn][Aa][Pp][Pp][Pp][Uu][Rr][Cc][Hh][Aa][Ss][Ee][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ii][Nn][Tt][Ee][Rr][Nn][Ee][Tt][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Jj][Oo][Ii][Nn][Tt][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Jj][Oo][Ii][Nn][Tt][Rr][Ee][Aa][Cc][Tt][Ii][Oo][Nn][Ff][Oo][Rr][Cc][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Jj][Oo][Ii][Nn][Tt][Rr][Ee][Aa][Cc][Tt][Ii][Oo][Nn][Ff][Oo][Rr][Cc][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Jj][Oo][Ii][Nn][Tt][Rr][Ee][Aa][Cc][Tt][Ii][Oo][Nn][Tt][Oo][Rr][Qq][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Kk][Ee][Yy][Bb][Oo][Aa][Rr][Dd][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ll][Aa][Ss][Tt][Cc][Hh][Aa][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ll][Aa][Ss][Tt][Ee][Rr][Rr][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ll][Ee][Aa][Pp][Yy][Ee][Aa][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ll][Ii][Gg][Hh][Tt][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn][Aa][Ll][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ll][Ii][Gg][Hh][Tt][Pp][Oo][Ii][Nn][Tt][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ll][Ii][Gg][Hh][Tt][Ss][Ee][Nn][Ss][Oo][Rr][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ll][Oo][Aa][Dd][Ee][Dd][Ii][Mm][Aa][Gg][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Aa][Gg][Nn][Ee][Tt][Ii][Cc][Ss][Ee][Nn][Ss][Oo][Rr][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Aa][Nn][Aa][Gg][Ee][Dd][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Aa][Nn][Aa][Gg][Ee][Dd][Ss][Pp][Rr][Ii][Tt][Ee][Dd][Rr][Aa][Ww][Cc][Aa][Ll][Ll][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Aa][Nn][Aa][Gg][Ee][Dd][Ss][Pp][Rr][Ii][Tt][Ee][Dd][Rr][Aa][Ww][Nn][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Aa][Nn][Aa][Gg][Ee][Dd][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Oo][Rr][Tt][Ee][Dd][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Aa][Xx][Dd][Ee][Vv][Ii][Cc][Ee][Hh][Ee][Ii][Gg][Hh][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Aa][Xx][Dd][Ee][Vv][Ii][Cc][Ee][Ww][Ii][Dd][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Bb][Yy][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Bb][Yy][Tt][Ee][Ss][Ii][Gg][Nn][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ff][Ll][Oo][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ss][Hh][Oo][Rr][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ss][Tt][Rr][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Ii][Ll][Ll][Ii][Ss][Ee][Cc][Oo][Nn][Dd][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Ii][Nn][Uu][Tt][Ee][Ss][Ff][Rr][Oo][Mm][Uu][Nn][Ii][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Oo][Nn][Tt][Hh][Ff][Rr][Oo][Mm][Uu][Nn][Ii][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Oo][Uu][Ss][Ee][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Uu][Ll][Tt][Ii][Tt][Oo][Uu][Cc][Hh][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Uu][Ss][Ii][Cc][Dd][Uu][Rr][Aa][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Uu][Ss][Ii][Cc][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Uu][Ss][Ii][Cc][Pp][Ll][Aa][Yy][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Mm][Uu][Ss][Ii][Cc][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ff][Cc][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Cc][Ll][Ii][Ee][Nn][Tt][Dd][Ii][Ss][Cc][Oo][Nn][Nn][Ee][Cc][Tt][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Cc][Ll][Ii][Ee][Nn][Tt][Ff][Ll][Oo][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Cc][Ll][Ii][Ee][Nn][Tt][Ii][Nn][Tt][Ee][Gg][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Cc][Ll][Ii][Ee][Nn][Tt][Nn][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Cc][Ll][Ii][Ee][Nn][Tt][Pp][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Cc][Ll][Ii][Ee][Nn][Tt][Uu][Ss][Ee][Rr][Dd][Aa][Tt][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Ff][Ii][Rr][Ss][Tt][Cc][Ll][Ii][Ee][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Ee][Ss][Ss][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Ee][Ss][Ss][Aa][Gg][Ee][Ff][Ll][Oo][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Ee][Ss][Ss][Aa][Gg][Ee][Ff][Rr][Oo][Mm][Cc][Ll][Ii][Ee][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Ee][Ss][Ss][Aa][Gg][Ee][Ff][Rr][Oo][Mm][Ii][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Ee][Ss][Ss][Aa][Gg][Ee][Ii][Nn][Tt][Ee][Gg][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Ee][Ss][Ss][Aa][Gg][Ee][Ss][Tt][Rr][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Yy][Cc][Ll][Ii][Ee][Nn][Tt][Ii][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Nn][Ee][Xx][Tt][Cc][Ll][Ii][Ee][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Nn][Uu][Mm][Cc][Ll][Ii][Ee][Nn][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Ss][Ee][Rr][Vv][Ee][Rr][Ii][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Xx][Tt][Cc][Oo][Nn][Tt][Aa][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Xx][Tt][Ff][Ii][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Ee][Xx][Tt][Ff][Oo][Ll][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Oo][Tt][Ii][Ff][Ii][Cc][Aa][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Oo][Tt][Ii][Ff][Ii][Cc][Aa][Tt][Ii][Oo][Nn][Dd][Aa][Tt][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Oo][Tt][Ii][Ff][Ii][Cc][Aa][Tt][Ii][Oo][Nn][Tt][Yy][Pp][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Nn][Uu][Mm][Pp][Rr][Oo][Cc][Ee][Ss][Ss][Oo][Rr][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Aa][Nn][Gg][Ll][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Aa][Nn][Gg][Ll][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Aa][Nn][Gg][Ll][Ee][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Cc][Uu][Ll][Ll][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Dd][Ee][Pp][Tt][Hh][Rr][Ee][Aa][Dd][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Dd][Ee][Pp][Tt][Hh][Ww][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Ii][Nn][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Qq][Uu][Aa][Tt][Ww]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Qq][Uu][Aa][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Qq][Uu][Aa][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Qq][Uu][Aa][Tt][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Bb][Oo][Uu][Nn][Cc][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Bb][Oo][Uu][Nn][Cc][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Bb][Oo][Uu][Nn][Cc][Ee][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Hh][Ii][Tt][Ii][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Nn][Oo][Rr][Mm][Aa][Ll][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Nn][Oo][Rr][Mm][Aa][Ll][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Nn][Oo][Rr][Mm][Aa][Ll][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Nn][Uu][Mm][Hh][Ii][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Ss][Ll][Ii][Dd][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Ss][Ll][Ii][Dd][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Ss][Ll][Ii][Dd][Ee][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Tt][Rr][Aa][Nn][Ss][Pp][Aa][Rr][Ee][Nn][Cc][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Oo][Rr][Ii][Ee][Nn][Tt][Aa][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Dd][Rr][Aa][Ww][Nn][Pp][Oo][Ii][Nn][Tt][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Dd][Rr][Aa][Ww][Nn][Qq][Uu][Aa][Dd][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Aa][Cc][Tt][Ii][Vv][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Aa][Nn][Gg][Ll][Ee][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Dd][Ee][Pp][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ff][Rr][Ee][Qq][Uu][Ee][Nn][Cc][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ll][Ii][Ff][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Mm][Aa][Xx][Rr][Ee][Aa][Cc][Hh][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Cc][Oo][Ll][Ll][Ii][Ss][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Cc][Oo][Ll][Ll][Ii][Ss][Ii][Oo][Nn][Ww][Oo][Rr][Ll][Dd][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Cc][Oo][Ll][Ll][Ii][Ss][Ii][Oo][Nn][Ww][Oo][Rr][Ll][Dd][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Cc][Oo][Ll][Ll][Ii][Ss][Ii][Oo][Nn][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Cc][Oo][Ll][Ll][Ii][Ss][Ii][Oo][Nn][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ii][Ss][Ll][Aa][Nn][Dd][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ss][Oo][Ll][Vv][Ee][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Ii][Xx][Ee][Ll][Ss][Dd][Rr][Aa][Ww][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Oo][Ii][Nn][Tt][Ee][Rr][Pp][Rr][Ee][Ss][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Oo][Ii][Nn][Tt][Ee][Rr][Rr][Ee][Ll][Ee][Aa][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Oo][Ii][Nn][Tt][Ee][Rr][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Oo][Ii][Nn][Tt][Ee][Rr][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Oo][Ii][Nn][Tt][Ee][Rr][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Oo][Ll][Yy][Gg][Oo][Nn][Ss][Dd][Rr][Aa][Ww][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Rr][Oo][Xx][Ii][Mm][Ii][Tt][Yy][Ss][Ee][Nn][Ss][Oo][Rr][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Pp][Uu][Ss][Hh][Nn][Oo][Tt][Ii][Ff][Ii][Cc][Aa][Tt][Ii][Oo][Nn][Tt][Oo][Kk][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Aa][Cc][Cc][Ee][Ll][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Aa][Cc][Cc][Ee][Ll][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Aa][Cc][Cc][Ee][Ll][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Ff][Ii][Rr][Ss][Tt][Tt][Oo][Uu][Cc][Hh][Ee][Vv][Ee][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Gg][Pp][Ss][Aa][Ll][Tt][Ii][Tt][Uu][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Gg][Pp][Ss][Ll][Aa][Tt][Ii][Tt][Uu][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Gg][Pp][Ss][Ll][Oo][Nn][Gg][Ii][Tt][Uu][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Gg][Yy][Rr][Oo][Vv][Ee][Ll][Oo][Cc][Ii][Tt][Yy][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Gg][Yy][Rr][Oo][Vv][Ee][Ll][Oo][Cc][Ii][Tt][Yy][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Gg][Yy][Rr][Oo][Vv][Ee][Ll][Oo][Cc][Ii][Tt][Yy][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Bb][Uu][Tt][Tt][Oo][Nn][Pp][Rr][Ee][Ss][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Bb][Uu][Tt][Tt][Oo][Nn][Rr][Ee][Ll][Ee][Aa][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Bb][Uu][Tt][Tt][Oo][Nn][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Cc][Oo][Nn][Nn][Ee][Cc][Tt][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Rr][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Rr][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Rr][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Kk][Ee][Yy][Pp][Rr][Ee][Ss][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Kk][Ee][Yy][Rr][Ee][Ll][Ee][Aa][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Kk][Ee][Yy][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Ll][Aa][Ss][Tt][Kk][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Ll][Ii][Gg][Hh][Tt][Ll][Ee][Vv][Ee][Ll]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Aa][Gg][Nn][Ee][Tt][Ii][Cc][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Aa][Gg][Nn][Ee][Tt][Ii][Cc][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Aa][Gg][Nn][Ee][Tt][Ii][Cc][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Ll][Ee][Ff][Tt][Pp][Rr][Ee][Ss][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Ll][Ee][Ff][Tt][Rr][Ee][Ll][Ee][Aa][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Ll][Ee][Ff][Tt][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Mm][Ii][Dd][Dd][Ll][Ee][Pp][Rr][Ee][Ss][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Mm][Ii][Dd][Dd][Ll][Ee][Rr][Ee][Ll][Ee][Aa][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Mm][Ii][Dd][Dd][Ll][Ee][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Rr][Ii][Gg][Hh][Tt][Pp][Rr][Ee][Ss][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Rr][Ii][Gg][Hh][Tt][Rr][Ee][Ll][Ee][Aa][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Rr][Ii][Gg][Hh][Tt][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Ww][Hh][Ee][Ee][Ll]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Ww][Hh][Ee][Ee][Ll][Dd][Ee][Ll][Tt][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Nn][Ee][Xx][Tt][Tt][Oo][Uu][Cc][Hh][Ee][Vv][Ee][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Pp][Rr][Oo][Xx][Ii][Mm][Ii][Tt][Yy][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Vv][Ee][Cc][Tt][Oo][Rr][Ww]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Vv][Ee][Cc][Tt][Oo][Rr][Ww][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Vv][Ee][Cc][Tt][Oo][Rr][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Vv][Ee][Cc][Tt][Oo][Rr][Xx][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Vv][Ee][Cc][Tt][Oo][Rr][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Vv][Ee][Cc][Tt][Oo][Rr][Yy][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Vv][Ee][Cc][Tt][Oo][Rr][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Vv][Ee][Cc][Tt][Oo][Rr][Zz][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Tt][Oo][Uu][Cc][Hh][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Tt][Oo][Uu][Cc][Hh][Cc][Uu][Rr][Rr][Ee][Nn][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Tt][Oo][Uu][Cc][Hh][Cc][Uu][Rr][Rr][Ee][Nn][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Tt][Oo][Uu][Cc][Hh][Ll][Aa][Ss][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Tt][Oo][Uu][Cc][Hh][Ll][Aa][Ss][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Tt][Oo][Uu][Cc][Hh][Rr][Ee][Ll][Ee][Aa][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Tt][Oo][Uu][Cc][Hh][Ss][Tt][Aa][Rr][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Tt][Oo][Uu][Cc][Hh][Ss][Tt][Aa][Rr][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Tt][Oo][Uu][Cc][Hh][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Tt][Oo][Uu][Cc][Hh][Tt][Yy][Pp][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Ww][Tt][Oo][Uu][Cc][Hh][Vv][Aa][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Ff][Rr][Aa][Cc][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Nn][Oo][Rr][Mm][Aa][Ll][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Nn][Oo][Rr][Mm][Aa][Ll][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ii][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Ee][Aa][Dd][Pp][Aa][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Ee][Ss][Uu][Mm][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Vv][Ee][Cc][Tt][Oo][Rr][Ss][Ee][Nn][Ss][Oo][Rr][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Rr][Uu][Nn][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Cc][Rr][Ee][Ee][Nn][Bb][Oo][Uu][Nn][Dd][Ss][Bb][Oo][Tt][Tt][Oo][Mm]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Cc][Rr][Ee][Ee][Nn][Bb][Oo][Uu][Nn][Dd][Ss][Ll][Ee][Ff][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Cc][Rr][Ee][Ee][Nn][Bb][Oo][Uu][Nn][Dd][Ss][Rr][Ii][Gg][Hh][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Cc][Rr][Ee][Ee][Nn][Bb][Oo][Uu][Nn][Dd][Ss][Tt][Oo][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Cc][Rr][Ee][Ee][Nn][Xx][Ff][Rr][Oo][Mm][33][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Cc][Rr][Ee][Ee][Nn][Yy][Ff][Rr][Oo][Mm][33][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Ee][Cc][Oo][Nn][Dd][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Ee][Cc][Oo][Nn][Dd][Ss][Ff][Rr][Oo][Mm][Uu][Nn][Ii][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Aa][Nn][Ii][Mm][Aa][Tt][Ii][Oo][Nn][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Bb][Oo][Nn][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Bb][Oo][Nn][Ee][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Bb][Oo][Nn][Ee][Cc][Uu][Rr][Rr][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Bb][Oo][Nn][Ee][Cc][Uu][Rr][Rr][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Bb][Oo][Nn][Ee][Cc][Uu][Rr][Rr][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Bb][Oo][Nn][Ee][Pp][Aa][Rr][Ee][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Bb][Oo][Nn][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Bb][Oo][Nn][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Cc][Uu][Rr][Rr][Ee][Nn][Tt][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Ii][Ss][Aa][Nn][Ii][Mm][Aa][Tt][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Ii][Ss][Tt][Ww][Ee][Ee][Nn][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Ii][Nn][Ss][Tt][Aa][Nn][Cc][Ee][Ll][Oo][Oo][Pp][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Ii][Nn][Ss][Tt][Aa][Nn][Cc][Ee][Pp][Ll][Aa][Yy][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Ii][Nn][Ss][Tt][Aa][Nn][Cc][Ee][Rr][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Ii][Nn][Ss][Tt][Aa][Nn][Cc][Ee][Vv][Oo][Ll][Uu][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Ii][Nn][Ss][Tt][Aa][Nn][Cc][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Mm][Aa][Xx][Rr][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Mm][Ii][Nn][Rr][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Ss][Pp][Ll][Aa][Yy][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Aa][Cc][Tt][Ii][Vv][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Aa][Nn][Gg][Ll][Ee][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Ll][Ll][Ii][Ss][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Ll][Oo][Rr][Aa][Ll][Pp][Hh][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Ll][Oo][Rr][Bb][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Ll][Oo][Rr][Gg][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Ll][Oo][Rr][Rr][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Nn][Tt][Aa][Cc][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ii][Dd][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Nn][Tt][Aa][Cc][Tt][Ww][Oo][Rr][Ll][Dd][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Nn][Tt][Aa][Cc][Tt][Ww][Oo][Rr][Ll][Dd][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Uu][Rr][Rr][Ee][Nn][Tt][Ff][Rr][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Dd][Ee][Pp][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee][Pp][Oo][Ii][Nn][Tt][11][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee][Pp][Oo][Ii][Nn][Tt][11][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee][Pp][Oo][Ii][Nn][Tt][22][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Dd][Ii][Ss][Tt][Aa][Nn][Cc][Ee][Pp][Oo][Ii][Nn][Tt][22][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ff][Ii][Rr][Ss][Tt][Cc][Oo][Nn][Tt][Aa][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ff][Rr][Aa][Mm][Ee][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Gg][Rr][Oo][Uu][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Hh][Ee][Ii][Gg][Hh][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Hh][Ii][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Hh][Ii][Tt][Cc][Aa][Tt][Ee][Gg][Oo][Rr][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Hh][Ii][Tt][Gg][Rr][Oo][Uu][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Hh][Ii][Tt][Tt][Ee][Ss][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ii][Mm][Aa][Gg][Ee][Ii][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ii][Nn][Bb][Oo][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ii][Nn][Cc][Ii][Rr][Cc][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Nn][Ee][Xx][Tt][Cc][Oo][Nn][Tt][Aa][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Aa][Nn][Gg][Uu][Ll][Aa][Rr][Vv][Ee][Ll][Oo][Cc][Ii][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Mm][Aa][Ss][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Vv][Ee][Ll][Oo][Cc][Ii][Tt][Yy][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Vv][Ee][Ll][Oo][Cc][Ii][Tt][Yy][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Ii][Xx][Ee][Ll][Ff][Rr][Oo][Mm][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Ii][Xx][Ee][Ll][Ff][Rr][Oo][Mm][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Ll][Aa][Yy][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ww][Ii][Dd][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Xx][Bb][Yy][Oo][Ff][Ff][Ss][Ee][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Xx][Ff][Rr][Oo][Mm][Pp][Ii][Xx][Ee][Ll]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Xx][Ff][Rr][Oo][Mm][Ww][Oo][Rr][Ll][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Yy][Bb][Yy][Oo][Ff][Ff][Ss][Ee][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Yy][Ff][Rr][Oo][Mm][Pp][Ii][Xx][Ee][Ll]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Yy][Ff][Rr][Oo][Mm][Ww][Oo][Rr][Ll][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ss][Tt][Rr][Ii][Nn][Gg][Tt][Oo][Kk][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Aa][Nn][Gg][Ll][Ee][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Cc][Oo][Ll][Oo][Rr][Aa][Ll][Pp][Hh][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Cc][Oo][Ll][Oo][Rr][Bb][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Cc][Oo][Ll][Oo][Rr][Gg][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Cc][Oo][Ll][Oo][Rr][Rr][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Oo][Ll][Oo][Rr][Aa][Ll][Pp][Hh][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Oo][Ll][Oo][Rr][Bb][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Oo][Ll][Oo][Rr][Gg][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Oo][Ll][Oo][Rr][Rr][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Dd][Ee][Pp][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Hh][Ii][Tt][Tt][Ee][Ss][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Ii][Nn][Pp][Uu][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Ii][Nn][Pp][Uu][Tt][Cc][Aa][Nn][Cc][Ee][Ll][Ll][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Ii][Nn][Pp][Uu][Tt][Cc][Oo][Mm][Pp][Ll][Ee][Tt][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Ii][Nn][Pp][Uu][Tt][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Ll][Ee][Nn][Gg][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Ll][Ii][Nn][Ee][Ss][Pp][Aa][Cc][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Ss][Pp][Aa][Cc][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Ss][Tt][Rr][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Tt][Oo][Tt][Aa][Ll][Hh][Ee][Ii][Gg][Hh][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Tt][Oo][Tt][Aa][Ll][Ww][Ii][Dd][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ee][Xx][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Aa][Mm][Ee][Rr][Aa][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Aa][Mm][Ee][Rr][Aa][Pp][Ll][Aa][Yy][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn][Pp][Ll][Aa][Yy][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Rr][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Rr][Pp][Ll][Aa][Yy][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Pp][Ll][Aa][Yy][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Ll][Aa][Yy][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt][Pp][Ll][Aa][Yy][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Uu][Nn][Aa][Ss][Ss][Ii][Gg][Nn][Ee][Dd][Ii][Mm][Aa][Gg][Ee][Ff][Ii][Ll][Ee][Nn][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Uu][Nn][Aa][Ss][Ss][Ii][Gg][Nn][Ee][Dd][Ii][Mm][Aa][Gg][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Uu][Nn][Ii][Xx][Ff][Rr][Oo][Mm][Dd][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Uu][Pp][Dd][Aa][Tt][Ee][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ee][Rr][Tt][Ii][Cc][Ee][Ss][Pp][Rr][Oo][Cc][Ee][Ss][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Dd][Ee][Oo][Dd][Uu][Rr][Aa][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Dd][Ee][Oo][Hh][Ee][Ii][Gg][Hh][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Dd][Ee][Oo][Pp][Ll][Aa][Yy][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Dd][Ee][Oo][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Dd][Ee][Oo][Ww][Ii][Dd][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Ee][Ww][Oo][Ff][Ff][Ss][Ee][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Ee][Ww][Oo][Ff][Ff][Ss][Ee][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Ee][Ww][Zz][Oo][Oo][Mm]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Pp][Rr][Ee][Ss][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Rr][Ee][Ll][Ee][Aa][Ss][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Ss][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Hh][Ee][Ii][Gg][Hh][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Ee][Xx][Ii][Ss][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Ww][Ii][Dd][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ww][Oo][Rr][Ll][Dd][Xx][Ff][Rr][Oo][Mm][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ww][Oo][Rr][Ll][Dd][Yy][Ff][Rr][Oo][Mm][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Ww][Rr][Ii][Tt][Ee][Pp][Aa][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Gg][Ee][Tt][Yy][Ee][Aa][Rr][Ff][Rr][Oo][Mm][Uu][Nn][Ii][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Hh][Tt][Tt][Pp][Dd][Ee][Cc][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Hh][Tt][Tt][Pp][Ee][Nn][Cc][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Hh][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Hh][Oo][Ss][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Nn][Aa][Pp][Pp][Pp][Uu][Rr][Cc][Hh][Aa][Ss][Ee][Aa][Cc][Tt][Ii][Vv][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Nn][Aa][Pp][Pp][Pp][Uu][Rr][Cc][Hh][Aa][Ss][Ee][Aa][Dd][Dd][Pp][Rr][Oo][Dd][Uu][Cc][Tt][Ii][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Nn][Aa][Pp][Pp][Pp][Uu][Rr][Cc][Hh][Aa][Ss][Ee][Rr][Ee][Ss][Tt][Oo][Rr][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Nn][Aa][Pp][Pp][Pp][Uu][Rr][Cc][Hh][Aa][Ss][Ee][Ss][Ee][Tt][Kk][Ee][Yy][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Nn][Aa][Pp][Pp][Pp][Uu][Rr][Cc][Hh][Aa][Ss][Ee][Ss][Ee][Tt][Tt][Ii][Tt][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Nn][Aa][Pp][Pp][Pp][Uu][Rr][Cc][Hh][Aa][Ss][Ee][Ss][Ee][Tt][Uu][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Nn][Ss][Tt][Aa][Nn][Cc][Ee][Oo][Bb][Jj][Ee][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Ss][Cc][Aa][Pp][Tt][Uu][Rr][Ii][Nn][Gg][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Ss][Cc][Hh][Oo][Oo][Ss][Ii][Nn][Gg][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Ss][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Aa][Cc][Tt][Ii][Vv][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Ss][Ss][Oo][Uu][Nn][Dd][Rr][Ee][Cc][Oo][Rr][Dd][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ii][Ss][Ss][Uu][Pp][Pp][Oo][Rr][Tt][Ee][Dd][Dd][Ee][Pp][Tt][Hh][Tt][Ee][Xx][Tt][Uu][Rr][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Jj][Oo][Ii][Nn][Nn][Ee][Tt][Ww][Oo][Rr][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Ee][Ff][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Aa][Dd][Ff][Uu][Ll][Ll][Ss][Cc][Rr][Ee][Ee][Nn][Ss][Hh][Aa][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Aa][Dd][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Aa][Dd][Mm][Uu][Ss][Ii][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Aa][Dd][Oo][Bb][Jj][Ee][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Aa][Dd][Ss][Hh][Aa][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Aa][Dd][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Ff][Rr][Oo][Mm][Ss][Pp][Ii][Nn][Ee][Ff][Ii][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Aa][Dd][Ss][Oo][Uu][Nn][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Aa][Dd][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Aa][Dd][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Hh][Aa][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Aa][Dd][Ss][Uu][Bb][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Aa][Dd][Vv][Ii][Dd][Ee][Oo]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ll][Oo][Ww][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Mm][Aa][Kk][Ee][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Mm][Aa][Kk][Ee][Ff][Oo][Ll][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Mm][Ee][Ss][Ss][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Mm][Ii][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Mm][Oo][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Mm][Oo][Vv][Ee][Cc][Aa][Mm][Ee][Rr][Aa][Ll][Oo][Cc][Aa][Ll][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Mm][Oo][Vv][Ee][Cc][Aa][Mm][Ee][Rr][Aa][Ll][Oo][Cc][Aa][Ll][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Mm][Oo][Vv][Ee][Cc][Aa][Mm][Ee][Rr][Aa][Ll][Oo][Cc][Aa][Ll][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Mm][Oo][Vv][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Ll][Oo][Cc][Aa][Ll][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Mm][Oo][Vv][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Ll][Oo][Cc][Aa][Ll][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Mm][Oo][Vv][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Ll][Oo][Cc][Aa][Ll][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Nn][Oo][Tt][Ii][Ff][Ii][Cc][Aa][Tt][Ii][Oo][Nn][Cc][Rr][Ee][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Nn][Oo][Tt][Ii][Ff][Ii][Cc][Aa][Tt][Ii][Oo][Nn][Rr][Ee][Ss][Ee][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Oo][Bb][Jj][Ee][Cc][Tt][Rr][Aa][Yy][Cc][Aa][Ss][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Oo][Bb][Jj][Ee][Cc][Tt][Ss][Pp][Hh][Ee][Rr][Ee][Cc][Aa][Ss][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Oo][Bb][Jj][Ee][Cc][Tt][Ss][Pp][Hh][Ee][Rr][Ee][Ss][Ll][Ii][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Oo][Ff][Ff][Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Oo][Pp][Ee][Nn][Bb][Rr][Oo][Ww][Ss][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Oo][Pp][Ee][Nn][Tt][Oo][Rr][Ee][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Oo][Pp][Ee][Nn][Tt][Oo][Ww][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Aa][Uu][Ss][Ee][Mm][Uu][Ss][Ii][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Aa][Uu][Ss][Ee][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Aa][Uu][Ss][Ee][Vv][Ii][Dd][Ee][Oo]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Hh][Yy][Ss][Ii][Cc][Ss][Rr][Aa][Yy][Cc][Aa][Ss][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Hh][Yy][Ss][Ii][Cc][Ss][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Cc][Aa][Tt][Ee][Gg][Oo][Rr][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Hh][Yy][Ss][Ii][Cc][Ss][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Gg][Rr][Oo][Uu][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Ll][Aa][Yy][Mm][Uu][Ss][Ii][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Ll][Aa][Yy][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Aa][Nn][Ii][Mm][Aa][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Ll][Aa][Yy][Ss][Oo][Uu][Nn][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Ll][Aa][Yy][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Ll][Aa][Yy][Tt][Ww][Ee][Ee][Nn][Cc][Aa][Mm][Ee][Rr][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Ll][Aa][Yy][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Ll][Aa][Yy][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Ll][Aa][Yy][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Ll][Aa][Yy][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Ll][Aa][Yy][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Ll][Aa][Yy][Vv][Ii][Dd][Ee][Oo]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Oo][Ww]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Rr][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Rr][Ii][Nn][Tt][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Rr][Ii][Nn][Tt][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Pp][Uu][Ss][Hh][Nn][Oo][Tt][Ii][Ff][Ii][Cc][Aa][Tt][Ii][Oo][Nn][Ss][Ee][Tt][Uu][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Aa][Nn][Dd][Oo][Mm]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Aa][Nn][Dd][Oo][Mm][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Aa][Nn][Dd][Oo][Mm][Ss][Ii][Gg][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Aa][Tt][Ee][Aa][Pp][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Aa][Dd][Bb][Yy][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Aa][Dd][Ff][Ll][Oo][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Aa][Dd][Ii][Nn][Tt][Ee][Gg][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Aa][Dd][Ll][Ii][Nn][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Aa][Dd][Ss][Tt][Rr][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Cc][Oo][Rr][Dd][Ss][Oo][Uu][Nn][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Nn][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Nn][Dd][Ee][Rr][22][Dd][Bb][Aa][Cc][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Nn][Dd][Ee][Rr][22][Dd][Ff][Rr][Oo][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Nn][Dd][Ee][Rr][33][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Qq][Uu][Ee][Ss][Tt][Aa][Dd][Vv][Ee][Rr][Tt][Rr][Ee][Ff][Rr][Ee][Ss][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Cc][Oo][Uu][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Uu][Vv]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Ss][Ee][Tt][Tt][Ii][Mm][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Ss][Uu][Mm][Ee][Mm][Uu][Ss][Ii][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ee][Ss][Uu][Mm][Ee][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Ii][Gg][Hh][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Tt][Aa][Tt][Ee][Cc][Aa][Mm][Ee][Rr][Aa][Gg][Ll][Oo][Bb][Aa][Ll][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Tt][Aa][Tt][Ee][Cc][Aa][Mm][Ee][Rr][Aa][Gg][Ll][Oo][Bb][Aa][Ll][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Tt][Aa][Tt][Ee][Cc][Aa][Mm][Ee][Rr][Aa][Gg][Ll][Oo][Bb][Aa][Ll][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Tt][Aa][Tt][Ee][Cc][Aa][Mm][Ee][Rr][Aa][Ll][Oo][Cc][Aa][Ll][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Tt][Aa][Tt][Ee][Cc][Aa][Mm][Ee][Rr][Aa][Ll][Oo][Cc][Aa][Ll][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Tt][Aa][Tt][Ee][Cc][Aa][Mm][Ee][Rr][Aa][Ll][Oo][Cc][Aa][Ll][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Tt][Aa][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Gg][Ll][Oo][Bb][Aa][Ll][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Tt][Aa][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Gg][Ll][Oo][Bb][Aa][Ll][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Tt][Aa][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Gg][Ll][Oo][Bb][Aa][Ll][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Tt][Aa][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Ll][Oo][Cc][Aa][Ll][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Tt][Aa][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Ll][Oo][Cc][Aa][Ll][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Tt][Aa][Tt][Ee][Oo][Bb][Jj][Ee][Cc][Tt][Ll][Oo][Cc][Aa][Ll][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Rr][Oo][Uu][Nn][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Aa][Vv][Ee][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Aa][Vv][Ee][Ss][Oo][Uu][Nn][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Cc][Rr][Ee][Ee][Nn][Ff][Pp][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Cc][Rr][Ee][Ee][Nn][Tt][Oo][Ww][Oo][Rr][Ll][Dd][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Cc][Rr][Ee][Ee][Nn][Tt][Oo][Ww][Oo][Rr][Ll][Dd][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Ee][Kk][Mm][Uu][Ss][Ii][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Nn][Dd][Hh][Tt][Tt][Pp][Ff][Ii][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Nn][Dd][Hh][Tt][Tt][Pp][Rr][Ee][Qq][Uu][Ee][Ss][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Nn][Dd][Hh][Tt][Tt][Pp][Rr][Ee][Qq][Uu][Ee][Ss][Tt][Aa][Ss][Yy][Nn][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Nn][Dd][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Mm][Ee][Ss][Ss][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Aa][Dd][Mm][Oo][Bb][Dd][Ee][Tt][Aa][Ii][Ll][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Aa][Dd][Vv][Ee][Rr][Tt][Ll][Oo][Cc][Aa][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Aa][Dd][Vv][Ee][Rr][Tt][Ll][Oo][Cc][Aa][Tt][Ii][Oo][Nn][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Aa][Dd][Vv][Ee][Rr][Tt][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Aa][Dd][Vv][Ee][Rr][Tt][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Bb][Oo][Rr][Dd][Ee][Rr][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Bb][Uu][Tt][Tt][Oo][Nn][Ss][Cc][Rr][Ee][Ee][Nn][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Aa][Ss][Pp][Ee][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Ff][Oo][Vv]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Ll][Oo][Oo][Kk][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Rr][Aa][Nn][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Cc][Aa][Mm][Ee][Rr][Aa][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Qq][Uu][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Cc][Hh][Aa][Rr][Tt][Bb][Oo][Oo][Ss][Tt][Dd][Ee][Tt][Aa][Ii][Ll][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Cc][Ll][Ee][Aa][Rr][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Cc][Uu][Rr][Rr][Ee][Nn][Tt][Dd][Ii][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Cc][Uu][Rr][Ss][Oo][Rr][Bb][Ll][Ii][Nn][Kk][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Dd][Ee][Ff][Aa][Uu][Ll][Tt][Mm][Aa][Gg][Ff][Ii][Ll][Tt][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Dd][Ee][Ff][Aa][Uu][Ll][Tt][Mm][Ii][Nn][Ff][Ii][Ll][Tt][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Dd][Ee][Ff][Aa][Uu][Ll][Tt][Ww][Rr][Aa][Pp][Uu]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Dd][Ee][Ff][Aa][Uu][Ll][Tt][Ww][Rr][Aa][Pp][Vv]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Dd][Ii][Ss][Pp][Ll][Aa][Yy][Aa][Ss][Pp][Ee][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Aa][Cc][Tt][Ii][Vv][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Bb][Aa][Cc][Kk][Gg][Rr][Oo][Uu][Nn][Dd][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Bb][Aa][Cc][Kk][Gg][Rr][Oo][Uu][Nn][Dd][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Bb][Oo][Rr][Dd][Ee][Rr][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Bb][Oo][Rr][Dd][Ee][Rr][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Bb][Oo][Rr][Dd][Ee][Rr][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Cc][Uu][Rr][Ss][Oo][Rr][Bb][Ll][Ii][Nn][Kk][Tt][Ii][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Cc][Uu][Rr][Ss][Oo][Rr][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Cc][Uu][Rr][Ss][Oo][Rr][Ww][Ii][Dd][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Dd][Ee][Pp][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Ee][Xx][Tt][Ee][Nn][Dd][Ee][Dd][Ff][Oo][Nn][Tt][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Ff][Oo][Cc][Uu][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Ff][Oo][Nn][Tt][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Mm][Aa][Xx][Cc][Hh][Aa][Rr][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Mm][Aa][Xx][Ll][Ii][Nn][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Mm][Uu][Ll][Tt][Ii][Ll][Ii][Nn][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Pp][Aa][Ss][Ss][Ww][Oo][Rr][Dd][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Ss][Cc][Ii][Ss][Ss][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Tt][Ee][Xx][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Tt][Ee][Xx][Tt][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Tt][Ee][Xx][Tt][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Uu][Ss][Ee][Aa][Ll][Tt][Ee][Rr][Nn][Aa][Tt][Ee][Ii][Nn][Pp][Uu][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Dd][Ii][Tt][Bb][Oo][Xx][Ww][Rr][Aa][Pp][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Rr][Rr][Oo][Rr][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ee][Xx][Pp][Aa][Nn][Ss][Ii][Oo][Nn][Ff][Ii][Ll][Ee][Vv][Ee][Rr][Ss][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ff][Oo][Ll][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Gg][Ee][Nn][Ee][Rr][Aa][Tt][Ee][Mm][Ii][Pp][Mm][Aa][Pp][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Gg][Ll][Oo][Bb][Aa][Ll][33][Dd][Dd][Ee][Pp][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Hh][Tt][Tt][Pp][Hh][Oo][Ss][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Hh][Tt][Tt][Pp][Tt][Ii][Mm][Ee][Oo][Uu][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ii][Mm][Aa][Gg][Ee][Mm][Aa][Gg][Ff][Ii][Ll][Tt][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ii][Mm][Aa][Gg][Ee][Mm][Aa][Ss][Kk]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ii][Mm][Aa][Gg][Ee][Mm][Ii][Nn][Ff][Ii][Ll][Tt][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ii][Mm][Aa][Gg][Ee][Ss][Aa][Vv][Ee][Pp][Ii][Xx][Ee][Ll][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ii][Mm][Aa][Gg][Ee][Tt][Rr][Aa][Nn][Ss][Pp][Aa][Rr][Ee][Nn][Tt][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ii][Mm][Aa][Gg][Ee][Ww][Rr][Aa][Pp][Uu]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ii][Mm][Aa][Gg][Ee][Ww][Rr][Aa][Pp][Vv]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ii][Nn][Nn][Ee][Rr][Aa][Cc][Tt][Ii][Vv][Ee][Dd][Ee][Tt][Aa][Ii][Ll][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ii][Nn][Tt][Ee][Nn][Dd][Ee][Dd][Dd][Ee][Vv][Ii][Cc][Ee][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Jj][Oo][Ii][Nn][Tt][Ll][Ii][Mm][Ii][Tt][Oo][Ff][Ff]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Jj][Oo][Ii][Nn][Tt][Ll][Ii][Mm][Ii][Tt][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Jj][Oo][Ii][Nn][Tt][Mm][Oo][Tt][Oo][Rr][Oo][Ff][Ff]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Jj][Oo][Ii][Nn][Tt][Mm][Oo][Tt][Oo][Rr][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Jj][Oo][Ii][Nn][Tt][Mm][Oo][Uu][Ss][Ee][Tt][Aa][Rr][Gg][Ee][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Dd][Ee][Aa][Dd][Zz][Oo][Nn][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Ss][Cc][Rr][Ee][Ee][Nn][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ll][Ii][Gg][Hh][Tt][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn][Aa][Ll][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ll][Ii][Gg][Hh][Tt][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn][Aa][Ll][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ll][Ii][Gg][Hh][Tt][Pp][Oo][Ii][Nn][Tt][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ll][Ii][Gg][Hh][Tt][Pp][Oo][Ii][Nn][Tt][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ll][Ii][Gg][Hh][Tt][Pp][Oo][Ii][Nn][Tt][Rr][Aa][Dd][Ii][Uu][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Bb][Yy][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Bb][Yy][Tt][Ee][Ss][Ii][Gg][Nn][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ff][Ll][Oo][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ii][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ss][Hh][Oo][Rr][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Mm][Ee][Mm][Bb][Ll][Oo][Cc][Kk][Ss][Tt][Rr][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Mm][Uu][Ss][Ii][Cc][Ff][Ii][Ll][Ee][Vv][Oo][Ll][Uu][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Mm][Uu][Ss][Ii][Cc][Ss][Yy][Ss][Tt][Ee][Mm][Vv][Oo][Ll][Uu][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Cc][Ll][Ii][Ee][Nn][Tt][Uu][Ss][Ee][Rr][Dd][Aa][Tt][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Ll][Aa][Tt][Ee][Nn][Cc][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Ll][Oo][Cc][Aa][Ll][Ff][Ll][Oo][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Ll][Oo][Cc][Aa][Ll][Ii][Nn][Tt][Ee][Gg][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Nn][Ee][Tt][Ww][Oo][Rr][Kk][Nn][Oo][Mm][Oo][Rr][Ee][Cc][Ll][Ii][Ee][Nn][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Nn][Oo][Tt][Ii][Ff][Ii][Cc][Aa][Tt][Ii][Oo][Nn][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Nn][Oo][Tt][Ii][Ff][Ii][Cc][Aa][Tt][Ii][Oo][Nn][Tt][Ee][Xx][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Cc][Oo][Ll][Ll][Ii][Ss][Ii][Oo][Nn][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Cc][Uu][Ll][Ll][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Dd][Ee][Pp][Tt][Hh][Rr][Ee][Aa][Dd][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Dd][Ee][Pp][Tt][Hh][Ww][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Ll][Ii][Gg][Hh][Tt][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Ll][Oo][Oo][Kk][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Qq][Uu][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Ss][Cc][Aa][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Ss][Hh][Aa][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Tt][Rr][Aa][Nn][Ss][Pp][Aa][Rr][Ee][Nn][Cc][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Bb][Jj][Ee][Cc][Tt][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Oo][Rr][Ii][Ee][Nn][Tt][Aa][Tt][Ii][Oo][Nn][Aa][Ll][Ll][Oo][Ww][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Aa][Cc][Tt][Ii][Vv][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Aa][Nn][Gg][Ll][Ee][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Cc][Oo][Ll][Oo][Rr][Ii][Nn][Tt][Ee][Rr][Pp][Oo][Ll][Aa][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Dd][Ee][Pp][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ff][Aa][Cc][Ee][Dd][Ii][Rr][Ee][Cc][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ff][Rr][Ee][Qq][Uu][Ee][Nn][Cc][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ll][Ii][Ff][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Mm][Aa][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Rr][Aa][Nn][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn][Rr][Aa][Nn][Gg][Ee][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Ss][Tt][Aa][Rr][Tt][Zz][Oo][Nn][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Tt][Rr][Aa][Nn][Ss][Pp][Aa][Rr][Ee][Nn][Cc][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Vv][Ee][Ll][Oo][Cc][Ii][Tt][Yy][Rr][Aa][Nn][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Cc][Cc][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Dd][Ee][Bb][Uu][Gg][Oo][Ff][Ff]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Dd][Ee][Bb][Uu][Gg][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ff][Oo][Rr][Cc][Ee][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ff][Oo][Rr][Cc][Ee][Pp][Oo][Ww][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ff][Oo][Rr][Cc][Ee][Rr][Aa][Nn][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Gg][Rr][Aa][Vv][Ii][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Mm][Aa][Xx][Pp][Oo][Ll][Yy][Gg][Oo][Nn][Pp][Oo][Ii][Nn][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ss][Cc][Aa][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ss][Ll][Ee][Ee][Pp][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Tt][Hh][Rr][Ee][Aa][Dd][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ww][Aa][Ll][Ll][Bb][Oo][Tt][Tt][Oo][Mm]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ww][Aa][Ll][Ll][Ll][Ee][Ff][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ww][Aa][Ll][Ll][Rr][Ii][Gg][Hh][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ww][Aa][Ll][Ll][Tt][Oo][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Rr][Ii][Nn][Tt][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Rr][Ii][Nn][Tt][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Rr][Ii][Nn][Tt][Ss][Pp][Aa][Cc][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Pp][Uu][Ss][Hh][Nn][Oo][Tt][Ii][Ff][Ii][Cc][Aa][Tt][Ii][Oo][Nn][Kk][Ee][Yy][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Rr][Aa][Nn][Dd][Oo][Mm][Ss][Ee][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Rr][Aa][Nn][Dd][Oo][Mm][Ss][Ee][Ee][Dd][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Rr][Aa][Ww][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Dd][Ee][Aa][Dd][Zz][Oo][Nn][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Rr][Aa][Ww][Mm][Oo][Uu][Ss][Ee][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Rr][Aa][Ww][Tt][Oo][Uu][Cc][Hh][Vv][Aa][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Rr][Aa][Ww][Ww][Rr][Ii][Tt][Ee][Pp][Aa][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Rr][Ee][Nn][Dd][Ee][Rr][Tt][Oo][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Rr][Ee][Nn][Dd][Ee][Rr][Tt][Oo][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Rr][Ee][Ss][Oo][Ll][Uu][Tt][Ii][Oo][Nn][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Cc][Ii][Ss][Ss][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Cc][Rr][Ee][Ee][Nn][Rr][Ee][Ss][Oo][Ll][Uu][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Hh][Aa][Dd][Ee][Rr][Cc][Oo][Nn][Ss][Tt][Aa][Nn][Tt][Bb][Yy][Nn][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Aa][Nn][Ii][Mm][Aa][Tt][Ii][Oo][Nn][Ff][Rr][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Aa][Nn][Ii][Mm][Aa][Tt][Ii][Oo][Nn][Ss][Pp][Ee][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Bb][Oo][Nn][Ee][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Bb][Oo][Nn][Ee][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Bb][Oo][Nn][Ee][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Bb][Oo][Nn][Ee][Ss][Cc][Aa][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Dd][Ee][Pp][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Ff][Ll][Ii][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Rr][Oo][Tt][Aa][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Ll][Ee][Ee][Pp][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Oo][Rr][Tt][Cc][Rr][Ee][Aa][Tt][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Oo][Rr][Tt][Dd][Ee][Pp][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Oo][Rr][Tt][Tt][Ee][Xx][Tt][Uu][Rr][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Oo][Rr][Tt][Tt][Rr][Aa][Nn][Ss][Pp][Aa][Rr][Ee][Nn][Tt][Dd][Ee][Pp][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Ii][Nn][Ss][Tt][Aa][Nn][Cc][Ee][Bb][Aa][Ll][Aa][Nn][Cc][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Ii][Nn][Ss][Tt][Aa][Nn][Cc][Ee][Rr][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Ii][Nn][Ss][Tt][Aa][Nn][Cc][Ee][Vv][Oo][Ll][Uu][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Oo][Uu][Nn][Dd][Ss][Yy][Ss][Tt][Ee][Mm][Vv][Oo][Ll][Uu][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Aa][Cc][Tt][Ii][Vv][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Aa][Dd][Dd][Ii][Tt][Ii][Oo][Nn][Aa][Ll][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Aa][Nn][Gg][Ll][Ee][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Aa][Nn][Ii][Mm][Aa][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Aa][Tt][Ee][Gg][Oo][Rr][Yy][Bb][Ii][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Aa][Tt][Ee][Gg][Oo][Rr][Yy][Bb][Ii][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Ll][Ll][Ii][Dd][Ee][Bb][Ii][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Ll][Ll][Ii][Dd][Ee][Bb][Ii][Tt][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Ll][Oo][Rr][Aa][Ll][Pp][Hh][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Ll][Oo][Rr][Bb][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Ll][Oo][Rr][Gg][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Cc][Oo][Ll][Oo][Rr][Rr][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Dd][Ee][Pp][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ff][Ll][Ii][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ff][Rr][Aa][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Gg][Rr][Oo][Uu][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Oo][Ff][Ff][Ss][Ee][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Aa][Nn][Gg][Uu][Ll][Aa][Rr][Dd][Aa][Mm][Pp][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Aa][Nn][Gg][Uu][Ll][Aa][Rr][Ii][Mm][Pp][Uu][Ll][Ss][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Aa][Nn][Gg][Uu][Ll][Aa][Rr][Vv][Ee][Ll][Oo][Cc][Ii][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Cc][Oo][Mm]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Cc][Aa][Nn][Rr][Oo][Tt][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Dd][Aa][Mm][Pp][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Dd][Ee][Ll][Ee][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ff][Oo][Rr][Cc][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ff][Rr][Ii][Cc][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ii][Mm][Pp][Uu][Ll][Ss][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ii][Ss][Bb][Uu][Ll][Ll][Ee][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Ii][Ss][Ss][Ee][Nn][Ss][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Mm][Aa][Ss][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Oo][Ff][Ff]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Rr][Ee][Ss][Tt][Ii][Tt][Uu][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Tt][Oo][Rr][Qq][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Hh][Yy][Ss][Ii][Cc][Ss][Vv][Ee][Ll][Oo][Cc][Ii][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn][Bb][Yy][Oo][Ff][Ff][Ss][Ee][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Cc][Aa][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Cc][Aa][Ll][Ee][Bb][Yy][Oo][Ff][Ff][Ss][Ee][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Cc][Ii][Ss][Ss][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Hh][Aa][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Hh][Aa][Pp][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Hh][Aa][Pp][Ee][Bb][Oo][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Hh][Aa][Pp][Ee][Cc][Ii][Rr][Cc][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Hh][Aa][Pp][Ee][Pp][Oo][Ll][Yy][Gg][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Nn][Aa][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Pp][Ee][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Tt][Rr][Aa][Nn][Ss][Pp][Aa][Rr][Ee][Nn][Cc][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Uu][Vv]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Uu][Vv][Bb][Oo][Rr][Dd][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Uu][Vv][Oo][Ff][Ff][Ss][Ee][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Uu][Vv][Ss][Cc][Aa][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Pp][Rr][Ii][Tt][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ss][Yy][Nn][Cc][Rr][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Aa][Ll][Ii][Gg][Nn][Mm][Ee][Nn][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Aa][Nn][Gg][Ll][Ee][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Cc][Oo][Ll][Oo][Rr][Aa][Ll][Pp][Hh][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Cc][Oo][Ll][Oo][Rr][Bb][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Cc][Oo][Ll][Oo][Rr][Gg][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Cc][Oo][Ll][Oo][Rr][Rr][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Hh][Aa][Rr][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Oo][Ll][Oo][Rr][Aa][Ll][Pp][Hh][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Oo][Ll][Oo][Rr][Bb][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Oo][Ll][Oo][Rr][Gg][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Cc][Oo][Ll][Oo][Rr][Rr][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Dd][Ee][Ff][Aa][Uu][Ll][Tt][Ee][Xx][Tt][Ee][Nn][Dd][Ee][Dd][Ff][Oo][Nn][Tt][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Dd][Ee][Ff][Aa][Uu][Ll][Tt][Ff][Oo][Nn][Tt][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Dd][Ee][Ff][Aa][Uu][Ll][Tt][Mm][Aa][Gg][Ff][Ii][Ll][Tt][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Dd][Ee][Ff][Aa][Uu][Ll][Tt][Mm][Ii][Nn][Ff][Ii][Ll][Tt][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Dd][Ee][Pp][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Ee][Xx][Tt][Ee][Nn][Dd][Ee][Dd][Ff][Oo][Nn][Tt][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Ff][Oo][Nn][Tt][Ii][Mm][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Ii][Nn][Pp][Uu][Tt][Mm][Aa][Xx][Cc][Hh][Aa][Rr][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Ll][Ii][Nn][Ee][Ss][Pp][Aa][Cc][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Mm][Aa][Xx][Ww][Ii][Dd][Tt][Hh]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Ss][Cc][Ii][Ss][Ss][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Ss][Pp][Aa][Cc][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Ss][Tt][Rr][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Tt][Rr][Aa][Nn][Ss][Pp][Aa][Rr][Ee][Nn][Cc][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ee][Xx][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Rr][Aa][Nn][Ss][Ii][Tt][Ii][Oo][Nn][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Aa][Mm][Ee][Rr][Aa][Aa][Nn][Gg][Ll][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Aa][Mm][Ee][Rr][Aa][Aa][Nn][Gg][Ll][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Aa][Mm][Ee][Rr][Aa][Aa][Nn][Gg][Ll][Ee][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Aa][Mm][Ee][Rr][Aa][Ff][Oo][Vv]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Aa][Mm][Ee][Rr][Aa][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Aa][Mm][Ee][Rr][Aa][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Aa][Mm][Ee][Rr][Aa][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Rr][Aa][Ll][Pp][Hh][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Rr][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Rr][Bb][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Rr][Gg][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Rr][Rr][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Rr][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Rr][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Aa][Ll][Pp][Hh][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Aa][Nn][Gg][Ll][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Aa][Nn][Gg][Ll][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Aa][Nn][Gg][Ll][Ee][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Bb][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Gg][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Rr][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Ss][Cc][Aa][Ll][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Ss][Cc][Aa][Ll][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Ss][Cc][Aa][Ll][Ee][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt][Zz]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee][Aa][Ll][Pp][Hh][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee][Bb][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee][Gg][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee][Rr][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Ii][Zz][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee][Ss][Ii][Zz][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt][Aa][Ll][Pp][Hh][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt][Aa][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt][Bb][Ll][Uu][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt][Gg][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt][Ll][Ii][Nn][Ee][Ss][Pp][Aa][Cc][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt][Rr][Ee][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt][Ss][Pp][Aa][Cc][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ss][Yy][Nn][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Dd][Ee][Oo][Dd][Ii][Mm][Ee][Nn][Ss][Ii][Oo][Nn][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Dd][Ee][Oo][Vv][Oo][Ll][Uu][Mm][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Ee][Ww][Oo][Ff][Ff][Ss][Ee][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Ee][Ww][Zz][Oo][Oo][Mm]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Ee][Ww][Zz][Oo][Oo][Mm][Mm][Oo][Dd][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Aa][Cc][Tt][Ii][Vv][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Aa][Ll][Pp][Hh][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Cc][Oo][Ll][Oo][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Ii][Mm][Aa][Gg][Ee][Dd][Oo][Ww][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Ii][Mm][Aa][Gg][Ee][Uu][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Tt][Ee][Xx][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Bb][Uu][Tt][Tt][Oo][Nn][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Aa][Cc][Tt][Ii][Vv][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Aa][Ll][Pp][Hh][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Dd][Ee][Aa][Dd][Zz][Oo][Nn][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Ii][Mm][Aa][Gg][Ee][Ii][Nn][Nn][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Ii][Mm][Aa][Gg][Ee][Oo][Uu][Tt][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Pp][Oo][Ss][Ii][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Jj][Oo][Yy][Ss][Tt][Ii][Cc][Kk][Vv][Ii][Ss][Ii][Bb][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Vv][Ii][Rr][Tt][Uu][Aa][Ll][Rr][Ee][Ss][Oo][Ll][Uu][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ww][Ii][Nn][Dd][Oo][Ww][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ee][Tt][Ww][Ii][Nn][Dd][Oo][Ww][Tt][Ii][Tt][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Hh][Aa][11]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Hh][Oo][Ww][Cc][Hh][Oo][Oo][Ss][Ee][Ii][Mm][Aa][Gg][Ee][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Hh][Oo][Ww][Ii][Mm][Aa][Gg][Ee][Cc][Aa][Pp][Tt][Uu][Rr][Ee][Ss][Cc][Rr][Ee][Ee][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ii][Nn][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ll][Ee][Ee][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Pp][Aa][Cc][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Pp][Rr][Ii][Tt][Ee][Rr][Aa][Yy][Cc][Aa][Ss][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Pp][Rr][Ii][Tt][Ee][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Cc][Aa][Tt][Ee][Gg][Oo][Rr][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Pp][Rr][Ii][Tt][Ee][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Gg][Rr][Oo][Uu][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Pp][Rr][Ii][Tt][Ee][Rr][Aa][Yy][Cc][Aa][Ss][Tt][Ss][Ii][Nn][Gg][Ll][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Qq][Rr][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Aa][Rr][Tt][Gg][Pp][Ss][Tt][Rr][Aa][Cc][Kk][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Aa][Rr][Tt][Tt][Ee][Xx][Tt][Ii][Nn][Pp][Uu][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Ee][Pp][Pp][Hh][Yy][Ss][Ii][Cc][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Gg][Pp][Ss][Tt][Rr][Aa][Cc][Kk][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Mm][Uu][Ss][Ii][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Ss][Kk][Ee][Ll][Ee][Tt][Oo][Nn][22][Dd][Aa][Nn][Ii][Mm][Aa][Tt][Ii][Oo][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Ss][Oo][Uu][Nn][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Ss][Oo][Uu][Nn][Dd][Ii][Nn][Ss][Tt][Aa][Nn][Cc][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Ss][Oo][Uu][Nn][Dd][Rr][Ee][Cc][Oo][Rr][Dd][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Tt][Ee][Xx][Tt][Ii][Nn][Pp][Uu][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Tt][Ww][Ee][Ee][Nn][Cc][Aa][Mm][Ee][Rr][Aa]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Tt][Ww][Ee][Ee][Nn][Oo][Bb][Jj][Ee][Cc][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Tt][Ww][Ee][Ee][Nn][Ss][Pp][Rr][Ii][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Tt][Ww][Ee][Ee][Nn][Tt][Ee][Xx][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Oo][Pp][Vv][Ii][Dd][Ee][Oo]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Tt][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Ww][Aa][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ss][Yy][Nn][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Aa][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Aa][Nn][Rr][Aa][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Ii][Mm][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Rr][Uu][Nn][Cc]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Ww][Ee][Ee][Nn][Bb][Oo][Uu][Nn][Cc][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Ww][Ee][Ee][Nn][Ee][Aa][Ss][Ee][Ii][Nn][11]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Ww][Ee][Ee][Nn][Ee][Aa][Ss][Ee][Ii][Nn][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Ww][Ee][Ee][Nn][Ee][Aa][Ss][Ee][Oo][Uu][Tt][11]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Ww][Ee][Ee][Nn][Ee][Aa][Ss][Ee][Oo][Uu][Tt][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Ww][Ee][Ee][Nn][Ll][Ii][Nn][Ee][Aa][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Ww][Ee][Ee][Nn][Oo][Vv][Ee][Rr][Ss][Hh][Oo][Oo][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Ww][Ee][Ee][Nn][Ss][Mm][Oo][Oo][Tt][Hh][11]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Ww][Ee][Ee][Nn][Ss][Mm][Oo][Oo][Tt][Hh][22]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Ww][Ii][Tt][Tt][Ee][Rr][Mm][Ee][Ss][Ss][Aa][Gg][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Tt][Ww][Ii][Tt][Tt][Ee][Rr][Ss][Ee][Tt][Uu][Pp]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Uu][Pp][Dd][Aa][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Uu][Pp][Dd][Aa][Tt][Ee][22][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Uu][Pp][Dd][Aa][Tt][Ee][33][Dd]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Uu][Pp][Dd][Aa][Tt][Ee][Aa][Ll][Ll][Tt][Ww][Ee][Ee][Nn][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Uu][Pp][Dd][Aa][Tt][Ee][Dd][Ee][Vv][Ii][Cc][Ee][Ss][Ii][Zz][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Uu][Pp][Dd][Aa][Tt][Ee][Pp][Aa][Rr][Tt][Ii][Cc][Ll][Ee][Ss]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Uu][Pp][Dd][Aa][Tt][Ee][Tt][Ww][Ee][Ee][Nn][Cc][Hh][Aa][Ii][Nn]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Uu][Pp][Pp][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Vv][Aa][Ll]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Vv][Aa][Ll][Ff][Ll][Oo][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ww][Oo][Rr][Ll][Dd][Tt][Oo][Ss][Cc][Rr][Ee][Ee][Nn][Xx]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ww][Oo][Rr][Ll][Dd][Tt][Oo][Ss][Cc][Rr][Ee][Ee][Nn][Yy]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ww][Rr][Ii][Tt][Ee][Bb][Yy][Tt][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ww][Rr][Ii][Tt][Ee][Ff][Ll][Oo][Aa][Tt]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ww][Rr][Ii][Tt][Ee][Ii][Nn][Tt][Ee][Gg][Ee][Rr]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ww][Rr][Ii][Tt][Ee][Ll][Ii][Nn][Ee]\\b",
+"name":  "entity.name.function"
+},
+{
+"match": "\\b[Ww][Rr][Ii][Tt][Ee][Ss][Tt][Rr][Ii][Nn][Gg]\\b",
+"name":  "entity.name.function"
+},
+{
+"name": "comment.block",
+"begin": "[/][/]",
+"end": ".*$"
+},
+
+{
+"name": "comment.block",
+"begin": "[`]",
+"end": ".*$"
+},
+
+{
+"match": "\".*\"",
+"name": "string.quoted"
+},
+
+
+{
+"match": "\\(|\\)",
+"name": "constant.numeric"
+},
+
+{
+"match": "\\b[0-9]+|\\b[0-9]+.?[0-9]+",
+"name": "constant.numeric"
+},
+
+{
+"match": "([a-zA-z]+)(\\()",
+"name": "support.function.agk",
+"captures": {
+"1": { "name": "support.function.agk" },
+"2": { "name": "constant.numeric" }
+}
+},
+
+{
+"name": "comment.block",
+"begin": "\\b[Rr][Ee][Mm]\\b",
+"end": ".*$"
+},
+
+{
+"name": "comment.block",
+"begin": "\\b[Rr][Ee][Mm][Ss][Tt][Aa][Rr][Tt]\\b",
+"end": "[Rr][Ee][Mm][Ee][Nn][Dd]"
+},{
+"match": "\\b[Ee][Xx][Ii][Tt][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Cc][Aa][Ss][Ee][Dd][Ee][Ff][Aa][Uu][Ll][Tt]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ee][Nn][Dd][Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ee][Nn][Dd][Ss][Ee][Ll][Ee][Cc][Tt]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ee][Nn][Dd][Ww][Hh][Ii][Ll][Ee]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Cc][Oo][Nn][Ss][Tt][Aa][Nn][Tt]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ee][Nn][Dd][Tt][Yy][Pp][Ee]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ii][Nn][Tt][Ee][Gg][Ee][Rr]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ee][Nn][Dd][Cc][Aa][Ss][Ee]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ii][Nn][Cc][Ll][Uu][Dd][Ee]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ss][Tt][Rr][Ii][Nn][Gg]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ss][Ee][Ll][Ee][Cc][Tt]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ee][Ll][Ss][Ee][Ii][Ff]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Rr][Ee][Pp][Ee][Aa][Tt]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Rr][Ee][Tt][Uu][Rr][Nn]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Gg][Ll][Oo][Bb][Aa][Ll]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Rr][Ee][Mm][Ee][Nn][Dd]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ff][Ll][Oo][Aa][Tt]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ee][Nn][Dd][Ii][Ff]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ww][Hh][Ii][Ll][Ee]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Uu][Nn][Tt][Ii][Ll]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Gg][Oo][Ss][Uu][Bb]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Tt][Yy][Pp][Ee]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Tt][Hh][Ee][Nn]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Cc][Aa][Ss][Ee]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ee][Ll][Ss][Ee]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ee][Xx][Ii][Tt]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Nn][Ee][Xx][Tt]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ss][Tt][Ee][Pp]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ll][Oo][Oo][Pp]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Gg][Oo][Tt][Oo]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Rr][Ee][Ff]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Dd][Ee][Cc]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ii][Nn][Cc]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ff][Oo][Rr]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ee][Nn][Dd]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Dd][Ii][Mm]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Aa][Nn][Dd]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Nn][Oo][Tt]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ff][Oo][Rr]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Aa][Ss]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Ii][Ff]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Dd][Oo]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Oo][Rr]\\b",
+"name":  "keyword.source.agk"
+},
+{
+"match": "\\b[Tt][Oo]\\b",
+"name":  "keyword.source.agk"
+}
+]
+,"uuid": "4d2a704b-5401-40dc-8d9f-5ba52ef602d8"
+}

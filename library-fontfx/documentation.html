@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="agkdoc.css">
+</head>
+<body>
+<div id="title">Module : library-fontfx</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body"><p>This is a library for animating fonts easily. It is not dissimilar to the CreateText() option, except in that if you want things to animate, you do not have to bother with all the tweens and chains, you just tell it what you want to do. Examples are in the main.agc file. All of these use the same font (the standard 'subimages' font) but you can use as many fonts as you like. It is best to start by looking at the 5 demos (change the gosub) to pick another demo, and try to see how they work, especially Demo2 which gives an overview of the built in animation commands. </p><p> It is perhaps not too advisable to use this for too much action in a high speed game. The reason for this is primarily that it is written in AGK Basic itself, so in a high speed scenario there could be a lot of other things going on, and processor power is not infinite, especially on some cheaper Android tablets and phones. It may be fine to animate a "Get Ready!" message at the start of a level, but it is probably not a great idea to use it for the score which is being continually updated and animated. It might work better than I think, mind. It should be remembered that once an animation has completed FFSync() calls do almost nothing, so you could animate the score into position and do it, but I wouldn't advise animating the score while the game is playing.</p><p> As with many AGK features, it has a 'sync' call which should be called using the main Sync() loop to update everything. This is FFXSync()</p><p> Animations are sequences of commands, seperated by colons. Each command can have parameters, currently there are four possible parameters, time (how long one animation takes) repeat (how many times it should repeat, 0 = for ever), tween, which tween, if any should be used in the animation, and mod1 and mod2 which control the animation. Generally mod1 controls the 'aggressiveness' of the animation, so in curve for example (which makes the text follow a sine curve) it adjusts the deflection in the curve. The built in animations are documented in full later. Each part is seperated by a comma (e.g. "curve,repeat=2,time=2,mod1=4" is a single animation command.</p><p> You can have as many of these commands sequentially as you want. If you want one to repeat endlessly, just have a final command "loop" (see Demo3)</p><p> There is one catch. Some animations (curve is one) repeat infinitely by default. If you want to run it for just (say) five seconds, you need to do "curve,repeat=1,time=4.0", if you leave the repeat out it will default to zero and will repeat the curve forever.</p><p> Additional animations can be hard coded, there is an example of this in Demo4, which attempts to replicate (approximately) the level end text from Rainbow Islands (Goal In!). The exact code is explained there, but the basic idea is each character is called in turn, and you decide what to do with it - so in 'curve' for example you can move it up or down dependent on a sine calculation. You can make each character any size you want, make it go anywhere you want, set it to any angle and alpha. There is a helper function FFXOffsetSprite which assists with this.</p> <p>One detail is that AGK doesn't really do optional extensibility well. The FFXEXTENSION constant works round this problem. If you have no 'user defined animations' it can be set to zero (see main.agc), but if you have user defined ones (the demo has one called "goalin") then this is defined to a function call, this function is then responsible for processing the animation. The FFXEXTENSION must be present either as a 0 or a call, if not the library won't compile.</p> <p> the FFXCharacter and FFXText structures are documented, but unless you are hand coding animations in AGK Basic, you should have no need of them</p> <p>The tween functions in this library were derived from libclaw documentation developed by Julien Jorge</p></div>
+<table>
+  <tr>
+    <td>Name</td>
+    <td>library-fontfx</td>
+  </tr>
+  <tr class="alt">
+    <td>Author</td>
+    <td>Paul Scott Robson</td>
+  </tr>
+  <tr>
+    <td>Email</td>
+    <td>paulscottrobson@gmail.com</td>
+  </tr>
+  <tr class="alt">
+    <td>License</td>
+    <td>MIT</td>
+  </tr>
+  <tr>
+    <td>Prefix</td>
+    <td>FFX</td>
+  </tr>
+  <tr class="alt">
+    <td>Version</td>
+    <td>0.1</td>
+  </tr>
+  <tr>
+    <td>Created</td>
+    <td>08-Feb-15</td>
+  </tr>
+  <tr class="alt">
+    <td>Updated</td>
+    <td>17-Feb-15</td>
+  </tr>
+  <tr>
+    <td>Provides</td>
+    <td>fontfx</td>
+  </tr>
+</table>
+<div id="title">User Defined Type : FFXCharacter</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">This type represents a single character. It provides all the information for that character to be animated if necessary. This is only used when writing hard coded animations.</div>
+<table>
+  <tr>
+    <th>Member</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>spriteID</td>
+    <td>integer</td>
+    <td>Sprite ID - still kept when not in use.</td>
+  </tr>
+  <tr class="alt">
+    <td>x</td>
+    <td>float</td>
+    <td>Horizontal position of the sprite</td>
+  </tr>
+  <tr>
+    <td>y</td>
+    <td>float</td>
+    <td>Vertical position of the sprite</td>
+  </tr>
+  <tr class="alt">
+    <td>width</td>
+    <td>float</td>
+    <td>Default sprite width</td>
+  </tr>
+  <tr>
+    <td>height</td>
+    <td>float</td>
+    <td>Default sprite height</td>
+  </tr>
+  <tr class="alt">
+    <td>charIndex</td>
+    <td>integer</td>
+    <td>Character number (count from 1)</td>
+  </tr>
+  <tr>
+    <td>wordIndex</td>
+    <td>integer</td>
+    <td>Word number (count from 1)</td>
+  </tr>
+</table>
+<div id="title">User Defined Type : FFXText</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">This type represents a single animateable string. It does not use AGK2 Strings because their sub characters can't be independently scaled.<br>The developer should <b>not</b> manipulate this directly but use the methods. provided. It can be accessed for values needed for hard coded animations.</div>
+<table>
+  <tr>
+    <th>Member</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>x</td>
+    <td>float</td>
+    <td>Horizontal position</td>
+  </tr>
+  <tr class="alt">
+    <td>y</td>
+    <td>float</td>
+    <td>Vertical position</td>
+  </tr>
+  <tr>
+    <td>xTopLeft</td>
+    <td>float</td>
+    <td>Top left of string x</td>
+  </tr>
+  <tr class="alt">
+    <td>yTopLeft</td>
+    <td>float</td>
+    <td>Top left of string y</td>
+  </tr>
+  <tr>
+    <td>charWidth</td>
+    <td>float</td>
+    <td>Required char width</td>
+  </tr>
+  <tr class="alt">
+    <td>charHeight</td>
+    <td>float</td>
+    <td>Required char height</td>
+  </tr>
+  <tr>
+    <td>maxWidth</td>
+    <td>float</td>
+    <td>Largest width of character</td>
+  </tr>
+  <tr class="alt">
+    <td>maxHeight</td>
+    <td>float</td>
+    <td>Largest height of character</td>
+  </tr>
+  <tr>
+    <td>anchorPointX</td>
+    <td>integer</td>
+    <td>Horizontal Anchor point (-1 left, 0 centre, 1 right)</td>
+  </tr>
+  <tr class="alt">
+    <td>anchorPointY</td>
+    <td>integer</td>
+    <td>Vertical Anchor point (-1 top,0 centre, 1 bottom)</td>
+  </tr>
+  <tr>
+    <td>currentString</td>
+    <td>string</td>
+    <td>Current string value</td>
+  </tr>
+  <tr class="alt">
+    <td>characters</td>
+    <td>FFXCharacter[0]</td>
+    <td>Array of FFX characters.</td>
+  </tr>
+  <tr>
+    <td>isAnimationRunning</td>
+    <td>integer</td>
+    <td>Set to non-zero when animation is running.</td>
+  </tr>
+  <tr class="alt">
+    <td>fullWidth</td>
+    <td>float</td>
+    <td>Width of whole string</td>
+  </tr>
+  <tr>
+    <td>fullHeight</td>
+    <td>float</td>
+    <td>Height of whole string</td>
+  </tr>
+  <tr class="alt">
+    <td>fontImageId</td>
+    <td>integer</td>
+    <td>Image ID of font.</td>
+  </tr>
+  <tr>
+    <td>wordCount</td>
+    <td>integer</td>
+    <td>Number of words.</td>
+  </tr>
+  <tr class="alt">
+    <td>charCount</td>
+    <td>integer</td>
+    <td>Characters in whole String</td>
+  </tr>
+  <tr>
+    <td>animationStartTime</td>
+    <td>integer</td>
+    <td>System clock when animation started (milliseconds)</td>
+  </tr>
+  <tr class="alt">
+    <td>animationRepeatCount</td>
+    <td>integer</td>
+    <td>Repeat counter for animation.</td>
+  </tr>
+  <tr>
+    <td>animationTime</td>
+    <td>integer</td>
+    <td>Time it runs for (overridden or default, milliseconds)</td>
+  </tr>
+  <tr class="alt">
+    <td>animationPosition</td>
+    <td>integer</td>
+    <td>Animation position : 0->1000</td>
+  </tr>
+  <tr>
+    <td>animationModifier1</td>
+    <td>float</td>
+    <td>Animation modifiers 1</td>
+  </tr>
+  <tr class="alt">
+    <td>animationModifier2</td>
+    <td>float</td>
+    <td>Animation modifiers 2</td>
+  </tr>
+  <tr>
+    <td>animationCommand</td>
+    <td>string</td>
+    <td>Complete animation command.</td>
+  </tr>
+  <tr class="alt">
+    <td>animationCommandNo</td>
+    <td>integer</td>
+    <td>Index of animation number.</td>
+  </tr>
+  <tr>
+    <td>animationCommandCount</td>
+    <td>integer</td>
+    <td>Animations in current command</td>
+  </tr>
+  <tr class="alt">
+    <td>animationCurrentCommand</td>
+    <td>string</td>
+    <td>Current single animation being executed</td>
+  </tr>
+  <tr>
+    <td>animationTween</td>
+    <td>string</td>
+    <td>Current tween for animation.</td>
+  </tr>
+</table>
+<div id="title">Function : FFXCreateText(txt,text,fontImageID)</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">Create a new animated text object. This is built using a single font. You cannot change the font used. (just delete it and recreate it with the new font). The font is created filling most of the screen width and centred horizontally and vertically.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>txt</td>
+    <td>ref FFXText</td>
+    <td>Font Text Object</td>
+  </tr>
+  <tr class="alt">
+    <td>text</td>
+    <td>String</td>
+    <td>Text to store in there.</td>
+  </tr>
+  <tr>
+    <td>fontImageID</td>
+    <td>integer</td>
+    <td>Image ID of font to draw with.</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : FFXDeleteText(txt)</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">Delete a font text object and tidy up sprites used.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>txt</td>
+    <td>ref FFXText</td>
+    <td>Font Text Object</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : FFXOffsetSprite(char,xOffset,yOffset,xScale,yScale)</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">Offset sprite by a position and scale it, keeping position correct - required because of top/left coordinates. Helper function for character manipulation. DO NOT USE for anything else.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>char</td>
+    <td>ref FFXCharacter</td>
+    <td></td>
+  </tr>
+  <tr class="alt">
+    <td>xOffset</td>
+    <td>float</td>
+    <td>Horizontal offset position.</td>
+  </tr>
+  <tr>
+    <td>yOffset</td>
+    <td>float</td>
+    <td>Vertical offset position.</td>
+  </tr>
+  <tr class="alt">
+    <td>xScale</td>
+    <td>float</td>
+    <td>Horizontal scaling (1.0 = unchanged, -ve = flip)</td>
+  </tr>
+  <tr>
+    <td>yScale</td>
+    <td>float</td>
+    <td>Vertical scaling (1.0 = unchanged, -ve = flip)</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : FFXRestart(txt)</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">Restart the current animation on the given text object. This can be done at any time. The FFXSync() command returns 0 if the animation is no longer running.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>txt</td>
+    <td>ref FFXText</td>
+    <td>Font Text Object</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : FFXSetAnchorPoints(txt,x,y)</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">Set the anchor point for the text, e.g. the 'target' for SetPosition. If you set it to -1,-1 then SetPosition(x,5,8) will put the top left corner at (5,8).</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>txt</td>
+    <td>ref FFXText</td>
+    <td>Font Text Object</td>
+  </tr>
+  <tr class="alt">
+    <td>x</td>
+    <td>integer</td>
+    <td>horizontal anchor point (-1 left,0 centre, 1 right)</td>
+  </tr>
+  <tr>
+    <td>y</td>
+    <td>integer</td>
+    <td>vertical anchor point (-1 top,0 centre, 1 bottom)</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : FFXSetAnimation(txt,animation)</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">Prepare to run an animation on a text object. This associates the command with the text object setting it up to run. Subsequent calls to FFXSync() do the actual animation.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>txt</td>
+    <td>ref FFXText</td>
+    <td>Font Text Object</td>
+  </tr>
+  <tr class="alt">
+    <td>animation</td>
+    <td>string</td>
+    <td>Animation to run.</td>
+  </tr>
+  <tr>
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : FFXSetColor(txt,r,g,b,a)</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">Set the text ARGB colours - same as SetSpriteColor() functionality in AGK2. All values are 0-255 and are a fractional multiplier of the ARGB values. It is not possible to increase the ARGB of a sprite pixel using this method. Used judiciously, this will allow one font to have several 'looks'.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>txt</td>
+    <td>ref FFXText</td>
+    <td>Font Text Object</td>
+  </tr>
+  <tr class="alt">
+    <td>r</td>
+    <td>integer</td>
+    <td>Colour Red</td>
+  </tr>
+  <tr>
+    <td>g</td>
+    <td>integer</td>
+    <td>Colour Greem</td>
+  </tr>
+  <tr class="alt">
+    <td>b</td>
+    <td>integer</td>
+    <td>Colour Blue</td>
+  </tr>
+  <tr>
+    <td>a</td>
+    <td>integer</td>
+    <td>Alpha</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : FFXSetFontSize(txt,width,height)</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">Change the font size. This is the biggest the font can get, e.g. the biggest character possible will fit in this space</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>txt</td>
+    <td>ref FFXText</td>
+    <td>Font Text Object</td>
+  </tr>
+  <tr class="alt">
+    <td>width</td>
+    <td>float</td>
+    <td>Width in units (-1 to calculate from A/R)</td>
+  </tr>
+  <tr>
+    <td>height</td>
+    <td>float</td>
+    <td>Height in units (-1 to calculate from A/R)</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : FFXSetPosition(txt,x,y)</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">Reposition the text, taking note of anchorage points.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>txt</td>
+    <td>ref FFXText</td>
+    <td>Font Text Object</td>
+  </tr>
+  <tr class="alt">
+    <td>x</td>
+    <td>float</td>
+    <td>new position horizontal</td>
+  </tr>
+  <tr>
+    <td>y</td>
+    <td>float</td>
+    <td>new position vertical</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : FFXSetText(txt,text)</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">Update the text and resize/position accordingly.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>txt</td>
+    <td>ref FFXText</td>
+    <td>Font Text Object</td>
+  </tr>
+  <tr class="alt">
+    <td>text</td>
+    <td>String</td>
+    <td>Text to store in there.</td>
+  </tr>
+  <tr>
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : FFXStop(txt)</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">Stop an animation from running.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>txt</td>
+    <td>ref FFXText</td>
+    <td>Font Text Object</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : FFXSync(txt)</div>
+<div id="body"><i> Defined in '.\library-fontfx.agc'</i></div>
+<div id="body">Update the given animation as per the system clock. This should be called as part of the usual Sync() loop (see the examples).</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>txt</td>
+    <td>ref FFXText</td>
+    <td>Font Text Object</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>integer</td>
+    <td>0 if the animation is complete, 1 otherwise.</td>
+  </tr>
+</table>
+<br /><div><i>Generated by agkdoc.py on 02/17/15 16:58:04</i></div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+// *************************************************************************
+//
+//                                Draw Skeleton
+//
+// *************************************************************************
+300       hplot y.m - 23 / distance,x.m to y.m - 15 / distance,x.m to y.m - 15 / dI,x.m - 15 / dI to y.m - 8 / dI,x.m - 30 / dI to y.m + 8 / dI,x.m - 30 / dI to y.m + 15 / dI,x.m - 15 / dI to y.m + 15 / dI,x.m to y.m + 23 / dI,x.m
+301       hplot y.m,x.m - 26 / dI to y.m,x.m - 65 / dI:
+          hplot y.m - 2 / dI + .5,x.m - 38 / dI to y.m + 2 / dI + .5,x.m - 38 / dI:
+          hplot y.m - 3 / dI + .5,x.m - 45 / dI to y.m + 3 / dI + .5,x.m - 45 / dI:
+          hplot y.m - 5 / dI + .5,x.m - 53 / dI to y.m + 5 / dI + .5,x.m - 53 / dI
+302       hplot y.m - 23 / dI,x.m - 56 / dI to y.m - 30 / dI,x.m - 53 / dI to y.m - 23 / dI,x.m - 45 / dI to y.m - 23 / dI,x.m - 53 / dI to y.m - 8 / dI,x.m - 38 / dI
+303       hplot y.m - 15 / dI,x.m - 45 / dI to y.m - 8 / dI,x.m - 60 / dI to y.m + 8 / dI,x.m - 60 / dI to y.m + 15 / dI,x.m - 45 / dI:
+          hplot y.m + 15 / dI,x.m - 42 / dI to y.m + 15 / dI,x.m - 57 / dI:
+          hplot y.m + 12 / dI,x.m - 45 / dI to y.m + 20 / dI,x.m - 45 / dI
+304       hplot y.m,x.m - 75 / dI to y.m - 5 / dI + .5,x.m - 80 / dI to y.m - 8 / dI,x.m - 75 / dI to y.m - 5 / dI + .5,x.m - 65 / dI to y.m + 5 / dI + .5,x.m - 65 / dI to y.m + 5 / dI + .5,x.m - 68 / dI to y.m - 5 / dI + .5,x.m - 68 / dI to y.m - 5 / dI + .5,x.m - 65 / dI
+305       hplot to y.m + 5 / dI + .5,x.m - 65 / dI to y.m + 8 / dI,x.m - 75 / dI to y.m + 5 / dI + .5,x.m - 80 / dI to y.m - 5 / dI + .5,x.m - 80 / dI:
+          hplot y.m - 5 / dI + .5,x.m - 72 / dI:
+          hplot y.m + 5 / dI + .5,x.m - 72 / dI

@@ -1,0 +1,4 @@
+{ "name": "AGK",
+  "scopeName": "source.agk",
+  "fileTypes": ["agc"],
+  "patterns": [

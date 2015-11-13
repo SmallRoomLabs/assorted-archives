@@ -1,0 +1,151 @@
+// ****************************************************************************************************************
+// ****************************************************************************************************************
+//
+//										SC/MP Definition File
+//
+// ****************************************************************************************************************
+// ****************************************************************************************************************
+//
+//	AC		8 		Accumulator
+//	P0..P3	16 		Pointer registers (P0 is the program counter)
+//	EX 		8 		Extension Register
+//	SR 		8 		Status Register (CY/L OV SB SA IE F2 F1 F0)
+//
+//	MA 		16 		Memory address register
+//	MB		8 		Memory buffer.
+//	opcode 	8 		Current Opcode
+//	operand	8 		Current Operand
+//	temp16 	16 		Work register
+//	cycles 	16 		CPU Cycles count
+//
+//
+//	READ() 			Read memory at MA -> MB
+//	WRITE()			Write MB to memory at MA
+//  STATUSREG()		True value of SR with SA and SB updated from hardware.
+//	CHECKEX() 		If operand is $80, replace operand with EX.
+//	EAC($P) 		Put P(n) + adjusted operand in MA.
+//	PREINDEX($P) 	Pre index adjustment
+//	POSTINDEX($P)	Post index adjustment
+//	DECIMALADD() 	Decimal Add MB + CY/L to AC, CY/L out, OV unchanged
+//	BINARYADD() 	Binary Add MB + CY/L to AC, CY/L out, OV set if MB & AC signs are same and result different.
+//
+//	$P 				Pn where n is opcode & 3
+//	##				Operand position
+//
+// ****************************************************************************************************************
+
+// ****************************************************************************************************************
+//										Memory Reference instructions
+// ****************************************************************************************************************
+
+C0-C3 	18	"LD ##($P)"		CHECKEX();EAC($P);READ();AC = MB 						// Load Accumulator
+C5-C7 	18 	"LD @##($P)"	CHECKEX();PREINDEX($P);MA = $P;POSTINDEX($P);READ();AC = MB 		
+
+C8-CB 	18 	"ST ##($P)"		CHECKEX();EAC($P);READ();MB = AC;WRITE() 				// Save Accumulator
+CD-CF	18 	"ST @##($P)"	CHECKEX();PREINDEX($P);MA = $P;POSTINDEX($P);MB = AC;WRITE(); 		
+
+D0-D3 	18	"AND ##($P)"	CHECKEX();EAC($P);READ();AC = AC & MB 					// And with Accumulator
+D5-D7 	18 	"AND @##($P)"	CHECKEX();PREINDEX($P);MA = $P;POSTINDEX($P);READ();AC = AC & MB 		
+
+D8-DB 	18	"OR ##($P)"		CHECKEX();EAC($P);READ();AC = AC | MB 					// Or with Accumulator
+DD-DF 	18 	"OR @##($P)"	CHECKEX();PREINDEX($P);MA = $P;POSTINDEX($P);READ();AC = AC | MB 		
+
+E0-E3 	18	"XOR ##($P)"	CHECKEX();EAC($P);READ();AC = AC ^ MB 					// Ex-Or with Accumulator
+E5-E7 	18 	"XOR @##($P)"	CHECKEX();PREINDEX($P);MA = $P;POSTINDEX($P);READ();AC = AC ^ MB 		
+
+E8-EB 	23	"DAD ##($P)"	CHECKEX();EAC($P);READ();DECIMALADD(); 					// Decimal Add to Accumulator
+ED-EF 	23 	"DAD @##($P)"	CHECKEX();PREINDEX($P);MA = $P;POSTINDEX($P);READ();DECIMALADD()
+
+F0-F3 	19	"ADD ##($P)"	CHECKEX();EAC($P);READ();BINARYADD(); 					// Binary Add to Accumulator
+F5-F7 	19 	"ADD @##($P)"	CHECKEX();PREINDEX($P);MA = $P;POSTINDEX($P);READ();BINARYADD()
+
+F8-FB 	20	"CAD ##($P)"	CHECKEX();EAC($P);READ();MB = MB ^ 0xFF;BINARYADD(); 	// Complement and Binary Add to Accumulator
+FD-FF 	20 	"CAD @##($P)"	CHECKEX();PREINDEX($P);MA = $P;POSTINDEX($P);READ();MB = MB ^ 0xFF;BINARYADD()
+
+// ****************************************************************************************************************
+//										Memory Increment/Decrement Instructions
+// ****************************************************************************************************************
+
+A8-AB 	22	"ILD ##($P)"	EAC($P);READ();AC = MB = (MB + 1) & 0xFF;WRITE() 		// Increment and Load
+B8-BB 	22	"DLD ##($P)"	EAC($P);READ();AC = MB = (MB - 1) & 0xFF;WRITE() 		// Decrement and Load
+
+// ****************************************************************************************************************
+//												Immediate Instructions
+// ****************************************************************************************************************
+
+C4 		10	"LDI ##"		AC = operand 											// Load Immediate
+D4 		10	"ANI ##"		AC = AC & operand 										// And Immediate
+DC 		10	"ORI ##"		AC = AC | operand 										// Or Immediate
+E4 		10	"XRI ##"		AC = AC ^ operand 										// Ex-Or Immediate
+EC 		15	"DAI ##"		MB = operand;DECIMALADD(); 								// Decimal Add Immediate
+F4 		11	"ADI ##"		MB = operand;BINARYADD(); 								// Binary Add Immediate
+FC 		12	"CAI ##"		MB = operand;MB = MB ^ 0xFF;BINARYADD(); 				// Complement and Binary Add Immediate
+
+// ****************************************************************************************************************
+//													Jump Instructions
+// ****************************************************************************************************************
+
+90-93 	11 	"JMP ##($P)"	EAC($P);P0 = MA 										// Jump always
+94-97 	10 	"JP ##($P)"		EAC($P);if ((AC & 0x80) == 0) P0 = MA 					// Jump if Acc +ve
+98-9B 	10 	"JZ ##($P)"		EAC($P);if (AC == 0) P0 = MA 							// Jump if Acc +ve
+9C-9F 	10 	"JNZ ##($P)"	EAC($P);if (AC != 0) P0 = MA 							// Jump if Acc +ve
+
+// ****************************************************************************************************************
+//													Delay Instruction
+// ****************************************************************************************************************
+
+8F 		13	"DLY ##"		DELAYCPU(operand,AC);AC = 0 							// Delay CPU.
+
+// ****************************************************************************************************************
+//											Extension Register Instructions
+// ****************************************************************************************************************
+
+40 		6	"LDE"			AC = EX 												// Load Accumulator from Extension
+01 		7	"XAE"			MB = EX;EX = AC;AC = MB 								// Exchange Accumulator and Extension
+50 		6	"ANE"			AC = AC & EX 											// And Extension with Accumulator
+58 		6	"ORE"			AC = AC | EX 											// Or Extension with Accumulator
+60 		6	"XRE"			AC = AC ^ EX 											// Ex-Or Extension with Accumulator
+68 		11	"DAE"			MB = EX;DECIMALADD(); 									// Decimal Add Extension to Accumulator
+70 		7	"ADE"			MB = EX;BINARYADD(); 									// Binary Add Extension to Accumulator
+78 		8	"CAE"			MB = EX ^ 0xFF;BINARYADD(); 							// Complement and Binary Add Extension to Accumulator
+
+// ****************************************************************************************************************
+//											Pointer Register Move Instructions
+// ****************************************************************************************************************
+
+30-33 	8 	"XPAL $P"		MB = ($P & 0xFF);$P = ($P & 0xFF00) | AC;AC = MB 		// Swap AC and Px Low byte
+34-37 	8 	"XPAH $P"		MB = ($P >> 8) & 0xFF;$P = ($P & 0xFF) | (AC << 8);AC = MB // Swap AC and Px High byte
+3C 		7 	"XPPC P0"		;														// Swap PC(P0) and P0
+3D-3F 	7	"XPPC $P"		temp16 = $P;$P = P0;P0 = temp16 						// Swap PC(P0) and Px
+
+// ****************************************************************************************************************
+//										 Shift, Rotate, Serial I/O Instructions
+// ****************************************************************************************************************
+
+19 		5 	"SIO"			EX = (EX >> 1) & 0x7F 									// Doesn't shift in from SIN or out to SOUT latch at present.
+1C 		5 	"SR"			AC = (AC >> 1) & 0x7F									// Shift AC right
+1D 		5	"SRL"			AC = ((AC >> 1) & 0x7F) | (SR & 0x80)					// Shift AC right and CY/L into Bit 7.
+1E 		5 	"RR"			AC = ((AC >> 1) & 0x7F) | ((AC & 1) << 7)				// Rotate AC right, don't change CY/L
+																					// Rotate AC:CY/L right as 9 bit register.
+1F 		5 	"RRL"			operand = AC & 1;AC = ((AC >> 1) & 0x7F) | (SR & 0x80);SR = (SR & 0x7F) | (operand << 7)
+
+// ****************************************************************************************************************
+//												Miscellaneous Instructions
+// ****************************************************************************************************************
+
+00		8 	"HALT"			; 														// Pulses H-Flag, we do nothing.
+02 		5	"CCL"			SR = SR & 0x7F											// Clear carry link
+03 		5 	"SCL"			SR = SR | 0x80 											// Set carry link
+04 		6 	"DINT"			SR = SR & 0xF7 											// Disable interrupt
+05 		0 	"IEN"			SR = SR | 0x08 											// Enable interrupt
+06 		5	"CSA"			AC = STATUSREG()										// Copy status to accumulator, updating senses.
+07		0	"CAS"			SR = AC;UPDATEFLAGS(SR & 7) 							// Copy accumulator to status
+08		5	"NOP"			; 														// Official NOP.
+
+//	IEN and CAS have 0 cycle times because they have the potential to enable an interrupt. A zero cycle time means that the
+//	cycle counter cannot go over beyond the frame (because it wasn't before).
+//
+//	If the check for Interrupt is done in the end of the frame *only* (it is a key press) then this effectively does
+//	the same as stopping an interrupt going off straight after IEN / CAS.
+//
+//	The penalty is a small error in the cycle timing.

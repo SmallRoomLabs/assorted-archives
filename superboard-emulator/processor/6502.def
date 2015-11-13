@@ -1,0 +1,265 @@
+// ********************************************************************************************************************************************************************
+// ********************************************************************************************************************************************************************
+//
+//																		6502 Core Generator Source
+//
+// ********************************************************************************************************************************************************************
+// ********************************************************************************************************************************************************************
+
+"ADC @O"	4	(A:6D,I:69,Z:65,IX:61,IY:71,ZX:75,AX:7D,AY:79)					@EAC;sValue = zValue = a = add8Bit(a,READ(eac),decimalFlag)
+
+"AND @O" 	4 	(A:2D,I:29,Z:25,IX:21,IY:31,ZX:35,AX:3D,AY:39)					@EAC; a = a & READ(eac) ; sValue = zValue = a
+
+"ASL @O"	6 	(A:0E,Z:06,ZX:16,AX:1E)											@EAC; WRITE(eac,aslCode(READ(eac)))
+
+"ASL A"		2 	0A																a = aslCode(a)
+
+"BCC @R"	2 	90																BRANCH(carryFlag == 0)
+
+"BCS @R"	2 	B0																BRANCH(carryFlag != 0)
+
+"BEQ @R"	2 	F0 																BRANCH(zValue == 0)
+
+"BIT @O"	3 	(A:2C,Z:24) 													@EAC; bitCode(READ(eac))
+
+"BMI @R"	2 	30 																BRANCH((sValue & 0x80) != 0)
+
+"BNE @R"	2 	D0 																BRANCH(zValue != 0)
+
+"BPL @R"	2 	10 																BRANCH((sValue & 0x80) == 0)
+  
+"BRA @R"	2 	80 																BRANCH(1)
+
+"BRK"		7 	00 																brkCode()
+
+"BVC @R"	2 	50 																BRANCH(overflowFlag == 0)
+
+"BVS @R"	2 	70 																BRANCH(overflowFlag != 0)
+
+"CLC"		2 	18 																carryFlag = 0
+
+"CLD"		2 	D8 																decimalFlag = 0
+
+"CLI"		2 	58 																interruptDisableFlag = 0
+
+"CLV"		2 	B8																overflowFlag = 0
+	
+"CMP @O"	4	(I:C9,A:CD,Z:C5,IX:C1,IY:D1,ZX:D5,AX:DD,AY:D9)					@EAC;sValue = zValue = sub8Bit(a,READ(eac),0)
+
+"CPX @O"	4 	(A:EC,Z:E4,I:E0)												@EAC;sValue = zValue = sub8Bit(x,READ(eac),0)
+
+"CPY @O"	4 	(I:C0,Z:C4,A:CC)												@EAC;sValue = zValue = sub8Bit(y,READ(eac),0)
+
+"DEC @O"	6 	(Z:C6,ZX:D6,A:CE,ZX:DE)											@EAC;sValue = zValue = READ(eac)-1;	WRITE(eac,sValue)
+
+"DEX"		2 	CA 																sValue = zValue = --x
+
+"DEY"		2 	88 																sValue = zValue = --y
+
+"EOR @O"	4 	(I:49,Z:45,ZX:55,A:4D,AX:5D,AX:59,IX:41,IY:51)					@EAC;sValue = zValue = a = a ^ READ(eac)
+
+"INC @O"	6 	(Z:E6,ZX:F6,A:EE,AX:FE)											@EAC;sValue = zValue = READ(eac)+1; WRITE(eac, sValue)
+
+"INX"		2 	E8																sValue = zValue = ++x
+
+"INY"		2 	C8 																sValue = zValue = ++y
+
+"JMP @O" 	3 	(A:4C,ID:6C) 													@EAC;SETPC(eac)
+
+"JSR @O"	6 	(A:20) 															@EAC;pc--;PUSH(pc >> 8);PUSH(pc & 0xFF);SETPC(eac)
+
+"LDA @O"	4 	(I:A9,Z:A5,ZX:B5,A:AD,AX:BD,AY:B9,IX:A1,IY:B1) 					@EAC;a = sValue = zValue = READ(eac)
+
+"LDX @O"	4 	(I:A2,Z:A6,ZY:B6,A:AE,AY:BE) 									@EAC;x = sValue = zValue = READ(eac)
+
+"LDY @O"	4 	(I:A0,Z:A4,ZX:B4,A:AC,AX:BC) 									@EAC;y = sValue = zValue = READ(eac)
+
+"LSR @O"	4 	(Z:46,ZX:56,A:4E,AX:5E) 										@EAC; WRITE(eac,lsrCode(READ(eac)))
+
+"LSR A"		2 	4A																a = lsrCode(a)
+
+"NOP"		2 	EA 																{}
+
+"ORA @O"	4 	(I:09,Z:05,ZX:15,A:0D,AX:1D,AY:19,IX:01,IY:11)					@EAC;sValue = zValue = a = a | READ(eac)
+
+"PHA"		3 	48																PUSH(a)
+
+"PHP"		3 	08 																PUSH(constructFlagRegister())
+
+"PLA"		4 	68 																a = sValue = zValue = POP()
+
+"PLP"		4 	28 																explodeFlagRegister(POP())
+
+"ROL @O"	4 	(Z:26,ZX:36,A:2E,AX:3E)											@EAC; WRITE(eac,rolCode(READ(eac)))
+
+"ROL A"		2 	2A																a = rolCode(a)
+
+"ROR @O"	4 	(Z:66,ZX:76,A:6E,AX:7E) 										@EAC; WRITE(eac,rorCode(READ(eac)))
+
+"ROR A"		2 	6A																a = rorCode(a)
+
+"RTI" 		6 	40 																explodeFlagRegister(POP());pc = POP();pc = pc | (((WORD16)POP()) << 8)
+
+"RTS" 		6 	60 																pc = POP();pc = pc | (((WORD16)POP()) << 8);pc++
+
+"SBC @O"	4	(I:E9,Z:E5,ZX:F5,A:ED,AX:FD,AY:F9,IX:E1,IY:F1) 					@EAC;sValue = zValue = a = sub8Bit(a,READ(eac),decimalFlag)
+
+"SEC"		2 	38 																carryFlag = 1	
+
+"SEI"		2 	78 																interruptDisableFlag = 1
+
+"SED"		2 	F8 																decimalFlag = 1
+
+"STA @O"	4 	(Z:85,ZX:95,A:8D,AX:9D,AY:99,IX:81,IY:91) 						@EAC;WRITE(eac,a)
+
+"STX @O"	4 	(Z:86,ZY:96,A:8E) 												@EAC;WRITE(eac,x)
+
+"STY @O"	4 	(Z:84,ZX:94,A:8C)												@EAC;WRITE(eac,y)
+						
+"TAX"		2 	AA																sValue = zValue = x = a
+
+"TAY"		2 	A8 																sValue = zValue = y = a
+
+"TSX" 		2 	BA 																sValue = zValue = x = s
+
+"TXA"		2 	8A 																sValue = zValue = a = x
+
+"TXS"		2 	9A 																s = x
+
+"TYA"		2 	98 																sValue = zValue = a = y
+
+// ********************************************************************************************************************************************************************
+//																				Utility code
+// ********************************************************************************************************************************************************************
+
+:#define PUSH(n) 	WRITE01(0x100+(s--),n)
+:#define POP(n) 	READ01(0x100+(++s))
+
+:#define BRANCH(t) 	{ temp8 = FETCH();if (t) { if (temp8 & 0x80) { SETPC(pc+temp8-256); } else { SETPC(pc+temp8); } } }
+
+:static BYTE8 a,x,y,s,carryFlag,interruptDisableFlag,breakFlag,decimalFlag,overflowFlag,sValue,zValue;
+:static WORD16 pc;
+
+:static BYTE8 temp8;
+:static WORD16 eac,temp16;
+
+// Flag Register is : NV1BDIZC
+
+:static void explodeFlagRegister(BYTE8 f) {
+:	carryFlag = f & 1;
+:	zValue = (f & 2);
+:	interruptDisableFlag = (f >> 2) & 1;
+:	decimalFlag = (f >> 3) & 1;
+:	breakFlag = (f >> 4) & 1;
+:	overflowFlag = (f >> 6) & 1;
+:	sValue = f & 0x80;
+:}
+
+:static BYTE8 constructFlagRegister(void) {
+:	BYTE8 f = 0x20 | carryFlag | (interruptDisableFlag << 2) | (decimalFlag << 3) | (breakFlag << 4) | (overflowFlag << 6);
+:	if (zValue == 0) f |= 0x02;
+:	if (sValue & 0x80) f |= 0x80;
+:	return f;	
+:}
+
+:static BYTE8 aslCode(BYTE8 n) {
+:	carryFlag = (n >> 7);
+:	n = sValue = zValue = (n << 1);
+:	return n;
+:}
+
+:static BYTE8 lsrCode(BYTE8 n) {
+:	carryFlag = n & 1;
+:	n = sValue = zValue = (n >> 1) & 0x7F;
+:	return n;
+:}
+
+:static BYTE8 rolCode(BYTE8 n) {
+:	BYTE8 newCarry = (n >> 7);
+:	n = sValue = zValue = (n << 1) | carryFlag;
+:	carryFlag = newCarry;
+:	return n;
+:}
+
+:static BYTE8 rorCode(BYTE8 n) {
+:	BYTE8 newCarry = n & 1;
+:	n = sValue = zValue = (n >> 1) | (carryFlag << 7);
+:	carryFlag = newCarry;
+:	return n;
+:}
+
+:static void bitCode(BYTE8 n) {
+:	zValue = ((n & a) == 0);
+:	sValue = n & 0x80;
+:	overflowFlag = (n & 0x40) ? 1 : 0;
+:}
+
+:static void executeInterrupt(WORD16 vector,BYTE8 setBreakFlag) {
+:	BYTE8 oldBreakFlag = breakFlag;
+:	PUSH(pc >> 8);PUSH(pc & 0xFF);					// Push PCH, PCL
+:	if (setBreakFlag) breakFlag = 1;				// Set Break Flag = 1 for the Push
+:	PUSH(constructFlagRegister());					// Push PSW with BRK = 1
+:	breakFlag = oldBreakFlag;						// Restore the break flag.
+:	SETPC(READWORD(vector)); 						// And jump to the vector.
+:	interruptDisableFlag = 1;	 					// Disable any further interrupts.
+:}
+
+:static void brkCode(void) {
+:	pc++;											// Skip byte after break.
+:	executeInterrupt(0xFFFE,0);						// And interrupt, not setting break Flag.
+:}
+
+:#ifdef ENABLE_NMI
+:static void nmiCode(void) {
+:	executeInterrupt(0xFFFA,1);	
+:}
+:#endif
+
+:#ifdef ENABLE_IRQ
+:static void irqCode(void) {
+:	if (interruptDisableFlag == 0) executeInterrupt(0xFFFE,1);
+:}
+:#endif
+
+:static void resetProcessor(void) {
+:	interruptDisableFlag = 1;						// IRQ Disabled
+:	carryFlag &= 1;overflowFlag &= 1;				// Validate other flags
+:	breakFlag &= 1;decimalFlag &= 1;
+:	SETPC(READWORD(0xFFFC));						// Go to start vector.
+:}
+
+:static BYTE8 add8Bit(BYTE8 n1,BYTE8 n2,BYTE8 isDecimalMode) {
+:	WORD16 result;
+: 	BYTE8 r,t;
+: 	if (isDecimalMode) {
+:       	r = (n1 & 0xf)+(n2 & 0xf)+carryFlag;
+:        if (r > 9) r += 6;
+:        t = (n1 >> 4)+(n2 >> 4)+ (r >= 0x10 ? 1 : 0);
+:        if (t > 9) t += 6;
+:        result = (r & 0xF) | (t << 4);
+:        carryFlag = (t >= 0x10 ? 1 : 0);
+:    } else {
+:        result = n1 + n2 + carryFlag;
+:        overflowFlag = ((n1 & 0x80) == (n2 & 0x80) && (n1 & 0x80) != (result & 0x80)) ? 1 : 0;
+:        carryFlag = (result >> 8) & 1;
+:    }
+: 	return result & 0xFF;
+:}
+
+:static BYTE8 sub8Bit(BYTE8 n1,BYTE8 n2,BYTE8 isDecimalMode) {
+: 	WORD16 result;
+: 	BYTE8 r,t;
+: 	if (isDecimalMode) {
+: 		r = (n1 & 0xf) - (n2 & 0xf) - (carryFlag ^ 1);
+:        if (r & 0x10) r -= 6;
+: 		t = (n1 >> 4) - (n2 >> 4) - ((r & 0x10)>>4);
+:        if (t & 0x10) t -= 6;
+: 		result = (r & 0xF) | (t << 4);
+: 		carryFlag = (t > 15) ? 0 : 1;
+:    } else {
+:        result = n1 + (n2 ^ 0xFF) + carryFlag;
+: 		carryFlag = (result >> 8) & 1;
+: 		overflowFlag = ((n1 & 0x80) != (n2 & 0x80) && (n1 & 0x80) != (result & 0x80)) ? 1 : 0;
+: 	}
+: 	return result & 0xFF;
+:}

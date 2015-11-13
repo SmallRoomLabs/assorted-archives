@@ -1,0 +1,439 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Interface</name>
+    <events>
+        <comment>Make all buttons pop in/out when tapped</comment>
+        <event-group description="All i/o is done through the interfacedata dictionary object." sid="3001265759270327" title="Interface Software" />
+        <event-block sid="1389932021531624">
+            <conditions>
+                <condition id="17" name="On tap object" sid="3933246265349987" type="Touch">
+                    <param id="0" name="Object">Buttons</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="4" name="Set animation" sid="9273534994214095" type="Buttons">
+                    <param id="0" name="Animation">&quot;In&quot;</param>
+                    <param id="1" name="From">1</param>
+                </action>
+                <action behavior="Timer" id="0" name="Start timer" sid="6739924337606429" type="Buttons">
+                    <param id="0" name="Duration">0.3</param>
+                    <param id="1" name="Type">0</param>
+                    <param id="2" name="Tag">&quot;ButtonOut&quot;</param>
+                </action>
+            </actions>
+        </event-block>
+        <event-block sid="517246399737802">
+            <conditions>
+                <condition behavior="Timer" id="0" name="On timer" sid="5570594218657625" type="Buttons">
+                    <param id="0" name="Tag">&quot;ButtonOut&quot;</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="4" name="Set animation" sid="8473758462047418" type="Buttons">
+                    <param id="0" name="Animation">&quot;Out&quot;</param>
+                    <param id="1" name="From">1</param>
+                </action>
+            </actions>
+        </event-block>
+        <comment>Make toggles ... toggle</comment>
+        <event-block sid="4374002651274483">
+            <conditions>
+                <condition id="17" name="On tap object" sid="9517195738898646" type="Touch">
+                    <param id="0" name="Object">Toggles</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="3671444390267394">
+                    <conditions>
+                        <condition id="-8" name="Compare two values" sid="878743328961178" type="System">
+                            <param id="0" name="First value">Toggles.AnimationName</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Second value">&quot;Off&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="4" name="Set animation" sid="8494153815604511" type="Toggles">
+                            <param id="0" name="Animation">&quot;On&quot;</param>
+                            <param id="1" name="From">1</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="584685149916145">
+                    <conditions>
+                        <condition id="-22" name="Else" sid="9948083536683724" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="4" name="Set animation" sid="9128468247507904" type="Toggles">
+                            <param id="0" name="Animation">&quot;Off&quot;</param>
+                            <param id="1" name="From">1</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Handle Labelled objects on creation</comment>
+        <event-block sid="474506332161239">
+            <conditions>
+                <condition id="-18" name="On created" sid="6456931214939247" type="Labelled" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="461686639190952">
+                    <conditions>
+                        <condition id="-7" name="Compare instance variable" sid="7702270846406326" type="Labelled">
+                            <param id="0" name="Instance variable">labelText</param>
+                            <param id="1" name="Comparison">1</param>
+                            <param id="2" name="Value">&quot;&quot;</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-3" name="Create object" sid="3566541414298077" type="System">
+                            <param id="0" name="Object to create">Label</param>
+                            <param id="1" name="Layer">0</param>
+                            <param id="2" name="X">Labelled.X</param>
+                            <param id="3" name="Y">Labelled.Y-32</param>
+                        </action>
+                        <action id="0" name="Set text" sid="7369596197043432" type="Label">
+                            <param id="0" name="Text">Labelled.labelText</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Handle creation of banks of LEDs</comment>
+        <event-block sid="5686526994239123">
+            <conditions>
+                <condition id="-18" name="On created" sid="1837900569754131" type="LEDCreator" />
+            </conditions>
+            <actions>
+                <action id="0" name="Add key" sid="5493736669999491" type="InterfaceData">
+                    <param id="0" name="Key">LEDCreator.key</param>
+                    <param id="1" name="Value">0</param>
+                </action>
+            </actions>
+            <sub-events>
+                <event-block sid="1624590008576935">
+                    <conditions>
+                        <condition id="-10" name="For" sid="8091170550239055" type="System">
+                            <param id="0" name="Name">&quot;&quot;</param>
+                            <param id="1" name="Start index">0</param>
+                            <param id="2" name="End index">LEDCreator.bitsDisplayed-1</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-3" name="Create object" sid="3973261063717501" type="System">
+                            <param id="0" name="Object to create">LEDComponent</param>
+                            <param id="1" name="Layer">0</param>
+                            <param id="2" name="X">LEDCreator.X+loopindex*32-(LEDCreator.bitsDisplayed-1)/2*32</param>
+                            <param id="3" name="Y">LEDCreator.Y</param>
+                        </action>
+                        <action id="-10" name="Set value" sid="1930115577935278" type="LEDComponent">
+                            <param id="0" name="Instance variable">key</param>
+                            <param id="1" name="Value">LEDCreator.key</param>
+                        </action>
+                        <action id="-10" name="Set value" sid="2040096710261668" type="LEDComponent">
+                            <param id="0" name="Instance variable">bit</param>
+                            <param id="1" name="Value">LEDCreator.bitsDisplayed-1-loopindex</param>
+                        </action>
+                        <action id="-15" name="Set visible" sid="3885937977820406" type="LEDCreator">
+                            <param id="0" name="Visibility">0</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Handle creation of banks of Switches</comment>
+        <event-block sid="4665616460346715">
+            <conditions>
+                <condition id="-18" name="On created" sid="951794720449345" type="SwitchCreator" />
+            </conditions>
+            <actions>
+                <action id="0" name="Add key" sid="7036119788371792" type="InterfaceData">
+                    <param id="0" name="Key">SwitchCreator.key</param>
+                    <param id="1" name="Value">0</param>
+                </action>
+            </actions>
+            <sub-events>
+                <event-block sid="1698965971186044">
+                    <conditions>
+                        <condition id="-10" name="For" sid="8266947159313701" type="System">
+                            <param id="0" name="Name">&quot;&quot;</param>
+                            <param id="1" name="Start index">0</param>
+                            <param id="2" name="End index">SwitchCreator.bitsDisplayed-1</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-3" name="Create object" sid="2127283697656901" type="System">
+                            <param id="0" name="Object to create">SwitchComponent</param>
+                            <param id="1" name="Layer">0</param>
+                            <param id="2" name="X">SwitchCreator.X+loopindex*32-(SwitchCreator.bitsDisplayed-1)/2*32</param>
+                            <param id="3" name="Y">SwitchCreator.Y</param>
+                        </action>
+                        <action id="-10" name="Set value" sid="1991688894519854" type="SwitchComponent">
+                            <param id="0" name="Instance variable">key</param>
+                            <param id="1" name="Value">SwitchCreator.key</param>
+                        </action>
+                        <action id="-10" name="Set value" sid="9985055242680509" type="SwitchComponent">
+                            <param id="0" name="Instance variable">bit</param>
+                            <param id="1" name="Value">SwitchCreator.bitsDisplayed-1-loopindex</param>
+                        </action>
+                        <action id="-15" name="Set visible" sid="5061256565001733" type="SwitchCreator">
+                            <param id="0" name="Visibility">0</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Hit Square PushButton (these are used to set data values quickly on switches)</comment>
+        <event-block sid="7984788898063881">
+            <conditions>
+                <condition id="17" name="On tap object" sid="1905948349783646" type="Touch">
+                    <param id="0" name="Object">SquarePushButton</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <comment>Update all the switch components that refer to this</comment>
+                <event-block sid="2340601633416702">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="7661605418527659" type="System">
+                            <param id="0" name="Object">SwitchComponent</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block sid="872497797108017">
+                            <conditions>
+                                <condition id="-7" name="Compare instance variable" sid="1272295581931532" type="SwitchComponent">
+                                    <param id="0" name="Instance variable">key</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Value">SquarePushButton.key</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <comment>Dependent on nibble half copy the value into the switches</comment>
+                                <event-block sid="1456734077254933">
+                                    <conditions>
+                                        <condition id="-8" name="Is boolean instance variable set" sid="1385554701730182" type="SquarePushButton">
+                                            <param id="0" name="Instance variable">topNibble</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions />
+                                    <sub-events>
+                                        <event-block sid="485217213161499">
+                                            <conditions>
+                                                <condition id="-7" name="Compare instance variable" sid="921066378176479" type="SwitchComponent">
+                                                    <param id="0" name="Instance variable">bit</param>
+                                                    <param id="1" name="Comparison">5</param>
+                                                    <param id="2" name="Value">4</param>
+                                                </condition>
+                                            </conditions>
+                                            <actions>
+                                                <action id="4" name="Set animation" sid="956784563644599" type="SwitchComponent">
+                                                    <param id="0" name="Animation">(getbit(SquarePushButton.newValue,SwitchComponent.bit) &lt;&gt; 0) ? &quot;On&quot;:&quot;Off&quot;</param>
+                                                    <param id="1" name="From">1</param>
+                                                </action>
+                                            </actions>
+                                        </event-block>
+                                    </sub-events>
+                                </event-block>
+                                <event-block sid="8557590222664309">
+                                    <conditions>
+                                        <condition id="-22" name="Else" sid="7888515255913825" type="System" />
+                                    </conditions>
+                                    <actions />
+                                    <sub-events>
+                                        <event-block sid="1878792592677482">
+                                            <conditions>
+                                                <condition id="-7" name="Compare instance variable" sid="6116113018713664" type="SwitchComponent">
+                                                    <param id="0" name="Instance variable">bit</param>
+                                                    <param id="1" name="Comparison">3</param>
+                                                    <param id="2" name="Value">3</param>
+                                                </condition>
+                                            </conditions>
+                                            <actions>
+                                                <action id="4" name="Set animation" sid="141387346086128" type="SwitchComponent">
+                                                    <param id="0" name="Animation">(getbit(SquarePushButton.newValue,SwitchComponent.bit) &lt;&gt; 0) ? &quot;On&quot;:&quot;Off&quot;</param>
+                                                    <param id="1" name="From">1</param>
+                                                </action>
+                                            </actions>
+                                        </event-block>
+                                    </sub-events>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Copy all switch data to the interface dictionary, then update all LEDs with the current value </comment>
+        <event-block sid="8882641922113334">
+            <conditions>
+                <condition id="-6" name="Every X seconds" sid="7111738747604042" type="System">
+                    <param id="0" name="Interval (seconds)">0.1</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="9767812092481194">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="2784918355258336" type="System">
+                            <param id="0" name="Object">SwitchComponent</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Add key" sid="8268585429087394" type="InterfaceData">
+                            <param id="0" name="Key">SwitchComponent.key</param>
+                            <param id="1" name="Value">setbit(InterfaceData.Get(SwitchComponent.key),SwitchComponent.bit,(SwitchComponent.AnimationName = &quot;On&quot;) ? 1 : 0)</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="763246371613736">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="6671350438889605" type="System">
+                            <param id="0" name="Object">LEDComponent</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="4" name="Set animation" sid="965931934839027" type="LEDComponent">
+                            <param id="0" name="Animation">getbit(InterfaceData.Get(LEDComponent.key),LEDComponent.bit) &lt;&gt; 0 ? &quot;On&quot;:&quot;Off&quot;</param>
+                            <param id="1" name="From">1</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Create buttons</comment>
+        <event-block sid="7524151729927225">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="5707598861560011" type="System" />
+            </conditions>
+            <actions>
+                <action id="-15" name="Set visible" sid="3002892737486256" type="KeypadArea">
+                    <param id="0" name="Visibility">0</param>
+                </action>
+            </actions>
+            <sub-events>
+                <variable constant="0" name="height" sid="4082222676907024" static="0" type="number">0</variable>
+                <variable constant="0" name="width" sid="7542777407357844" static="0" type="number">0</variable>
+                <variable constant="0" name="keys" sid="7213168451562597" static="0" type="text">!1:!2:!3:!4:6:7:!8:!9:!5:!6:4:5:!10:!11:!7:!14:2:3:X:!0:!12:X:0:1</variable>
+                <variable constant="0" name="descr" sid="3225613665748752" static="0" type="text"></variable>
+                <event-block sid="2073359765449713">
+                    <conditions>
+                        <condition id="-10" name="For" sid="4909723720888632" type="System">
+                            <param id="0" name="Name">&quot;&quot;</param>
+                            <param id="1" name="Start index">0</param>
+                            <param id="2" name="End index">23</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="1357151896527408" type="System">
+                            <param id="0" name="Variable">height</param>
+                            <param id="1" name="Value">KeypadArea.Height/4</param>
+                        </action>
+                        <action id="-9" name="Set value" sid="7844831596906572" type="System">
+                            <param id="0" name="Variable">width</param>
+                            <param id="1" name="Value">KeypadArea.Width/6</param>
+                        </action>
+                        <action id="-9" name="Set value" sid="6984808009528876" type="System">
+                            <param id="0" name="Variable">descr</param>
+                            <param id="1" name="Value">tokenat(keys,loopindex,&quot;:&quot;)</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <event-block sid="7608057563841233">
+                            <conditions>
+                                <condition id="-14" name="Compare variable" sid="1366602858001398" type="System">
+                                    <param id="0" name="Variable">descr</param>
+                                    <param id="1" name="Comparison">1</param>
+                                    <param id="2" name="Value">&quot;X&quot;</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-3" name="Create object" sid="8542809720600296" type="System">
+                                    <param id="0" name="Object to create">SquarePushButton</param>
+                                    <param id="1" name="Layer">0</param>
+                                    <param id="2" name="X">KeypadArea.BBoxLeft+(loopindex % 6) * width+width/2</param>
+                                    <param id="3" name="Y">KeypadArea.BBoxTop+floor(loopindex / 6) * height + height/2</param>
+                                </action>
+                                <action id="-7" name="Set size" sid="3263893801969548" type="SquarePushButton">
+                                    <param id="0" name="Width">width*0.97</param>
+                                    <param id="1" name="Height">height*0.97</param>
+                                </action>
+                                <action id="-3" name="Create object" sid="1661669979855066" type="System">
+                                    <param id="0" name="Object to create">Label</param>
+                                    <param id="1" name="Layer">0</param>
+                                    <param id="2" name="X">SquarePushButton.X</param>
+                                    <param id="3" name="Y">SquarePushButton.Y-2</param>
+                                </action>
+                                <action id="-28" name="Set effect parameter" sid="7100859228901483" type="Label">
+                                    <param id="0" name="Effect">&quot;SetColor&quot;</param>
+                                    <param id="1" name="Parameter index">0</param>
+                                    <param id="2" name="Value">0</param>
+                                </action>
+                                <action id="-28" name="Set effect parameter" sid="6848238068039921" type="Label">
+                                    <param id="0" name="Effect">&quot;SetColor&quot;</param>
+                                    <param id="1" name="Parameter index">1</param>
+                                    <param id="2" name="Value">0</param>
+                                </action>
+                                <action id="-28" name="Set effect parameter" sid="4177036078200838" type="Label">
+                                    <param id="0" name="Effect">&quot;SetColor&quot;</param>
+                                    <param id="1" name="Parameter index">2</param>
+                                    <param id="2" name="Value">0</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <event-block sid="1449118770476066">
+                                    <conditions>
+                                        <condition id="-8" name="Compare two values" sid="2173967171451093" type="System">
+                                            <param id="0" name="First value">left(descr,1)</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Second value">&quot;!&quot;</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-13" name="Set boolean" sid="9690145612910208" type="SquarePushButton">
+                                            <param id="0" name="Instance variable">topNibble</param>
+                                            <param id="1" name="Value">1</param>
+                                        </action>
+                                        <action id="-10" name="Set value" sid="6501228728321463" type="SquarePushButton">
+                                            <param id="0" name="Instance variable">newValue</param>
+                                            <param id="1" name="Value">int(mid(descr,1,99))*16</param>
+                                        </action>
+                                        <action id="0" name="Set text" sid="8697951146007153" type="Label">
+                                            <param id="0" name="Text">tokenat(MNEMONICS,SquarePushButton.newValue/16,&quot;:&quot;)</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <event-block sid="6276375323561468">
+                                    <conditions>
+                                        <condition id="-22" name="Else" sid="2492074765327703" type="System" />
+                                    </conditions>
+                                    <actions>
+                                        <action id="0" name="Set text" sid="1206880018342741" type="Label">
+                                            <param id="0" name="Text">descr</param>
+                                        </action>
+                                        <action id="-13" name="Set boolean" sid="2556248863689163" type="SquarePushButton">
+                                            <param id="0" name="Instance variable">topNibble</param>
+                                            <param id="1" name="Value">0</param>
+                                        </action>
+                                        <action id="-10" name="Set value" sid="2358089586730118" type="SquarePushButton">
+                                            <param id="0" name="Instance variable">newValue</param>
+                                            <param id="1" name="Value">descr</param>
+                                        </action>
+                                        <action id="2" name="Set scale" sid="6407485308981859" type="Label">
+                                            <param id="0" name="Scale">0.4</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+    </events>
+</c2eventsheet>

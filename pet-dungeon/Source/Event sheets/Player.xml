@@ -1,0 +1,415 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Player</name>
+    <events>
+        <event-group description="" sid="2766137151231792" title="Player Code" />
+        <comment>Open up the visibility at the top level as you walk round</comment>
+        <event-block sid="2622020377128975">
+            <conditions>
+                <condition id="-1" name="Every tick" sid="6026057419023133" type="System" />
+            </conditions>
+            <actions>
+                <action id="3" name="Set tile range" sid="3603479756167879" type="Visibility">
+                    <param id="0" name="Tile X">Visibility.PositionToTileX(Player.X)-1</param>
+                    <param id="1" name="Tile Y">Visibility.PositionToTileY(Player.Y)-1</param>
+                    <param id="2" name="Width">3</param>
+                    <param id="3" name="Height">3</param>
+                    <param id="4" name="Tile">VTILE_OPEN</param>
+                    <param id="5" name="State">0</param>
+                </action>
+            </actions>
+        </event-block>
+        <comment>If waiting for offer, then stop moving</comment>
+        <event-block sid="262683620203089">
+            <conditions>
+                <condition id="-8" name="Is boolean instance variable set" sid="4422852427409047" type="Player">
+                    <param id="0" name="Instance variable">waitingForOffer</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action behavior="8Direction" id="0" name="Stop" sid="7834025357158533" type="Player" />
+            </actions>
+        </event-block>
+        <comment>Otherwise do moving code</comment>
+        <event-block sid="9986825772847798">
+            <conditions>
+                <condition id="-22" name="Else" sid="6158777762263445" type="System" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <comment>Lock Player onto Path</comment>
+                <event-block sid="3926690363633967">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="2779177717909214" type="System" />
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <variable constant="0" name="tileID" sid="447016219247886" static="0" type="number">0</variable>
+                        <comment>Read the tile ID</comment>
+                        <event-block sid="860888630469284">
+                            <conditions>
+                                <condition id="-1" name="Every tick" sid="282472961541679" type="System" />
+                            </conditions>
+                            <actions>
+                                <action id="-9" name="Set value" sid="1448979416469283" type="System">
+                                    <param id="0" name="Variable">tileID</param>
+                                    <param id="1" name="Value">Map.TileAt(Map.PositionToTileX(Player.X),Map.PositionToTileY(Player.Y)) % 8</param>
+                                </action>
+                                <action id="-13" name="Set boolean" sid="1450431238238263" type="Player">
+                                    <param id="0" name="Instance variable">isFloating</param>
+                                    <param id="1" name="Value">0</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <comment>If shift is down can &quot;float&quot; through walls</comment>
+                                <event-block sid="2795376459454879">
+                                    <conditions>
+                                        <condition id="-14" name="Compare variable" sid="4879503048770018" type="System">
+                                            <param id="0" name="Variable">tileID</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">TILE_WALL</param>
+                                        </condition>
+                                        <condition id="2" name="Key is down" sid="4104220945179577" type="Keyboard">
+                                            <param id="0" name="Key">16 (Shift)</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-9" name="Set value" sid="6760919515950195" type="System">
+                                            <param id="0" name="Variable">tileID</param>
+                                            <param id="1" name="Value">TILE_PATH</param>
+                                        </action>
+                                        <action id="-13" name="Set boolean" sid="7005503654871733" type="Player">
+                                            <param id="0" name="Instance variable">isFloating</param>
+                                            <param id="1" name="Value">1</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <comment>Cannot (normally) go through walls or the frame</comment>
+                                <event-block any="1" sid="7431028622049143">
+                                    <conditions>
+                                        <condition id="-14" name="Compare variable" sid="9684619692714579" type="System">
+                                            <param id="0" name="Variable">tileID</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">TILE_WALL</param>
+                                        </condition>
+                                        <condition id="-14" name="Compare variable" sid="7110890223422547" type="System">
+                                            <param id="0" name="Variable">tileID</param>
+                                            <param id="1" name="Comparison">0</param>
+                                            <param id="2" name="Value">TILE_FRAME</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-3" name="Set position" sid="1565211055108512" type="Player">
+                                            <param id="0" name="X">Player.lastGoodX</param>
+                                            <param id="1" name="Y">Player.lastGoodY</param>
+                                        </action>
+                                        <action behavior="8Direction" id="0" name="Stop" sid="8043085107535063" type="Player" />
+                                    </actions>
+                                </event-block>
+                                <comment>Set last good known position</comment>
+                                <event-block sid="4808732480209311">
+                                    <conditions>
+                                        <condition id="-22" name="Else" sid="8649234946768282" type="System" />
+                                    </conditions>
+                                    <actions>
+                                        <action id="-10" name="Set value" sid="763511859057058" type="Player">
+                                            <param id="0" name="Instance variable">lastGoodX</param>
+                                            <param id="1" name="Value">Player.X</param>
+                                        </action>
+                                        <action id="-10" name="Set value" sid="5735116606846424" type="Player">
+                                            <param id="0" name="Instance variable">lastGoodY</param>
+                                            <param id="1" name="Value">Player.Y</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>Update the maximum hit points value. Adjust hit points down when moving - scaled up significantly if travelling through walls.</comment>
+                <event-block sid="8930883327933661">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="696860576341407" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-10" name="Set value" sid="6971896960085459" type="Player">
+                            <param id="0" name="Instance variable">maxHitPoints</param>
+                            <param id="1" name="Value">max(Player.hitPoints,Player.maxHitPoints)</param>
+                        </action>
+                        <action id="-13" name="Set boolean" sid="9228608450346666" type="Player">
+                            <param id="0" name="Instance variable">isMoving</param>
+                            <param id="1" name="Value">0</param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <event-block sid="4419241343588426">
+                            <conditions>
+                                <condition behavior="8Direction" id="1" name="Compare speed" sid="5168915426203014" type="Player">
+                                    <param id="0" name="Comparison">4</param>
+                                    <param id="1" name="Speed">0.01</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-13" name="Set boolean" sid="1518066650665236" type="Player">
+                                    <param id="0" name="Instance variable">isMoving</param>
+                                    <param id="1" name="Value">1</param>
+                                </action>
+                                <action id="-12" name="Subtract from" sid="7679752233543078" type="Player">
+                                    <param id="0" name="Instance variable">hitPoints</param>
+                                    <param id="1" name="Value">0.15*dt*40/Player.8Direction.Speed</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <comment>Shift is down - is floating ?</comment>
+                                <event-block sid="2699519744533957">
+                                    <conditions>
+                                        <condition id="-8" name="Is boolean instance variable set" sid="8249909406825755" type="Player">
+                                            <param id="0" name="Instance variable">isFloating</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-12" name="Subtract from" sid="4970543569235355" type="Player">
+                                            <param id="0" name="Instance variable">hitPoints</param>
+                                            <param id="1" name="Value">2*dt*Player.8Direction.Speed/40</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <comment>This only actually updates when HP has changed</comment>
+                                <event-block sid="117348639152074">
+                                    <conditions>
+                                        <condition id="-1" name="Every tick" sid="9255720531214708" type="System" />
+                                    </conditions>
+                                    <actions>
+                                        <action id="0" name="Call function" sid="633000991256885" type="Function">
+                                            <param id="0" name="Name">&quot;RefreshHitPoints&quot;</param>
+                                            <param id="1" name="Parameter {n}"></param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>Check for nearest gold</comment>
+                <event-block sid="9029571838562182">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="1823863895505934" type="System" />
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <comment>Pick the nearest</comment>
+                        <event-block sid="5691288485036737">
+                            <conditions>
+                                <condition id="-15" name="Pick nearest/furthest" sid="2453195775095266" type="Gold">
+                                    <param id="0" name="Which">0</param>
+                                    <param id="1" name="X">Player.X</param>
+                                    <param id="2" name="Y">Player.Y</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <comment>If in range, and first time, display Gold near message</comment>
+                                <event-block sid="8341213504633084">
+                                    <conditions>
+                                        <condition id="-8" name="Compare two values" sid="6721322424182423" type="System">
+                                            <param id="0" name="First value">distance(Player.X,Player.Y,Gold.X,Gold.Y)</param>
+                                            <param id="1" name="Comparison">2</param>
+                                            <param id="2" name="Second value">CELLSIZE*4</param>
+                                        </condition>
+                                        <condition id="-4" name="Trigger once while true" sid="2495317360449811" type="System" />
+                                    </conditions>
+                                    <actions>
+                                        <action id="0" name="Call function" sid="5107683698487545" type="Function">
+                                            <param id="0" name="Name">&quot;AddMessageToQueue&quot;</param>
+                                            <param id="1" name="Parameter {n}">&quot;Gold is near&quot;</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>Collected gold</comment>
+                <event-block sid="9481629006635642">
+                    <conditions>
+                        <condition id="0" name="On collision with another object" sid="1714537352570173" type="Player">
+                            <param id="0" name="Object">Gold</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <variable constant="0" name="goldCollected" sid="3040269675955136" static="0" type="number">0</variable>
+                        <event-block sid="1860260541971032">
+                            <conditions>
+                                <condition id="-1" name="Every tick" sid="379168930707472" type="System" />
+                            </conditions>
+                            <actions>
+                                <action id="-9" name="Set value" sid="8094860804987969" type="System">
+                                    <param id="0" name="Variable">goldCollected</param>
+                                    <param id="1" name="Value">1 + round(random(0,Player.gold+1))</param>
+                                </action>
+                                <action id="0" name="Call function" sid="3135283206564145" type="Function">
+                                    <param id="0" name="Name">&quot;AddMessageToQueue&quot;</param>
+                                    <param id="1" name="Parameter {n}">&quot;You found &quot; &amp; goldCollected &amp; &quot; gold pieces.&quot;</param>
+                                </action>
+                                <action id="-11" name="Add to" sid="9453251995715023" type="Player">
+                                    <param id="0" name="Instance variable">gold</param>
+                                    <param id="1" name="Value">goldCollected</param>
+                                </action>
+                                <action id="0" name="Call function" sid="2470772716652113" type="Function">
+                                    <param id="0" name="Name">&quot;RefreshStatus&quot;</param>
+                                    <param id="1" name="Parameter {n}"></param>
+                                </action>
+                                <action behavior="Fade" id="1" name="Start fade" sid="9586370268493163" type="Gold" />
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>Autoheal to maximum when not moving (adapted from &quot;5&quot; option on line 1290. Healing only goes as far as the maximum HP level attained by other methods (i.e. you can&apos;t heal indefinitely like the original)</comment>
+                <event-block sid="5526833325887504">
+                    <conditions>
+                        <condition id="-6" name="Every X seconds" sid="4731409233732144" type="System">
+                            <param id="0" name="Interval (seconds)">1.0</param>
+                        </condition>
+                        <condition id="-8" inverted="1" name="Is boolean instance variable set" sid="6334502198203858" type="Player">
+                            <param id="0" name="Instance variable">isMoving</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-11" name="Add to" sid="9194823616769256" type="Player">
+                            <param id="0" name="Instance variable">hitPoints</param>
+                            <param id="1" name="Value">(10+sqrt(Player.experience/Player.hitPoints))*0.1</param>
+                        </action>
+                        <action id="-10" name="Set value" sid="6807656485987766" type="Player">
+                            <param id="0" name="Instance variable">hitPoints</param>
+                            <param id="1" name="Value">min(Player.hitPoints,Player.maxHitPoints)</param>
+                        </action>
+                        <action id="0" name="Call function" sid="9403145661307775" type="Function">
+                            <param id="0" name="Name">&quot;RefreshHitPoints&quot;</param>
+                            <param id="1" name="Parameter {n}"></param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Handle touch interface</comment>
+        <event-block sid="4723210684009005">
+            <conditions>
+                <condition id="2" name="Is in touch" sid="7006330452206845" type="Touch" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="7512958626013995">
+                    <conditions>
+                        <condition id="-8" name="Compare two values" sid="2147387919053138" type="System">
+                            <param id="0" name="First value">Touch.X</param>
+                            <param id="1" name="Comparison">2</param>
+                            <param id="2" name="Second value">LayoutWidth/3</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action behavior="8Direction" id="7" name="Simulate control" sid="1337630209310546" type="Player">
+                            <param id="0" name="Control">0</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="2235036871693628">
+                    <conditions>
+                        <condition id="-8" name="Compare two values" sid="3367054633271175" type="System">
+                            <param id="0" name="First value">Touch.X</param>
+                            <param id="1" name="Comparison">5</param>
+                            <param id="2" name="Second value">LayoutWidth*2/3</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action behavior="8Direction" id="7" name="Simulate control" sid="2578447919561165" type="Player">
+                            <param id="0" name="Control">1</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="8392552870030527">
+                    <conditions>
+                        <condition id="-8" name="Compare two values" sid="8395848388358028" type="System">
+                            <param id="0" name="First value">Touch.Y</param>
+                            <param id="1" name="Comparison">2</param>
+                            <param id="2" name="Second value">LayoutHeight/3</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action behavior="8Direction" id="7" name="Simulate control" sid="7616655960672363" type="Player">
+                            <param id="0" name="Control">2</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="6356997670451511">
+                    <conditions>
+                        <condition id="-8" name="Compare two values" sid="6687312134688595" type="System">
+                            <param id="0" name="First value">Touch.Y</param>
+                            <param id="1" name="Comparison">5</param>
+                            <param id="2" name="Second value">LayoutHeight*2/3</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action behavior="8Direction" id="7" name="Simulate control" sid="5642314037940608" type="Player">
+                            <param id="0" name="Control">3</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Check for end game situation</comment>
+        <event-block any="1" sid="5933955576936047">
+            <conditions>
+                <condition id="-7" name="Compare instance variable" sid="4485962668154953" type="Player">
+                    <param id="0" name="Instance variable">hitPoints</param>
+                    <param id="1" name="Comparison">2</param>
+                    <param id="2" name="Value">1</param>
+                </condition>
+                <condition id="-8" name="Compare two values" sid="6450644461260149" type="System">
+                    <param id="0" name="First value">Gold.Count</param>
+                    <param id="1" name="Comparison">0</param>
+                    <param id="2" name="Second value">0</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action behavior="Fade" id="1" name="Start fade" sid="8814004199816675" type="Visibility" />
+                <action id="-10" name="Set value" sid="2809688635521712" type="MessageText">
+                    <param id="0" name="Instance variable">changeTime</param>
+                    <param id="1" name="Value">time+999999</param>
+                </action>
+                <action id="0" name="Set text" sid="7848563278872807" type="MessageText">
+                    <param id="0" name="Text">&quot;gold:&quot; &amp; Player.gold &amp; &quot; exp:&quot; &amp; Player.experience &amp; &quot; killed &quot; &amp; Player.killCount &amp; &quot; beasts&quot;</param>
+                </action>
+                <action behavior="8Direction" id="8" name="Set enabled" sid="2193416586507485" type="Player">
+                    <param id="0" name="State">0</param>
+                </action>
+            </actions>
+        </event-block>
+        <comment>Remove button when queue not empty</comment>
+        <event-block sid="7002275426178753">
+            <conditions>
+                <condition id="-7" name="Compare instance variable" sid="3558991878822643" type="MessageText">
+                    <param id="0" name="Instance variable">queue</param>
+                    <param id="1" name="Comparison">0</param>
+                    <param id="2" name="Value">&quot;&quot;</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="-16" name="Set opacity" sid="6852593202136162" type="DecisionButton">
+                    <param id="0" name="Opacity">100</param>
+                </action>
+            </actions>
+        </event-block>
+        <event-block sid="2766118098676092">
+            <conditions>
+                <condition id="-22" name="Else" sid="7702992435895081" type="System" />
+            </conditions>
+            <actions>
+                <action id="-16" name="Set opacity" sid="1416972515097078" type="DecisionButton">
+                    <param id="0" name="Opacity">0</param>
+                </action>
+            </actions>
+        </event-block>
+    </events>
+</c2eventsheet>

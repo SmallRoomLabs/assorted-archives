@@ -1,0 +1,639 @@
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 1 - 9/18/2015 22:52:17
+
+
+       1/       0 :                     
+       2/       0 :                     		cpu	sc/mp
+       3/       0 :                     
+       4/       0 : =0x70               buildPage = 0x70 									; page built into.
+       5/       0 : =0x7E00             videoRAM = 0x7E00 									; video RAM
+       6/       0 : =0x7F00             insRAM = 0x7F00 									; 8154 RAM.
+       7/       0 : =0x7C00             keyboardPort = 0x7C00 								; keyboard port
+       8/       0 :                     
+       9/       0 :                     
+      10/       0 :                     ;		xFC8-xFE7 		32 byte stack
+      11/       0 :                     ;		xFE8-xFEF 		8 label addresses
+      12/       0 :                     ;		xFF0-xFF1 		unused
+      13/       0 :                     ;		xFF2 			current command
+      14/       0 :                     ;		xFF3 			lines to display
+      15/       0 :                     ;		xFF4,5 			address to display / etc.
+      16/       0 :                     ;		xFF6 			Cursor position
+      17/       0 :                     ;       xFF7-xFFF       Storage for Registers (Monitor only)
+      18/       0 :                     
+      19/       0 : =0x7FE8             stack 	= 0x7FE8 									; stack ends here (use this because it pre-decrements)
+      20/       0 : =0x7FE8             labels 	= 0x7FE8 									; labels here (8 bytes)
+      21/       0 : =0x7FF2             command = 0x7FF2 									; current command.
+      22/       0 : =0x7FF3             listCount = 0x7FF3 									; lines to list.
+      23/       0 : =0x7FF4             workAddress = 0x7FF4 								; address working from (low byte, high byte)
+      24/       0 : =0x7FF6             cursor 	= 0x7FF6 									; cursor position.
+      25/       0 :                     
+      26/       0 :                     
+      27/       0 : =0xFF7              registers = 0x0FF7 									; registers (these 2 are accessed via direct mode)
+      28/       0 : =0xFF7              r_a 	= registers 								; hence the "wrong" values here.
+      29/       0 : =0xFF8              r_e 	= registers+1
+      30/       0 : =0xFF9              r_s 	= registers+2
+      31/       0 : =0xFFA              r_p1 	= registers+3
+      32/       0 : =0xFFC              r_p2 	= registers+5
+      33/       0 : =0xFFE              r_p3 	= registers+7
+      34/       0 :                     
+      35/       0 :                     ; ***************************************************************************************************************************************************
+      36/       0 :                     ;
+      37/       0 :                     ;															ROM Monitor Start
+      38/       0 :                     ;
+      39/       0 :                     ; ***************************************************************************************************************************************************
+      40/       0 :                     
+      41/       0 :                     		org 	0x0000
+      42/       0 : 08                  		nop
+      43/       1 : 90 FE               		jmp		MonitorStart
+      44/       3 :                     
+      45/       3 :                     ; ***************************************************************************************************************************************************
+      46/       3 :                     ;
+      47/       3 :                     ;														Run code and ReEnter Monitor.
+      48/       3 :                     ;
+      49/       3 :                     ;	There are two entry points. One to run from where you left off (continue) and one to run from a particular position in P3 (RunFromP3)
+      50/       3 :                     ;	The position in P3 is -1 from the actual position because of SC/MPs pre-incrementing program counter.
+      51/       3 :                     ;
+      52/       3 :                     ; ***************************************************************************************************************************************************
+      53/       3 :                     
+      54/       3 :                     Continue:
+      55/       3 : C0 F7               		ld 		r_p1+1 								; load P1
+      56/       5 : 35                  		xpah 	p1
+      57/       6 : C0 F3               		ld 		r_p1
+      58/       8 : 31                  		xpal 	p1
+      59/       9 : C0 F3               		ld 		r_p2+1 								; load P2
+      60/       B : 36                  		xpah 	p2
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 2 - 9/18/2015 22:52:17
+
+
+      61/       C : C0 EF               		ld 		r_p2
+      62/       E : 32                  		xpal 	p2
+      63/       F : C0 EF               		ld 		r_p3+1 								; load P3
+      64/      11 : 37                  		xpah 	p3
+      65/      12 : C0 EB               		ld 		r_p3
+      66/      14 : 33                  		xpal 	p3
+      67/      15 : C0 E2               		ld 		r_e 								; load E
+      68/      17 : 01                  		xae
+      69/      18 : C0 E0               		ld 		r_s 								; load S
+      70/      1A : 07                  		cas
+      71/      1B : C0 DB               		ld 		r_a 								; load A
+      72/      1D :                     
+      73/      1D : 3F                  		xppc 	p3 									; run the program.
+      74/      1E :                     
+      75/      1E : C8 D8               		st 		r_a 								; come back here to restart, save A,E,S
+      76/      20 : 06                  		csa
+      77/      21 : C8 D7               		st 		r_s
+      78/      23 : 40                  		lde
+      79/      24 : C8 D3               		st 		r_e
+      80/      26 : 35                  		xpah 	p1 									; save pointer register p1
+      81/      27 : C8 D3               		st 		r_p1+1
+      82/      29 : 31                  		xpal 	p1
+      83/      2A : C8 CF               		st 		r_p1
+      84/      2C : 36                  		xpah 	p2 									; save pointer register p2
+      85/      2D : C8 CF               		st 		r_p2+1
+      86/      2F : 32                  		xpal 	p2
+      87/      30 : C8 CB               		st 		r_p2
+      88/      32 : 33                  		xpal 	p3
+      89/      33 : C8 CB               		st 		r_p3+1
+      90/      35 : 37                  		xpah 	p3 									
+      91/      36 : C8 C3               		st 		r_p1
+      92/      38 :                     ;
+      93/      38 :                     ;		TODO:Status dump and list.
+      94/      38 :                     ;
+      95/      38 : 90 FE               		jmp 	CommandLoop
+      96/      3A :                     
+      97/      3A :                     ; ***************************************************************************************************************************************************
+      98/      3A :                     ;
+      99/      3A :                     ;													(G) and	(C)ontinue commands
+     100/      3A :                     ;
+     101/      3A :                     ; ***************************************************************************************************************************************************
+     102/      3A :                     
+     103/      3A :                     GoToAddress:
+     104/      3A : 40                  		lde 										; get the LSB
+     105/      3B : C8 C2               		st 		r_p3								; store into the P3 values that are loaded.
+     106/      3D : 35                  		xpah 	p1									; same for MSB.
+     107/      3E : C8 C0               		st 		r_p3+1								; so it is continue with a fixed address.
+     108/      40 :                     
+     109/      40 :                     VisitContinue:
+     110/      40 : 90 C1               		jmp 	Continue
+     111/      42 :                     
+     112/      42 :                     ; ***************************************************************************************************************************************************
+     113/      42 :                     ;
+     114/      42 :                     ;															Monitor Start Routine
+     115/      42 :                     ;
+     116/      42 :                     ;	C 		Continue from where we left off.
+     117/      42 :                     ;	G xxxx	Go from xxxx
+     118/      42 :                     ;	I xxxx 	Implant at xxxx then, either, (i) 	type a 2 digit number the INT to load into memory
+     119/      42 :                     ;										  (ii) 	press INT to go to the next.
+     120/      42 :                     ;										  (iii) =n to store the address in label n
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 3 - 9/18/2015 22:52:17
+
+
+     121/      42 :                     ;									      (iv)  ?n display the offset to label n (no change)
+     122/      42 :                     ;	H xxxx 	48 byte hex dump.
+     123/      42 :                     ;	L 		Display labels.
+     124/      42 :                     ;
+     125/      42 :                     ; ***************************************************************************************************************************************************
+     126/      42 :                     
+     127/      42 :                     MonitorStart:	
+     128/      42 : C4 E8               		ldi 	(Stack & 255)						; set the stack up in P2.
+     129/      44 : 32                  		xpal 	p2
+     130/      45 : C4 7F               		ldi 	(Stack / 256)
+     131/      47 : 36                  		xpah 	p2
+     132/      48 : C4 47               		ldi 	(PrintStringInline-1) & 0xFF 		; print string in line.
+     133/      4A : 33                  		xpal 	p3
+     134/      4B : C4 70               		ldi 	((PrintStringInline-1) / 256) | buildPage
+     135/      4D : 37                  		xpah 	p3
+     136/      4E : 3F                  		xppc 	p3
+     137/      4F : 01 53 43 52 55 4D   		db 		1,"SCRUMPI 3",4
+                    50 49 20 33 04 
+     138/      5A :                     
+     139/      5A :                     CommandLoop:
+     140/      5A : C4 59               		ldi 	(PrintStringInline-1) & 0xFF 		; print command prompt.
+     141/      5C : 33                  		xpal 	p3
+     142/      5D : C4 70               		ldi 	((PrintStringInline-1) / 256) | buildPage
+     143/      5F : 37                  		xpah 	p3
+     144/      60 : 3F                  		xppc 	p3 						
+     145/      61 : 0D 43 4F 4D 4D 41   		db 		13,"COMMAND ? ",4
+                    4E 44 20 3F 20 04 
+     146/      6D :                     
+     147/      6D : C4 E8               		ldi 	labels & 255 						; set work address P1 to point to labels.
+     148/      6F : 31                  		xpal 	p1
+     149/      70 : C4 7F               		ldi 	labels/256
+     150/      72 : 35                  		xpah 	p1
+     151/      73 :                     
+     152/      73 : C4 72               		ldi 	(GetKbd-1) & 255
+     153/      75 : 33                  		xpal 	p3
+     154/      76 : C4 70               		ldi 	((GetKbd-1) / 256 ) | buildPage
+     155/      78 : 37                  		xpah 	p3
+     156/      79 : 3F                  		xppc 	p3									; read command key
+     157/      7A : CA 0A               		st 		command-stack(p2) 					; save it.
+     158/      7C : E4 4C               		xri 	'L'									; is it (L)abels
+     159/      7E : 98 FE               		jz 		List 								; list those 8 bytes out.
+     160/      80 : E4 0F               		xri 	'L'!'C'								; is it (C)ontinue
+     161/      82 : 98 BC               		jz 		VisitContinue 
+     162/      84 :                     
+     163/      84 : C4 83               		ldi 	((GetHexNibble-1) & 255)			; now read the hex nibble in, four times.
+     164/      86 : 33                  		xpal 	p3
+     165/      87 : C4 70               		ldi 	((GetHexNibble-1) / 256) | buildPage
+     166/      89 : 37                  		xpah 	p3
+     167/      8A :                     
+     168/      8A : 3F                  		xppc 	p3 									; read first byte
+     169/      8B : 94 CD               		jp 		CommandLoop
+     170/      8D : 3F                  		xppc 	p3
+     171/      8E : 94 CA               		jp 		CommandLoop
+     172/      90 : 40                  		lde 										; save in P1.H
+     173/      91 : 35                  		xpah 	p1						
+     174/      92 : 3F                  		xppc 	p3 									; read second byte into E.
+     175/      93 : 94 C5               		jp 		CommandLoop
+     176/      95 : 3F                  		xppc 	p3
+     177/      96 : 94 C2               		jp 		CommandLoop
+     178/      98 :                     
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 4 - 9/18/2015 22:52:17
+
+
+     179/      98 : C2 0A               		ld 		command-stack(p2) 					; read command
+     180/      9A : E4 47               		xri 	'G'									; is it G(o)
+     181/      9C : 98 9C               		jz 		GoToAddress 				
+     182/      9E : E4 0E               		xri 	'G'!'I'								; is it I(mplant)
+     183/      A0 : 98 FE               		jz 		Implant
+     184/      A2 : E4 49               		xri 	'I'|'H'								; is it H(ex dump)		
+     185/      A4 : 9C B4               		jnz 	CommandLoop
+     186/      A6 :                     
+     187/      A6 : 40                  		lde
+     188/      A7 : 31                  		xpal 	p1 									; make P1 point to the listing.
+     189/      A8 : C4 07               		ldi 	7 									; we want to do 8 of them.
+     190/      AA :                     ;
+     191/      AA :                     ;		List i+1 lines from P1
+     192/      AA :                     ;
+     193/      AA : 02                  List:	ccl 										; add 1 to the count.
+     194/      AB : F4 01               		adi 	1
+     195/      AD : 90 FB               		jmp 	List
+     196/      AF :                     
+     197/      AF : 90 FE               Implant:jmp 	Implant
+     198/      B1 :                     
+     199/     600 :                     		org 	0x600
+     200/     600 :                     
+     201/     600 :                     ; ***************************************************************************************************************************************************
+     202/     600 :                     ;
+     203/     600 :                     ;										VDU Out routine. Preserves everything except CY/L and OV
+     204/     600 :                     ;
+     205/     600 :                     ;	Understands 01 (Clear) 08 (Backspace) 0D (CR/LF) and characters 20..FF (characters). All others are ignored.
+     206/     600 :                     ;
+     207/     600 :                     ;	Really tight because it uses relative addressing to access 'cursor' variable. If needs be, memory can be grabbed by moving the reloading of p2/p3
+     208/     600 :                     ; 	above to later, when p1 can be used as a pointer.
+     209/     600 :                     ; ***************************************************************************************************************************************************
+     210/     600 :                     
+     211/     600 : CE FF               PutVDU:	st 		@-1(p2) 							; save A on stack
+> > >test.asm(212): error: jump target not on same page
+     212/     602 :                     		ld 		cursor 								
+     213/     602 : 31                  		xpal 	p1									; save P1.L on stack, set P1.L to cursor
+     214/     603 : CE FF               		st 		@-1(p2)
+     215/     605 : C4 7E               		ldi 	buildPage | (videoRAM/256) 			; save P1.H on stack,make P1 point to Video Memory/cursor
+     216/     607 : 35                  		xpah 	p1
+     217/     608 : CE FF               		st 		@-1(p2)
+     218/     60A :                     _PVPutVDUEcho: 										; come here from keyboard routine to echo as stack already set up and P1.H is pointing to video RAM
+     219/     60A :                     ;
+     220/     60A :                     ;		Now test for control characters
+     221/     60A :                     ;
+     222/     60A : C2 02               		ld 		2(p2) 								; reload A (character to be printed)
+     223/     60C : E4 01               		xri 	0x01								; was it $01 (Clear screen)
+     224/     60E : 98 FE               		jz 		_PVClear
+     225/     610 : E4 09               		xri 	0x01 ! 0x08 						; was it $08 (Backspace)
+     226/     612 : 98 FE               		jz 		_PVBackspace
+     227/     614 : E4 05               		xri  	0x08 ! 0x0D 						; was it $0D (Carriage Return)
+     228/     616 : 98 FE               		jz 		_PVCarriageReturn
+     229/     618 :                     ;
+     230/     618 :                     ;		We know now it isn't a known control character, check for any unknown ones :) All those XRIs
+     231/     618 :                     ; 		haven't changed the upper 3 bits which is what we want to test now.
+     232/     618 :                     ;
+     233/     618 : D4 E0               		ani 	0xE0 								; if all 000x xxxx e.g. it is a control character
+     234/     61A : 98 FE               		jz 		_PVExit 							; exit the routine.
+     235/     61C :                     ;
+     236/     61C :                     ;		Output the character and advance the cursor
+     237/     61C :                     ;
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 5 - 9/18/2015 22:52:17
+
+
+     238/     61C :                     _PVCharacter:
+     239/     61C : C2 02               		ld 		2(p2) 								; reload character to be written
+     240/     61E : D4 BF               		ani 	0xBF 								; clear bit 6 - (may be necessary if we change graphics for unused space in VDU RAM)
+     241/     620 : CD 01               		st 		@1(p1)								; write to screen, incrementing cursor which is in P1.L
+     242/     622 : 31                  		xpal 	p1 									; retrieve cursor value from P1.L
+     243/     623 : 98 FE               		jz 		_PVScroll							; if zero wrapped round go to bottom line and scroll up, note P1.H will now be $7F not $7E.
+     244/     625 :                     _PVSaveCursorAndExit:
+> > >test.asm(245): error: jump target not on same page
+     245/     625 :                     		st 		cursor 								; write cursor position back and exit
+     246/     625 : 90 FE               		jmp 	_PVExit
+     247/     627 :                     ;
+     248/     627 :                     ;		Carriage return to the start of the next line. Scroll if you reach the bottom.
+     249/     627 :                     ;
+     250/     627 :                     _PVCarriageReturn:
+     251/     627 : 31                  		xpal 	p1 									; get cursor position out of P1.L
+     252/     628 : D4 E0               		ani 	0xE0 								; start of current line, clear lower 5 bits.
+     253/     62A : 02                  		ccl 										; move to next line, 32 characters down.
+     254/     62B : F4 20               		adi 	0x20 
+     255/     62D : 9C F6               		jnz 	_PVSaveCursorAndExit 				; not at top now, so save and exit
+     256/     62F : 90 FE               		jmp 	_PVScroll 							; if at top we've wrapped around to top so need to scroll.
+     257/     631 :                     ;
+     258/     631 :                     ;		Backspace to previous screen position, if possible of course.
+     259/     631 :                     ;
+     260/     631 :                     _PVBackSpace:
+     261/     631 : 31                  		xpal 	p1 									; get cursor out of P1.L
+     262/     632 : 98 FE               		jz 		_PVExit 							; can't backspace before position zero
+> > >test.asm(263): error: jump target not on same page
+     263/     634 :                     		dld 	cursor 								; cursor back one and exit.
+     264/     634 : 90 FE               		jmp 	_PVExit
+     265/     636 :                     ;
+     266/     636 :                     ;		Clear Screen. On entry from start, A is zero because of XRI checks. P1.H points to video memory.
+     267/     636 :                     ; 		so actually move cursor to A and clears screen from A on.This is also used by the scroll
+     268/     636 :                     ; 		up routine to clear the bottom line and set the cursor at the start of the bottom line.
+     269/     636 :                     ;
+     270/     636 :                     _PVClear:
+> > >test.asm(271): error: jump target not on same page
+     271/     636 :                     		st 		cursor 								; save cursor position as where we are clearing from.
+     272/     636 :                     _PVClearLoop:
+     273/     636 : 31                  		xpal 	p1 									; update P1 									
+     274/     637 : C4 20               		ldi 	' ' 								; write space and increment it
+     275/     639 : CD 01               		st 		@1(p1) 								
+     276/     63B : 31                  		xpal 	p1 									; until P1.L is zero again, e.g. at the bottom of the screen.
+     277/     63C : 9C F8               		jnz 	_PVClearLoop 						; then fall through to the exit.
+     278/     63E :                     ;
+     279/     63E :                     ;		Exit the PUTVDU Routine
+     280/     63E :                     ;
+     281/     63E :                     _PVExit:
+     282/     63E : C6 01               		ld 		@1(p2) 								; restore P1.H off stack
+     283/     640 : 35                  		xpah 	p1
+     284/     641 : C6 01               		ld 		@1(p2)								; restore P1.L off stack
+     285/     643 : 31                  		xpal 	p1
+     286/     644 : C6 01               		ld 		@1(p2) 								; restore A
+     287/     646 : 3F                  		xppc 	p3 									; return 
+     288/     647 : 90 B7               		jmp 	PutVDU 								; is reentrant.
+     289/     649 :                     ;
+     290/     649 :                     ;		Scroll screen up, then use clear screen to clear bottom line and position cursor.
+     291/     649 :                     ;
+     292/     649 :                     _PVScroll:
+     293/     649 : C4 7E               		ldi 	buildPage | (videoRAM/256) 			; set P1.H to 7C again - if cursor overflowed, will be P1.H will be $7F here
+     294/     64B : 35                  		xpah 	p1
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 6 - 9/18/2015 22:52:17
+
+
+     295/     64C : C4 E0               		ldi 	0xE0 								; and scroll up, because of the XRI test, this is effectively zero
+     296/     64E :                     _PVScrollLoop:
+     297/     64E : E4 E0               		xri 	0xE0 								; undo XRI test, copy to P1.L
+     298/     650 : 31                  		xpal 	p1 
+     299/     651 : C1 20               		ld 		32(p1) 								; copy from next line
+     300/     653 : CD 01               		st 		@1(p1) 								; to this line, and go to next cell
+     301/     655 : 31                  		xpal 	p1 									; retrieve P1.L
+     302/     656 : E4 E0               		xri 	0xE0 								; check if bottom line.
+     303/     658 : 9C F4               		jnz 	_PVScrollLoop 						; keep going til 0xE0 reached.
+     304/     65A : C4 E0               		ldi 	0xE0 								; start fill from bottom line.
+     305/     65C : 90 D8               		jmp 	_PVClear 							; set cursor and clear screen from 0xE0
+     306/     65E :                     
+     307/     65E :                     ; ***************************************************************************************************************************************************
+     308/     65E :                     ;	
+     309/     65E :                     ;							Keyboard Read Routine. Echos keypress on display. Preserves P1,P2,E returns key in A.
+     310/     65E :                     ;
+     311/     65E :                     ;											This is *not* re-entrant as it exits through PutVDU
+     312/     65E :                     ;
+     313/     65E :                     ;		-1(p2) 	Counter for flashing cursor
+     314/     65E :                     ; 		-2(p2) 	Last key state. Non zero if key pressed, 0 if no key pressed.
+     315/     65E :                     ;		2(p2) 	Output key, removed from stack when PutVDU exits.
+     316/     65E :                     ;
+     317/     65E :                     ; ***************************************************************************************************************************************************
+     318/     65E :                     
+     319/     65E :                     
+     320/     65E : CE FF               GetKbd:	st 		@-1(p2) 							; save A - we overwrite this with the key stroke.
+     321/     660 : 31                  		xpal 	p1									; save P1.L and P1.H on stack 
+     322/     661 : CE FF               		st 		@-1(p2) 							; these are restored when we exit echo.
+     323/     663 : 35                  		xpah 	p1 
+     324/     664 : CE FF               		st 		@-1(p2)
+     325/     666 : C4 01               		ldi 	1 									; set last key state to 1, must have no key before key acknowledged.
+     326/     668 : CA FE               		st 		-2(p2) 								
+     327/     66A : 03                  		scl 										
+     328/     66B :                     ;
+     329/     66B :                     ;		Keyboard loop. At this point, if carry is clear clear cursor and echo using print routine
+     330/     66B :                     ;		If carry is set, continue with keyboard scanning
+     331/     66B :                     ;
+     332/     66B : C4 F6               _GKLoop:ldi 	(cursor & 255)						; set P1 to point to cursor
+     333/     66D : 31                  		xpal 	p1
+     334/     66E : C4 7F               		ldi 	(cursor / 256) | buildPage 			; in page 7
+     335/     670 : 35                  		xpah 	p1
+     336/     671 : C1 00               		ld 		0(p1) 								; read the cursor
+     337/     673 : 31                  		xpal 	p1									; put in P1.L 
+     338/     674 : C4 7E               		ldi 	videoRAM/256 						; make P1 point to the cursor in video memory
+     339/     676 : 35                  		xpah 	p1
+     340/     677 : C4 20               		ldi 	' '									; write a blank space there
+     341/     679 : C9 00               		st 		0(p1)
+     342/     67B : 06                  		csa 										; check carry flag
+     343/     67C : 94 8C               		jp 		_PVPutVDUEcho 						; if clear, then echo and exit.
+     344/     67E : AA FF               		ild 	-1(p2) 								; increment the counter.
+     345/     680 : 94 FE               		jp 		_GKNoToggle
+     346/     682 : C4 A0               		ldi 	' ' + 0x80 							; set solid block on
+     347/     684 : C9 00               		st 		0(p1)
+     348/     686 :                     _GKNoToggle:
+     349/     686 : C4 7C               		ldi 	keyboardPort/256 					; point P1 to keyboard port
+     350/     688 : 35                  		xpah 	p1
+     351/     689 : C4 00               		ldi 	0 									; set keyboard scan value to $00
+     352/     68B : CA 02               		st 		2(p2)
+     353/     68D : C4 08               		ldi 	8 									; first address row to check. 
+     354/     68F :                     _GKLoadRow:
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 7 - 9/18/2015 22:52:17
+
+
+     355/     68F : 31                  		xpal 	p1
+     356/     690 : C1 00               		ld 		0(p1)								; read the row.
+     357/     692 : D4 0F               		ani 	0xF 								; only interested in lower 4 bits.
+     358/     694 : 9C FE               		jnz 	_GKFoundKey 						; if a bit is set, then go figure out what the key is.
+     359/     696 : C2 02               		ld 		2(p2)								; add 4 to keyboard scan value, e.g. next row down.
+     360/     698 : 02                  		ccl 
+     361/     699 : F4 04               		adi 	4
+     362/     69B : CA 02               		st 		2(p2)
+     363/     69D : 31                  		xpal 	p1 									; get bit to check 
+     364/     69E : 1C                  		sr 											; shift it right.
+     365/     69F : 9C EE               		jnz 	_GKLoadRow 							; not completed, do the next row.
+     366/     6A1 :                     
+     367/     6A1 : C4 0D               		ldi 	13 									; going to check code $0D (carriage return) attached to SA.
+     368/     6A3 : CA 02               		st 		2(p2)
+     369/     6A5 : 06                  		csa 										; look at Sense A, which is connected to the INT key on the keyboard.
+     370/     6A6 : D4 10               		ani 	0x10
+     371/     6A8 : 9C FE               		jnz 	_GKCheckState
+     372/     6AA :                     
+     373/     6AA : CA FE               		st 		-2(p2) 								; set last key state to zero.
+     374/     6AC :                     _GKPauseAndLoopBack:
+     375/     6AC : 03                  		scl  										; we haven't finished yet.
+     376/     6AD : 8F FF               		dly 	255 								; pause
+     377/     6AF : 90 BA               		jmp 	_GKLoop
+     378/     6B1 :                     ;
+     379/     6B1 :                     ;		Key pressed. 2(P2) contains the row (0,4,8,12), A the bits read.
+     380/     6B1 :                     ;
+     381/     6B1 :                     _GKFoundKey:
+     382/     6B1 : 1C                  		sr 											; shift right
+     383/     6B2 : 98 FE               		jz 		_GKGotKeyNumber 					; if zero, must've shifted last '1' bit that time.
+     384/     6B4 : 31                  		xpal 	p1 									; save in P1.L
+     385/     6B5 : AA 02               		ild 	2(p2) 								; increment the keyboard number
+     386/     6B7 : 31                  		xpal 	p1 									; restore from P1.L
+     387/     6B8 : 90 F7               		jmp 	_GKFoundKey							; go round again
+     388/     6BA :                     ;
+     389/     6BA :                     ;		Now 2(P2) contains the raw key number 0-15.
+     390/     6BA :                     ;
+     391/     6BA :                     _GKGotKeyNumber:
+     392/     6BA : C1 00               		ld 		0(p1) 								; read the shift bits 4,5,6
+     393/     6BC : D4 70               		ani 	0x70 								; we only want those.
+     394/     6BE : E4 40               		xri 	0x40 								; 0x,1x,2x,4x -> 4x,5x,6x,0x
+     395/     6C0 : 9C FE               		jnz 	_GKNotPunc							; 4x,5x,6x,0x -> 4x,5x,6x,3x
+     396/     6C2 : C4 30               		ldi 	0x30
+     397/     6C4 :                     _GKNotPunc:
+     398/     6C4 : 02                  		ccl
+     399/     6C5 : F4 F0               		adi 	0xF0 								; 3x,4x,5x,2x now - numbers, alpha1, alpha2, punc
+     400/     6C7 : DA 02               		or 		2(p2) 								; or with current key
+     401/     6C9 : CA 02               		st 		2(p2) 								; 2 now contains the current key as read.
+     402/     6CB :                     _GKCheckState:
+     403/     6CB : C2 FE               		ld 		-2(p2) 								; look at last key state 
+     404/     6CD : 9C DD               		jnz 	_GKPauseAndLoopBack 				; if non-zero, we are still waiting gor a release, so pause & loop back.
+     405/     6CF :                     
+     406/     6CF : 02                  		ccl 										; we want out :)
+     407/     6D0 : 90 99               		jmp 	_GKLoop 							; so loop back with carry clear.
+     408/     6D2 :                     
+     409/     6D2 :                     ; ***************************************************************************************************************************************************
+     410/     6D2 :                     ;
+     411/     6D2 :                     ;						Print A as Hexadecimal. 2 versions of this, one with and one without trailing space.
+     412/     6D2 :                     ;
+     413/     6D2 :                     ;	Note: always reentrant to PrintHex.
+     414/     6D2 :                     ; ***************************************************************************************************************************************************
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 8 - 9/18/2015 22:52:17
+
+
+     415/     6D2 :                     
+     416/     6D2 :                     PrintHexTrailingSpace:
+     417/     6D2 : CE FF               		st 		@-1(p2)								; push A on stack
+     418/     6D4 : C4 20               		ldi 	' ' 								; print a space after it.
+     419/     6D6 : 90 FE               		jmp 	_PHEntry
+     420/     6D8 :                     PrintHex:
+     421/     6D8 : CE FF               		st 		@-1(p2) 							; push A on stack
+     422/     6DA : C4 1F               		ldi 	0x1F 								; control character
+     423/     6DC :                     _PHEntry:
+     424/     6DC : CE FF               		st 		@-1(p2) 							; save A on stack
+     425/     6DE : 37                  		xpah 	p3 									; save P3 on stack.
+     426/     6DF : CE FF               		st 		@-1(p2)
+     427/     6E1 : 33                  		xpal 	p3
+     428/     6E2 : CE FF               		st 		@-1(p2)
+     429/     6E4 : C4 FF               		ldi 	(PutVDU-1) & 255 					; set P3 to call Put VDU
+     430/     6E6 : 33                  		xpal	p3
+     431/     6E7 : C4 05               		ldi 	(PutVDU-1) / 256
+     432/     6E9 : 37                  		xpah 	p3
+     433/     6EA : C2 03               		ld 		3(p2) 								; get number,do MSB
+     434/     6EC : 1C                  		sr
+     435/     6ED : 1C                  		sr
+     436/     6EE : 1C                  		sr
+     437/     6EF : 1C                  		sr
+     438/     6F0 : 02                  		ccl
+     439/     6F1 : EC 90               		dai 	0x90 	
+     440/     6F3 : EC 40               		dai 	0x40
+     441/     6F5 : 3F                  		xppc 	p3
+     442/     6F6 : C2 03               		ld 		3(p2)								; get number, do LSB
+     443/     6F8 : D4 0F               		ani 	0x0F
+     444/     6FA : 02                  		ccl
+     445/     6FB : EC 90               		dai 	0x90
+     446/     6FD : EC 40               		dai 	0x40
+     447/     6FF : 3F                  		xppc 	p3		
+     448/     700 : C2 02               		ld 		2(p2) 								; print trailer
+     449/     702 : 3F                  		xppc 	p3 									; it will ignore the control character $1F and print the space.
+     450/     703 :                     _PHNoSpace:
+     451/     703 : C6 01               		ld 		@1(p2)								; restore P3
+     452/     705 : 33                  		xpal 	p3
+     453/     706 : C6 02               		ld 		@2(p2)								; 2 here, dumping the space byte.
+     454/     708 : 37                  		xpah 	p3
+     455/     709 : C6 01               		ld 		@1(p2) 								; restore A
+     456/     70B : 3F                  		xppc 	p3
+     457/     70C : 90 CA               		jmp 	PrintHex 						
+     458/     70E :                     
+     459/     70E :                     ; ***************************************************************************************************************************************************
+     460/     70E :                     ;
+     461/     70E :                     ;		Shift A single hex digit into E. (To get two, just call xppc p3 twice !). Returns A +ve error, A -ve good, bits 0-6 key pressed
+     462/     70E :                     ;
+     463/     70E :                     ; ***************************************************************************************************************************************************
+     464/     70E :                     
+     465/     70E :                     GetHexNibble:
+     466/     70E : C4 76               		ldi 	((GetKbd-1) / 256) | buildPage		; save P3 on stack and set it to keyboard read
+     467/     710 : 37                  		xpah 	p3 									
+     468/     711 : CE FF               		st 		@-1(p2)
+     469/     713 : C4 5D               		ldi 	(GetKbd-1) & 255 					; set P3 to get keyboard, call it to read a character.
+     470/     715 : 33                  		xpal 	p3
+     471/     716 : CE FF               		st 		@-1(p2)
+     472/     718 :                     
+     473/     718 : 3F                  		xppc 	p3 									; read the key.
+     474/     719 : CA FF               		st 		-1(p2) 								; save it.
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 9 - 9/18/2015 22:52:17
+
+
+     475/     71B : 02                  		ccl 
+     476/     71C : F4 B9               		adi 	255-'F' 							; if key >= F, will now be +ve
+     477/     71E : 94 FE               		jp 		_GHKError
+     478/     720 : F4 06               		adi 	6 									; now will be 1,2,3,4,5 for A-F
+     479/     722 : 94 FE               		jp 		_GHKIsAlphabeticHex
+     480/     724 : F4 07               		adi 	7 									; if +ve now will be wrong.
+     481/     726 : 94 FE               		jp 		_GHKError
+     482/     728 :                     _GHKIsAlphabeticHex:
+     483/     728 : 02                  		ccl 	
+     484/     729 : F4 0A               		adi 	10 									; now should be 0-15 if >= '0'
+     485/     72B : 94 FE               		jp 		_GHKIsValidDigit
+     486/     72D :                     _GHKError:
+     487/     72D : 02                  		ccl 										; return clear carry to return 
+     488/     72E : 90 FE               		jmp 	_GHKExit 
+     489/     730 :                     
+     490/     730 :                     _GHKIsValidDigit:
+     491/     730 : 01                  		xae 										; E = new digit, A = old
+     492/     731 : 1E                  		rr 											; rotate right x 4
+     493/     732 : 1E                  		rr
+     494/     733 : 1E                  		rr
+     495/     734 : 1E                  		rr
+     496/     735 : D4 F0               		ani 	0xF0 								; mask off upper bits.
+     497/     737 : 58                  		ore 										; or the new value in.
+     498/     738 : 01                  		xae 										; put back in E
+     499/     739 : 03                  		scl 										; set carry/link as good.		
+     500/     73A :                     _GHKExit:
+     501/     73A : C6 01               		ld 		@1(p2)								; restore P3
+     502/     73C : 33                  		xpal 	p3
+     503/     73D : C6 01               		ld 		@1(p2)								
+     504/     73F : 37                  		xpah 	p3
+     505/     740 : 06                  		csa 										; copy carry/link bit into A indicating error.
+     506/     741 : D4 80               		ani 	0x80 								; clear bits 0-6
+     507/     743 : DA FD               		or 		-3(p2) 								; or old character in.
+     508/     745 : 3F                  		xppc 	p3									; return
+     509/     746 : 90 C6               		jmp 	GetHexNibble						; and it is re-entrant.
+     510/     748 :                     
+     511/     748 :                     ; ***************************************************************************************************************************************************
+     512/     748 :                     ;
+     513/     748 :                     ;												Print following string inline in code. Breaks P1.
+     514/     748 :                     ;
+     515/     748 :                     ; ***************************************************************************************************************************************************
+     516/     748 :                     
+     517/     748 :                     PrintStringInline:
+     518/     748 : C4 FF               		ldi 	(PutVdu-1) & 255 					; put putvdu.l into P3, save old P3 in P1
+     519/     74A : 33                  		xpal 	p3
+     520/     74B : 31                  		xpal 	p1
+     521/     74C : C4 75               		ldi 	((PutVdu-1) / 256) | buildPage 		; do the same with the upper byte
+     522/     74E : 37                  		xpah 	p3
+     523/     74F : 35                  		xpah 	p1
+     524/     750 : C5 01               		ld 		@1(p1) 								; P1 will point to the XPPC P3 that called this.
+     525/     752 :                     _PSILLoop:
+     526/     752 : C5 01               		ld 		@1(p1) 								; read next character
+     527/     754 : 3F                  		xppc 	p3 									; print it
+     528/     755 : E4 04               		xri 	0x04 								; end marker ?
+     529/     757 : 9C F9               		jnz 	_PSILLoop
+     530/     759 : C5 FF               		ld 		@-1(p1)								; point P1 back to the 04 marker, which is followed by code
+     531/     75B : 3D                  		xppc 	p1 									; return to that caller
+     532/     75C : 90 EA               		jmp 	PrintStringInline
+     533/     75E :                     
+     534/     75E :                     
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 10 - 9/18/2015 22:52:17
+
+
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 11 - 9/18/2015 22:52:17
+
+
+  symbol table (* = unused):
+  ------------------------
+
+*ARCHITECTURE :  i386-unknown-win32 - | *BIGENDIAN :                      0 - |
+*BRANCHEXT :                      0 - |  BUILDPAGE :                     70 - |
+*CASESENSITIVE :                  0 - |  COMMAND :                     7FF2 - |
+ COMMANDLOOP :                   5A C | *CONSTPI :        3.141592653589793 - |
+ CONTINUE :                       3 C |  CURSOR :                      7FF6 - |
+*DATE :                   9/18/2015 - | *FALSE :                          0 - |
+*FULLPMMU :                       1 - |  GETHEXNIBBLE :                 70E C |
+ GETKBD :                       65E C |  GOTOADDRESS :                   3A C |
+*HAS64 :                          1 - | *HASDSP :                         0 - |
+*HASFPU :                         0 - | *HASPMMU :                        0 - |
+ IMPLANT :                       AF C | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+*INSRAM :                      7F00 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - |  KEYBOARDPORT :                7C00 - |
+ LABELS :                      7FE8 - |  LIST :                          AA C |
+*LISTCOUNT :                   7FF3 - | *LISTON :                         1 - |
+*MACEXP :                         1 - | *MOMCPU :                         C - |
+*MOMCPUNAME :                 SC/MP - | *MONITORSTART :                  42 C |
+*NESTMAX :                      100 - | *PACKING :                        0 - |
+*PADDING :                        1 - |  PRINTHEX :                     6D8 C |
+*PRINTHEXTRAILINGSPACE :        6D2 C |  PRINTSTRINGINLINE :            748 C |
+ PUTVDU :                       600 C |  REGISTERS :                    FF7 - |
+*RELAXED :                        0 - |  R_A :                          FF7 - |
+ R_E :                          FF8 - |  R_P1 :                         FFA - |
+ R_P2 :                         FFC - |  R_P3 :                         FFE - |
+ R_S :                          FF9 - |  STACK :                       7FE8 - |
+*TIME :                    22:52:17 - | *TRUE :                           1 - |
+*VERSION :                     142F - |  VIDEORAM :                    7E00 - |
+ VISITCONTINUE :                 40 C | *WORKADDRESS :                 7FF4 - |
+*_GHKERROR :                    72D C | *_GHKEXIT :                     73A C |
+*_GHKISALPHABETICHEX :          728 C | *_GHKISVALIDDIGIT :             730 C |
+*_GKCHECKSTATE :                6CB C |  _GKFOUNDKEY :                  6B1 C |
+*_GKGOTKEYNUMBER :              6BA C |  _GKLOADROW :                   68F C |
+ _GKLOOP :                      66B C | *_GKNOTOGGLE :                  686 C |
+*_GKNOTPUNC :                   6C4 C |  _GKPAUSEANDLOOPBACK :          6AC C |
+*_PHENTRY :                     6DC C | *_PHNOSPACE :                   703 C |
+ _PSILLOOP :                    752 C | *_PVBACKSPACE :                 631 C |
+*_PVCARRIAGERETURN :            627 C | *_PVCHARACTER :                 61C C |
+ _PVCLEAR :                     636 C |  _PVCLEARLOOP :                 636 C |
+*_PVEXIT :                      63E C |  _PVPUTVDUECHO :                60A C |
+ _PVSAVECURSORANDEXIT :         625 C | *_PVSCROLL :                    649 C |
+ _PVSCROLLLOOP :                64E C |
+
+     83 symbols
+     48 unused symbols
+
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 12 - 9/18/2015 22:52:17
+
+
+  codepages:
+  ----------
+
+STANDARD (0 changed characters)
+
+
+0.01 seconds assembly time
+
+    534 lines source file
+      1 pass
+        additional necessary passes not started due to
+        errors, listing possibly incorrect
+      4 errors
+      0 warnings

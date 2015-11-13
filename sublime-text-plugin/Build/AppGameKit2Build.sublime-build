@@ -1,0 +1,12 @@
+                                                                           
+{
+    "cmd": ["C:\\Program Files (x86)\\The Game Creators\\AGK2\\Tier 1\\Compiler\\AGKCompiler.exe", "-run", "main.agc"],
+    "variants": [
+        { "cmd": ["C:\\Program Files (x86)\\The Game Creators\\AGK2\\Tier 1\\Compiler\\AGKCompiler.exe", "-bct", "main.agc"],
+          "name": "AGK Compile and Broadcast"
+        },
+        { "cmd": ["C:\\Program Files (x86)\\The Game Creators\\AGK2\\Tier 1\\Compiler\\AGKCompiler.exe", "-agk", "main.agc"],
+          "name": "AGK Compile only"
+        }
+    ]
+}

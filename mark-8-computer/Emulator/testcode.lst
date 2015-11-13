@@ -1,0 +1,55 @@
+ AS V1.42 Beta [Bld 102] - source file testcode.asm - page 1 - 9/24/2015 12:18:45
+
+
+       1/       0 :                     
+       2/       0 :                     	cpu 	8008new
+       3/       0 :                     
+       4/       0 :                         org     0
+       5/       0 :                     
+       6/       0 : 2E 00                   mvi     h,0
+       7/       2 : F5                      mov     l,h
+       8/       3 : 00                      hlt
+       9/       4 : 41                      in      0
+      10/       5 :                     wait:
+      11/       5 : 44 05 00                jmp     wait
+      12/       8 :                     
+ AS V1.42 Beta [Bld 102] - source file testcode.asm - page 2 - 9/24/2015 12:18:45
+
+
+  symbol table (* = unused):
+  ------------------------
+
+*ARCHITECTURE :  i386-unknown-win32 - | *BIGENDIAN :                      0 - |
+*BRANCHEXT :                      0 - | *CASESENSITIVE :                  0 - |
+*CONSTPI :        3.141592653589793 - | *DATE :                   9/24/2015 - |
+*FALSE :                          0 - | *FULLPMMU :                       1 - |
+*HAS64 :                          1 - | *HASDSP :                         0 - |
+*HASFPU :                         0 - | *HASPMMU :                        0 - |
+*INEXTMODE :                      0 - | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - | *LISTON :                         1 - |
+*MACEXP :                         1 - | *MOMCPU :                     8008E - |
+*MOMCPUNAME :               8008NEW - | *NESTMAX :                      100 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+*RELAXED :                        0 - | *TIME :                    12:18:45 - |
+*TRUE :                           1 - | *VERSION :                     142F - |
+ WAIT :                           5 C |
+
+     29 symbols
+     28 unused symbols
+
+ AS V1.42 Beta [Bld 102] - source file testcode.asm - page 3 - 9/24/2015 12:18:45
+
+
+  codepages:
+  ----------
+
+STANDARD (0 changed characters)
+
+
+0.01 seconds assembly time
+
+     12 lines source file
+      1 pass
+      0 errors
+      0 warnings

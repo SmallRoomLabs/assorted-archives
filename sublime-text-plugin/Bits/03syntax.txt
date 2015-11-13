@@ -1,0 +1,51 @@
+
+{
+  "name": "comment.block",
+  "begin": "[/][/]",
+  "end": ".*$"
+},
+
+{
+  "name": "comment.block",
+  "begin": "[`]",
+  "end": ".*$"
+},
+
+{
+  "match": "\".*\"",
+  "name": "string.quoted"
+},
+
+
+{
+  "match": "\\(|\\)",
+  "name": "constant.numeric"
+},
+
+{
+  "match": "\\b[0-9]+|\\b[0-9]+.?[0-9]+",
+  "name": "constant.numeric"
+},
+
+{
+  "match": "([a-zA-z]+)(\\()",
+  "name": "support.function.agk",
+  "captures": {
+    "1": { "name": "support.function.agk" },
+    "2": { "name": "constant.numeric" }
+  }
+},
+
+{  
+  "name": "comment.block",
+  "begin": "\\b[Rr][Ee][Mm]\\b",
+  "end": ".*$"
+},
+
+{
+  "name": "comment.block",
+  "begin": "\\b[Rr][Ee][Mm][Ss][Tt][Aa][Rr][Tt]\\b",
+  "end": "[Rr][Ee][Mm][Ee][Nn][Dd]"
+},
+
+

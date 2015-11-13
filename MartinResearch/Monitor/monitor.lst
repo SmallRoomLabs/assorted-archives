@@ -1,0 +1,455 @@
+ AS V1.42 Beta [Bld 101] - source file monitor.asm - page 1 - 8/21/2015 16:37:38
+
+
+       1/       0 :                     ; ************************************************************************************************************
+       2/       0 :                     ;
+       3/       0 :                     ;												MIKE-2 Monitor
+       4/       0 :                     ;												==============
+       5/       0 :                     ;
+       6/       0 :                     ;	Rewritten by Paul Robson 21 August 2015 to specification given in Microcomputer Design and 
+       7/       0 :                     ; 	Micro-8 volume 1 pp 170.
+       8/       0 :                     ;
+       9/       0 :                     ;	Paul Robson (paul@robsons.org.uk)
+      10/       0 :                     ;
+      11/       0 :                     ;	2) 	Debouncing ???
+      12/       0 :                     ;
+      13/       0 :                     ;	A/B/C 	General
+      14/       0 :                     ;	D 		LSB determines whether code or data displayed.
+      15/       0 :                     ; 	E 		Built up typed in data.
+      16/       0 :                     ;	H 		H value
+      17/       0 :                     ;	L 		L value
+      18/       0 :                     ; 	Save1 	Temporary register / Save & Restore
+      19/       0 :                     ; 	Save2	Displayed Data Value / Save & Restore.
+      20/       0 :                     ;
+      21/       0 :                     ; ************************************************************************************************************
+      22/       0 :                     
+      23/       0 :                     		cpu 	8008new 							; done in newer 8008 mnemonics, much more readable :)
+      24/       0 :                     
+      25/       0 :                     		org 	0h
+      26/       0 :                     
+      27/       0 : =400H               RSTTable = 	0400h 									; Vectors for RST 8,10,18,20,28,30 start offset from 3 here.
+      28/       0 :                     													; e.g. RST 10 does jmp 0406h (Direct jump not indirect)
+      29/       0 :                     
+      30/       0 : =FF8H               SaveMem = 	0FF8h 									; where registers are saved and reloaded.
+      31/       0 :                     
+      32/       0 : =FF8H               SaveA = 	SaveMem+0 								; Defined by "Micro-8 volume 1 page 170"
+      33/       0 : =FF9H               SaveB = 	SaveMem+1
+      34/       0 : =FFAH               SaveC = 	SaveMem+2								; note that changing the order changes the actual code.
+      35/       0 : =FFBH               SaveD = 	SaveMem+3
+      36/       0 : =FFCH               SaveE = 	SaveMem+4
+      37/       0 : =FFDH               SaveFlags = Savemem+5
+      38/       0 : =FFEH               SaveH = 	SaveMem+6
+      39/       0 : =FFFH               SaveL = 	SaveMem+7
+      40/       0 :                     
+      41/       0 : =400H               StartProgram = 0400h 								; where go goes 010 000 which is the first byte of RAM memory.
+      42/       0 :                     
+      43/       0 :                     ;
+      44/       0 :                     ;	The Save ports have been moved because they collide with the 420 Device which uses 6/7.
+      45/       0 :                     ;
+      46/       0 :                     
+      47/       0 : =4H                 InSave1  =  04h										; I/O Ports for latch # 1 
+      48/       0 : =CH                 OutSave1 = 	InSave1+8
+      49/       0 : =5H                 InSave2 =   05h 									; I/O Ports for latch # 2
+      50/       0 : =DH                 OutSave2 = 	InSave2+8
+      51/       0 :                     
+      52/       0 :                     ;
+      53/       0 :                     ;	Where the display ports are.
+      54/       0 :                     ;
+      55/       0 : =FH                 DisplayRight = 0Fh 									; Display Right (in Microcomputer Design and Micro-8)
+      56/       0 : =EH                 DisplayMiddle = 0Eh 								; Display Middle 
+      57/       0 : =DH                 DisplayLeft = 0Dh 									; Display Left
+      58/       0 :                     
+      59/       0 : =6H                 KeyboardPort = 06h 									; Keypad.
+      60/       0 :                     
+ AS V1.42 Beta [Bld 101] - source file monitor.asm - page 2 - 8/21/2015 16:37:38
+
+
+      61/       0 : =DH                 KeyContinue = 13									; Keypad Key assignments.
+      62/       0 : =CH                 KeyGo = KeyContinue-1 								; If the order changes, will have to rethink the decoding code.
+      63/       0 : =BH                 KeyLoadL = KeyContinue-2
+      64/       0 : =AH                 KeyLoadH = KeyContinue-3
+      65/       0 : =9H                 KeyRead = KeyContinue-4
+      66/       0 : =8H                 KeyWrite = KeyContinue-5
+      67/       0 :                     
+      68/       0 :                     ; ************************************************************************************************************
+      69/       0 :                     ;
+      70/       0 :                     ;		Entry point for both first boot and interrupt. Using the hardware latches, *all* registers
+      71/       0 :                     ;		are saved in memory.
+      72/       0 :                     ;
+      73/       0 :                     ; ************************************************************************************************************
+      74/       0 :                     
+      75/       0 :                     EntryPoint:
+      76/       0 : 59                  	out 	OutSave1 								; save A in hardware#1
+      77/       1 : C6                  	mov 	a,l 									; save L in hardware#2
+      78/       2 : 5B                  	out 	OutSave2
+      79/       3 : C5                  	mov 	a,h 									; copy H to A
+      80/       4 : 44 4B 00            	jmp 	ContinueEntry 							; skip over the exit load routine here.
+      81/       7 :                     
+      82/       8 :                     	org 	8h
+      83/       8 : 44 03 04            	jmp 	RSTTable+08h/8*3 						; LoadH/LoadL go in these 5 bytes
+      84/      10 :                     	org 	10h
+      85/      10 : 44 06 04            	jmp 	RSTTable+10h/8*3 						; Read/Write memory in these 5 bytes
+      86/      18 :                     	org 	18h
+      87/      18 : 44 09 04            	jmp 	RSTTable+18h/8*3 						; Register Restore tail code in these 5 bytes
+      88/      20 :                     	org 	20h
+      89/      20 : 44 0C 04            	jmp 	RSTTable+20h/8*3 						; (5 bytes free here)
+      90/      28 :                     	org 	28h
+      91/      28 : 44 0F 04            	jmp 	RSTTable+28h/8*3 						; (5 bytes free here)
+      92/      30 :                     	org 	30h
+      93/      30 : 44 12 04            	jmp 	RSTTable+30h/8*3
+      94/      33 :                     
+      95/      33 :                     
+      96/      33 :                     ; ************************************************************************************************************
+      97/      33 :                     ;
+      98/      33 :                     ;		Continue program option. Restores A,B,C,D,E,H,L and Flags, using external hardware, then executes
+      99/      33 :                     ;		RET. If this is an interrupt, then this should resume (as the hardware jammed RST0 in).
+     100/      33 :                     ;		If it is an initial boot, this should loop round, as the stack is cleared by RESET.	
+     101/      33 :                     ;
+     102/      33 :                     ;		It is also called as a subroutine by the GO command.
+     103/      33 :                     ;
+     104/      33 :                     ; ************************************************************************************************************
+     105/      33 :                     
+     106/      33 :                     RestoreRegisters:
+     107/      33 : 36 F8               	mvi 	l,SaveA & 255 							; point HL to SaveA
+     108/      35 : 2E 0F               	mvi 	h,SaveA / 256
+     109/      37 : C7                  	mov 	a,m 									; read saved A
+     110/      38 : 59                  	out 	OutSave1 								; save A in hardware #1
+     111/      39 : 30                  	inr 	l  										; point to B and read it.					
+     112/      3A : CF                  	mov 	b,m
+     113/      3B : 30                  	inr 	l  										; point to C and read it.					
+     114/      3C : D7                  	mov 	c,m
+     115/      3D : 30                  	inr 	l  										; point to D and read it.					
+     116/      3E : DF                  	mov 	d,m
+     117/      3F : 30                  	inr 	l  										; point to E and read it.					
+     118/      40 : E7                  	mov 	e,m
+     119/      41 : 30                  	inr 	l  										; point to Flags and read it.					
+     120/      42 : C7                  	mov 	a,m 
+ AS V1.42 Beta [Bld 101] - source file monitor.asm - page 3 - 8/21/2015 16:37:38
+
+
+     121/      43 : 5B                  	out 	OutSave2 								; save Flags in hardware#2
+     122/      44 : 30                  	inr 	l 										; point to saved H
+     123/      45 : C7                  	mov 	a,m 									; read saved H into A
+     124/      46 : 30                  	inr 	l 										; point to saved L
+     125/      47 : F7                  	mov 	l,m 									; read saved L into L
+     126/      48 : 44 1B 00            	jmp 	CABComplete
+     127/      4B :                     
+     128/      4B :                     SkipContinue:
+     129/      1B :                     	org 	1Bh 									; squeeze a bit of code into the RST space.
+     130/      1B :                     CABComplete:
+     131/      1B : E8                  	mov 	h,a 									; copy loaded H into H - now fixed up B,C,D,E,H,L
+     132/      1C : 4B                  	in 		InSave2 								; read flags from hardware#2
+     133/      1D : 80                  	add 	a 										; and put them back 
+     134/      1E : 49                  	in  	InSave1 								; restore A from hardware#1
+     135/      1F : 07                  	ret 	
+     136/      20 :                     
+     137/      4B :                     	org 	SkipContinue
+     138/      4B :                     
+     139/      4B :                     ; ************************************************************************************************************
+     140/      4B :                     ;
+     141/      4B :                     ;								Continuation of Entry (Saving Registers)
+     142/      4B :                     ;
+     143/      4B :                     ; ************************************************************************************************************
+     144/      4B :                     
+     145/      4B :                     ContinueEntry:
+     146/      4B : 36 FE               	mvi 	l,SaveH & 255 							; point HL to H save point.
+     147/      4D : 2E 0F               	mvi 	h,SaveH / 256
+     148/      4F : F8                  	mov 	m,a 									; save H there
+     149/      50 :                     
+     150/      50 : 06 00               	mvi 	a,0										; assume zero (reconstructing status register)
+     151/      52 : 68 5C 00            	jz 		EntryGetCarry							; if true, get carry bit
+     152/      55 : 06 18               	mvi 	a,18h 									; assume positive
+     153/      57 : 50 5C 00            	jp		EntryGetCarry 							; if true, get carry bit
+     154/      5A : 06 C0               	mvi 	a,0C0h 									; sign flag was set
+     155/      5C :                     EntryGetCarry:
+     156/      5C : 1A                  	rar 											; get carry bit.
+     157/      5D : 78 62 00            	jpe 	ParityEven 								; if the parity is odd.
+     158/      60 : 2C 01               	xri 	1										; fix it up so the new parity will be odd.
+     159/      62 :                     ParityEven:	
+     160/      62 : 31                  	dcr 	l 										; point to SaveFlags
+     161/      63 : F8                  	mov 	m,a 
+     162/      64 : 31                  	dcr 	l 										; point to E
+     163/      65 : FC                  	mov 	m,e
+     164/      66 : 31                  	dcr 	l 										; point to D
+     165/      67 : FB                  	mov 	m,d
+     166/      68 : 31                  	dcr 	l 										; point to C
+     167/      69 : FA                  	mov 	m,c
+     168/      6A : 31                  	dcr 	l 										; point to B
+     169/      6B : F9                  	mov 	m,b
+     170/      6C : 31                  	dcr 	l 										; point to A
+     171/      6D : 49                  	in 		InSave1 								; fetch saved A from hardware #1
+     172/      6E : F8                  	mov 	m,a 
+     173/      6F :                     
+     174/      6F : 36 FF               	mvi 	l,SaveL & 255 							; point HL to Save L
+     175/      71 : 4B                  	in 		InSave2 								; get saved L from hardware #2
+     176/      72 : F8                  	mov 	m,a 									; and save L.
+     177/      73 :                     
+     178/      73 : 2E 00               	mvi 	h,0 									; clear HL (current address)
+     179/      75 : F5                  	mov 	l,h 						
+     180/      76 :                     
+ AS V1.42 Beta [Bld 101] - source file monitor.asm - page 4 - 8/21/2015 16:37:38
+
+
+     181/      76 :                     ; ************************************************************************************************************
+     182/      76 :                     ;
+     183/      76 :                     ;									Loop Back here to load E with (HL)
+     184/      76 :                     ;
+     185/      76 :                     ; ************************************************************************************************************
+     186/      76 :                     
+     187/      76 :                     ReadMemoryUpdateDisplay:
+     188/      76 : E7                  	mov 	e,m 									; E now contains the contents of memory.
+     189/      77 : 5B                  	out 	OutSave2 								; Save it in OutSave 2 (displayed data value)
+     190/      78 : 26 00               	mvi 	e,0 									; clear E (built up value)
+     191/      7A :                     
+     192/      7A :                     ; ************************************************************************************************************
+     193/      7A :                     ;
+     194/      7A :                     ;									Update Display and show data first
+     195/      7A :                     ;
+     196/      7A :                     ; ************************************************************************************************************
+     197/      7A :                     
+     198/      7A :                     UpdateDisplayShowDataFirst:
+     199/      7A : 1E 01               	mvi 	d,1 									; Set D LSB, so that after increment D C is clear so shows 0:E
+     200/      7C :                     
+     201/      7C :                     ; ************************************************************************************************************
+     202/      7C :                     ;
+     203/      7C :                     ;					Update the Display, depending on the LSB of D (1 = Data,0 = Address)
+     204/      7C :                     ;
+     205/      7C :                     ; ************************************************************************************************************
+     206/      7C :                     
+     207/      7C :                     UpdateDisplay:
+     208/      7C : 0E 00               	mvi 	b,0 									; set B to zero, the upper octal digits.
+     209/      7E : 18                  	inr 	d 										; toggle bit 0 of D.
+     210/      7F : C3                  	mov 	a,d 									; put D in A
+     211/      80 : 0A                  	rrc 											; put bit 0 of D in the carry.
+     212/      81 : 4B                  	in 		InSave2 								; read the lower byte when displaying data.
+     213/      82 : 40 87 00            	jnc 	UpdateDisplayExitBA						; carry clear show 0:(S2), carry set show H:L.
+     214/      85 : CD                  	mov 	b,h 									; set BA to the value in HL.
+     215/      86 : C6                  	mov 	a,l 
+     216/      87 :                     
+     217/      87 :                     ; ************************************************************************************************************
+     218/      87 :                     ;
+     219/      87 :                     ; 			Update the display , at this point A contains the low byte, and B the high byte.
+     220/      87 :                     ;
+     221/      87 :                     ; ************************************************************************************************************
+     222/      87 :                     
+     223/      87 :                     UpdateDisplayExitBA:
+     224/      87 : 59                  	out 	OutSave1 								; save the LSB in hardware#1
+     225/      88 : 24 07               	ani 	7 										; this is the lowest octal digit we want
+     226/      8A : D0                  	mov 	c,a 									; put that low digit in C
+     227/      8B : 49                  	in 		InSave1 								; get the original value back.
+     228/      8C : 24 38               	ani 	38h 									; get the middle octal digit.
+     229/      8E : 80                  	add 	a 										; shift if left - now contains middle octal digit in .xxx ....
+     230/      8F : B2                  	ora 	c 										; A now contains .xxx .xxx 
+     231/      90 : 5F                  	out 	DisplayRight 	
+     232/      91 :                     
+     233/      91 : C1                  	mov 	a,b 									; Get the high byte 
+     234/      92 : 24 07               	ani 	7 										; this is the least significant digit of the msb, goes in middle upper
+     235/      94 : 80                  	add 	a 										; A now contains .... xxx.
+     236/      95 : 80                  	add 	a 										; A now contains ...x xx..
+     237/      96 : D0                  	mov 	c,a 									; save in C
+     238/      97 : 49                  	in 		InSave1 								; Get the original low byte back.
+     239/      98 : 24 C0               	ani 	0C0h 									; then isolate the last octal digit, the upper 2. dd.. ....
+     240/      9A : B2                  	ora 	c 										; A now contains dd.x xx..
+ AS V1.42 Beta [Bld 101] - source file monitor.asm - page 5 - 8/21/2015 16:37:38
+
+
+     241/      9B : 0A                  	rrc 											; A now contains d.xx x..d
+     242/      9C : 0A                  	rrc												; A now contains .xxx ..dd (there are only 2 bits in upper octal 8 bits)
+     243/      9D : 5D                  	out 	DisplayMiddle 							; put it on the middle display.
+     244/      9E :                     
+     245/      9E : C1                  	mov 	a,b 									; get the high byte
+     246/      9F : 24 38               	ani 	38h 									; isolate its middle octal digit ..xx x...
+     247/      A1 : 1A                  	rar 											; now contains ...x xx.. 
+     248/      A2 : D0                  	mov 	c,a 									; C now contains ...x xx..
+     249/      A3 : C1                  	mov 	a,b 									; get the high byte
+     250/      A4 : 24 C0               	ani 	0C0h 									; isolate its upper octal digit yy.. ....
+     251/      A6 : B2                  	ora 	c 										; now we have yy.x xx..
+     252/      A7 : 0A                  	rrc 											; and now .yy. xxx.
+     253/      A8 : 0A                  	rrc 											; and finally, ..yy .xxx - which is the left hand display
+     254/      A9 : 5B                  	out 	DisplayLeft 							; so put it there.
+     255/      AA :                     
+     256/      AA :                     ; ************************************************************************************************************
+     257/      AA :                     ;
+     258/      AA :                     ;		Wait for key to be released.
+     259/      AA :                     ;
+     260/      AA :                     ; ************************************************************************************************************
+     261/      AA :                     
+     262/      AA :                     WaitNoKeyPressed:									; wait until the keyboard is all clear.
+     263/      AA : 4D                  	in 		KeyboardPort 							; Read the keyboard port
+     264/      AB : 48 AA 00            	jnz 	WaitNoKeyPressed 						; there are keys pressed. 
+     265/      AE :                     
+     266/      AE :                     ; ************************************************************************************************************
+     267/      AE :                     ;
+     268/      AE :                     ;		Wait for key press, if time out then switch display. 
+     269/      AE :                     ; 		The testing loop takes 5+9+5+11+5+11 = 46 cycles.
+     270/      AE :                     ;		Toggles at 1.2s
+     271/      AE :                     ;		The CPU is clocked at 400Khz, 2.5 microseconds, therefore a total of 480,000 cycles between updates.
+     272/      AE :                     ;		480,000 / 46 = 10,434 which is the number of times we want to execute the loop.
+     273/      AE :                     ; 		10,434 / 256 = Outer C loop = 40.7 iterations.
+     274/      AE :                     ;
+     275/      AE :                     ; ************************************************************************************************************
+     276/      AE :                     	
+     277/      AE : 0E 29               	mvi 	b,41 									; Will average 41*256+128 = 10,624 iterations = 1.22s approx.
+     278/      B0 :                     													; not worth initialising C, we don't need that precision.
+     279/      B0 :                     WaitKeyPressed:
+     280/      B0 : 11                  	dcr 	c 										; Outer loop [5 cycles]
+     281/      B1 : 48 B8 00            	jnz 	NoDelayCheck 							; Normally this is taken [11 Cycles] [] are what usually happens.
+     282/      B4 : 09                  	dcr 	b 										; Decrement B [5 cycles]
+     283/      B5 : 68 7C 00            	jz 		UpdateDisplay 							; If reached zero, switch display [9 cycles]
+     284/      B8 :                     NoDelayCheck:
+     285/      B8 :                     
+     286/      B8 : 4D                  	in 		KeyboardPort 							; Wait for a key press [5 cycles]
+     287/      B9 : 68 B0 00            	jz 		WaitKeyPressed 							; Loop Back if Clear [11 cycles]
+     288/      BC :                     
+     289/      BC : 3C 08               	cpi 	8 										; control keys are 8 up. Write/Read/LoadH/LoadL/Go/Continue ?
+     290/      BE : 50 CC 00            	jp 		ControlKey 								; its a control key.
+     291/      C1 :                     
+     292/      C1 : C8                  	mov 	b,a 									; save in B
+     293/      C2 : C4                  	mov 	a,e 									; retrieve E value which is aabb bccc
+     294/      C3 : 80                  	add 	a 										; shift left three times.
+     295/      C4 : 80                  	add 	a
+     296/      C5 : 80                  	add 	a 										; so now it is bbcc c...
+     297/      C6 : B1                  	ora		b 										; or the new value in bbcc cxxx
+     298/      C7 : E0                  	mov 	e,a 									; update E
+     299/      C8 : 5B                  	out 	OutSave2 								; and now display this as well.
+     300/      C9 : 44 7A 00            	jmp 	UpdateDisplayShowDataFirst 				; and show the 0E first rather than the address.
+ AS V1.42 Beta [Bld 101] - source file monitor.asm - page 6 - 8/21/2015 16:37:38
+
+
+     301/      CC :                     
+     302/      CC :                     ; ************************************************************************************************************
+     303/      CC :                     ;
+     304/      CC :                     ;										Process Control Keys. 
+     305/      CC :                     ;
+     306/      CC :                     ; ************************************************************************************************************
+     307/      CC :                     
+     308/      CC :                     ControlKey:
+     309/      CC : 04 F3               	adi 	256-KeyContinue 						; A will be zero if it is Continue
+     310/      CE : 68 33 00            	jz 		RestoreRegisters 						; So if it is, go to the return from interrupt code.
+     311/      D1 : C8                  	mov 	b,a 									; So we can use INR to test it.
+     312/      D2 : 08                  	inr 	b 										; A will be zero if it is Go.
+     313/      D3 : 68 00 04            	jz 		StartProgram							; Run Program.
+     314/      D6 :                     
+     315/      D6 : 72 DC 00            	cm 		ExecuteControl 							; Execute Control in A, only if bit 7 set.
+     316/      D9 : 44 76 00            	jmp		ReadMemoryUpdateDisplay 				; Read Memory, Update and Display Data
+     317/      DC :                     
+     318/      DC :                     ; ************************************************************************************************************
+     319/      DC :                     ;
+     320/      DC :                     ;	Execute Control. At this point $FF:Load L $FE:Load H $FD:Read $FC:Write can also be $FB..$80 ignore these.
+     321/      DC :                     ;
+     322/      DC :                     ;	Returning from this subroutine updates E with (HL)
+     323/      DC :                     ;
+     324/      DC :                     ;	The subroutine allows us to replace several JMPs with RET. 
+     325/      DC :                     ;
+     326/      DC :                     ; ************************************************************************************************************
+     327/      DC :                     
+     328/      DC :                     ExecuteControl:
+     329/      DC : 08                  	inr 	b 										; update B, now zero if LoadL
+     330/      DD : 68 0B 00            	jz 		CtrlLoadL
+     331/      E0 : 08                  	inr 	b 										; update B, now zero if LoadH.
+     332/      E1 : 68 0D 00            	jz 		CtrlLoadH 								
+     333/      E4 :                     
+     334/      E4 : 08                  	inr 	b 										; update B, now $00 if Read $FF if write
+     335/      E5 : 08                  	inr 	b 										; update B, now $01 if Read $00 if write
+     336/      E6 : 33                  	rm 												; if signed, it's a bad command, ignore it.
+     337/      E7 : 68 13 00            	jz 		WriteMemory 							; if zero (write) then write to memory.
+     338/      EA : 44 14 00            	jmp 	ReadMemory 								; otherwise, read memory.
+     339/      ED :                     
+     340/      ED :                     ; ************************************************************************************************************
+     341/      ED :                     ;
+     342/      ED :                     ;		Memory read/write : read bumps HL, and reads the next byte for display, clearing E.
+     343/      ED :                     ;							write does the same but copies E into memory first
+     344/      ED :                     ;
+     345/      ED :                     ; ************************************************************************************************************
+     346/      ED :                     
+     347/      13 :                     	org 	13h										; code fits in the gaps between RSTxx
+     348/      13 :                     
+     349/      13 :                     WriteMemory:										; write does a write then increment then read.
+     350/      13 : FC                  	mov 	m,e 									; write out and increment address LSB in L
+     351/      14 :                     ReadMemory:											; read does an increment and read.
+     352/      14 : 30                  	inr 	l 					
+     353/      15 : 0B                  	rnz 											; no carry out, so return which does the read
+     354/      16 : 28                  	inr 	h 										; increment address MSB in H
+     355/      17 : 07                  	ret
+     356/      18 :                     
+     357/      18 :                     ; ************************************************************************************************************
+     358/      18 :                     ;
+     359/      18 :                     ;				Load H/Load L : copies E to H/L, reads next byte for display, clearing E.
+     360/      18 :                     ;
+ AS V1.42 Beta [Bld 101] - source file monitor.asm - page 7 - 8/21/2015 16:37:38
+
+
+     361/      18 :                     ; ************************************************************************************************************
+     362/      18 :                     
+     363/       B :                     	org 	0Bh 									; fits in the RSTxx gaps.
+     364/       B :                     
+     365/       B :                     CtrlLoadL:
+     366/       B : F4                  	mov 	l,e 									; copy E into L and display data there
+     367/       C : 07                  	ret
+     368/       D :                     
+     369/       D :                     CtrlLoadH:
+     370/       D : EC                  	mov 	h,e 									; copy E into H and display data there
+     371/       E : 07                  	ret
+     372/       F :                     
+ AS V1.42 Beta [Bld 101] - source file monitor.asm - page 8 - 8/21/2015 16:37:38
+
+
+  symbol table (* = unused):
+  ------------------------
+
+*ARCHITECTURE :  i386-unknown-win32 - | *BIGENDIAN :                      0 - |
+*BRANCHEXT :                      0 - |  CABCOMPLETE :                   1B C |
+*CASESENSITIVE :                  0 - | *CONSTPI :        3.141592653589793 - |
+ CONTINUEENTRY :                 4B C |  CONTROLKEY :                    CC C |
+ CTRLLOADH :                      D C |  CTRLLOADL :                      B C |
+*DATE :                   8/21/2015 - |  DISPLAYLEFT :                    D - |
+ DISPLAYMIDDLE :                  E - |  DISPLAYRIGHT :                   F - |
+ ENTRYGETCARRY :                 5C C | *ENTRYPOINT :                     0 C |
+ EXECUTECONTROL :                DC C | *FALSE :                          0 - |
+*FULLPMMU :                       1 - | *HAS64 :                          1 - |
+*HASDSP :                         0 - | *HASFPU :                         0 - |
+*HASPMMU :                        0 - | *INEXTMODE :                      0 - |
+*INLWORDMODE :                    0 - | *INMAXMODE :                      0 - |
+ INSAVE1 :                        4 - |  INSAVE2 :                        5 - |
+*INSRCMODE :                      0 - | *INSUPMODE :                      0 - |
+ KEYBOARDPORT :                   6 - |  KEYCONTINUE :                    D - |
+*KEYGO :                          C - | *KEYLOADH :                       A - |
+*KEYLOADL :                       B - | *KEYREAD :                        9 - |
+*KEYWRITE :                       8 - | *LISTON :                         1 - |
+*MACEXP :                         1 - | *MOMCPU :                     8008E - |
+*MOMCPUNAME :               8008NEW - | *NESTMAX :                      100 - |
+ NODELAYCHECK :                  B8 C |  OUTSAVE1 :                       C - |
+ OUTSAVE2 :                       D - | *PACKING :                        0 - |
+*PADDING :                        1 - |  PARITYEVEN :                    62 C |
+ READMEMORY :                    14 C |  READMEMORYUPDATEDISPLAY :       76 C |
+*RELAXED :                        0 - |  RESTOREREGISTERS :              33 C |
+ RSTTABLE :                     400 - |  SAVEA :                        FF8 - |
+*SAVEB :                        FF9 - | *SAVEC :                        FFA - |
+*SAVED :                        FFB - | *SAVEE :                        FFC - |
+*SAVEFLAGS :                    FFD - |  SAVEH :                        FFE - |
+ SAVEL :                        FFF - |  SAVEMEM :                      FF8 - |
+ SKIPCONTINUE :                  4B C |  STARTPROGRAM :                 400 - |
+*TIME :                    16:37:38 - | *TRUE :                           1 - |
+ UPDATEDISPLAY :                 7C C |  UPDATEDISPLAYEXITBA :           87 C |
+ UPDATEDISPLAYSHOWDATAFIRST :    7A C | *VERSION :                     142F - |
+ WAITKEYPRESSED :                B0 C |  WAITNOKEYPRESSED :              AA C |
+ WRITEMEMORY :                   13 C |
+
+     73 symbols
+     39 unused symbols
+
+ AS V1.42 Beta [Bld 101] - source file monitor.asm - page 9 - 8/21/2015 16:37:38
+
+
+  codepages:
+  ----------
+
+STANDARD (0 changed characters)
+
+
+0.00 seconds assembly time
+
+    372 lines source file
+      2 passes
+      0 errors
+      0 warnings

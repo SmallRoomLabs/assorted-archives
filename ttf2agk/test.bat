@@ -1,0 +1,1 @@
+python ttf2agk.py "font:Arial;vertical:#ff8000,black;border:blue,1;dropshadow:#00ffff,5"

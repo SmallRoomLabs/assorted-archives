@@ -1,0 +1,274 @@
+// ************************************************************************************************************
+//
+//											8008 Phased Opcodes
+//
+// ************************************************************************************************************
+//
+// ************************************************************************************************************
+//
+//	All based on opcode / step and and with 7 or 31.
+//
+//	$R 		Register name 	(A,B,C,D,E,H,L,M)
+//	$C 		Test name 		(NC,NZ,P,PO,C,Z,M,PE)
+//	$T 		Code for test 	(as above)
+//	$H 		RST address in hex
+//	$P 		Port address in hdex
+//
+// ************************************************************************************************************
+//							Load Data from One CPU register to another CPU Register
+// ************************************************************************************************************
+
+C0-C6 		5		"mov a,$R"
+	0 0 	A = $R 															[PCTR:opcode]
+
+C8-CE 		5		"mov b,$R"
+	0 0 	B = $R 															[PCTR:opcode]
+
+D0-D6 		5		"mov c,$R"
+	0 0 	C = $R 															[PCTR:opcode]
+
+D8-DE 		5		"mov d,$R"
+	0 0 	D = $R 															[PCTR:opcode]
+
+E0-E6 		5		"mov e,$R"
+	0 0 	E = $R 															[PCTR:opcode]
+
+E8-EE 		5		"mov h,$R"
+	0 0 	H = $R 															[PCTR:opcode]
+
+F0-F6 		5		"mov l,$R"
+	0 0 	L = $R 															[PCTR:opcode]
+
+// ************************************************************************************************************
+//								Load Data from a CPU Register to a location in memory
+// ************************************************************************************************************
+
+F8-FE 		7 		"mov m,$R"	
+	* * 	MA = HL();														[MA:opcode]
+	0 0		MB = $R;WRITE();												[PCTR:MB]
+
+// ************************************************************************************************************
+//								Load Data from a location in memory to a CPU Register
+// ************************************************************************************************************
+
+C7-F7,8 	8 		"mov $R,m"
+	* * 	MA = HL()														[MA:opcode]
+	0 0 	READ();$R = MB 													[PCTR:MB]
+
+// ************************************************************************************************************
+//										Load immediate to a CPU Register
+// ************************************************************************************************************
+
+06-36,8 	8 		"mvi $R,@1"
+	* 0 	;																[PCTR:opcode]
+	0 0 	FETCH();$R = MB 												[PCTR:MB]
+
+// ************************************************************************************************************
+//					  				Load immediate to a location in memory
+// ************************************************************************************************************
+
+3E 			9		"mvi m,@1"
+	* 0 	; 																[PCTR:opcode]
+	* * 	FETCH();MA = HL() 												[MA:MB]
+	0 0 	WRITE() 														[PCTR:MB]
+
+// ************************************************************************************************************
+//									  Increment or Decrement a CPU Register
+// ************************************************************************************************************
+
+08-30,8 	5 		"inr $R"
+	0 0 	PSZValue = $R = ($R+1) & 0xFF									[PCTR:opcode]
+
+09-31,8 	5 		"dcr $R"
+	0 0 	PSZValue = $R = ($R-1) & 0xFF									[PCTR:opcode]
+
+// ************************************************************************************************************
+//			Arithmetic/Comparison/Boolean instruction between the accumulator and a CPU register
+// ************************************************************************************************************
+
+80-86 		5 		"add $R"
+	0 0 	Carry = 0;PSZValue = A = _CPUAdd($R)							[PCTR:opcode]
+
+88-8E 		5 		"adc $R"
+	0 0 	PSZValue = A = _CPUAdd($R)										[PCTR:opcode]
+
+90-96 		5 		"sub $R"
+	0 0 	Carry = 0;PSZValue = A = _CPUSubtract($R)						[PCTR:opcode]
+
+98-9E 		5 		"sbb $R"
+	0 0 	PSZValue = A = _CPUSubtract($R)									[PCTR:opcode]
+
+A0-A6 		5 		"and $R"
+	0 0 	Carry = 0;PSZValue = A = A & $R									[PCTR:opcode]
+
+A8-AE 		5 		"xor $R"
+	0 0 	Carry = 0;PSZValue = A = A ^ $R									[PCTR:opcode]
+
+B0-B6 		5 		"ora $R"
+	0 0 	Carry = 0;PSZValue = A = A | $R									[PCTR:opcode]
+
+B8-BE 		5 		"cmp $R"
+	0 0 	Carry = 0;PSZValue = _CPUSubtract($R)							[PCTR:opcode]
+
+// ************************************************************************************************************
+//			Arithmetic/Comparison/Boolean instruction between the accumulator and a word in memory
+// ************************************************************************************************************
+
+87	 		8 		"add m"
+	* 0 	MA = HL();															[MA:opcode]
+	0 0 	READ();Carry = 0;PSZValue = A = _CPUAdd(MB)							[PCTR:MB]
+
+8F	 		8 		"adc m"
+	* 0 	MA = HL();															[MA:opcode]
+	0 0 	READ();PSZValue = A = _CPUAdd(MB)									[PCTR:MB]
+
+97	 		8 		"sub m"
+	* 0 	MA = HL();															[MA:opcode]
+	0 0 	READ();Carry = 0;PSZValue = A = _CPUSubtract(MB)					[PCTR:MB]
+
+9F	 		8 		"sbb m"
+	* 0 	MA = HL();															[MA:opcode]
+	0 0 	READ();PSZValue = A = _CPUSubtract(MB)								[PCTR:MB]
+
+A7	 		8 		"and m"
+	* 0 	MA = HL();															[MA:opcode]
+	0 0 	READ();Carry = 0;PSZValue = A = A & MB								[PCTR:MB]
+
+AF	 		8 		"xor m"
+	* 0 	MA = HL();															[MA:opcode]
+	0 0 	READ();Carry = 0;PSZValue = A = A ^ MB								[PCTR:MB]
+
+B7	 		8 		"ora m"
+	* 0 	MA = HL();															[MA:opcode]
+	0 0 	READ();Carry = 0;PSZValue = A = A | MB								[PCTR:MB]
+
+BF	 		8 		"cmp m"
+	* 0 	MA = HL();															[MA:opcode]
+	0 0 	READ();Carry = 0;PSZValue = _CPUSubtract(MB)						[PCTR:MB]
+
+// ************************************************************************************************************
+//						"Immediate" type Arithmetic/Comparison/Boolean instruction
+// ************************************************************************************************************
+
+04	 		8 		"adi @1"
+	* 0 	;																	[MA:opcode]
+	0 0 	FETCH();Carry = 0;PSZValue = A = _CPUAdd(MB)						[PCTR:MB]
+
+0C	 		8 		"aci @1"	
+	* 0 	;																	[MA:opcode]
+	0 0 	FETCH();PSZValue = A = _CPUAdd(MB)									[PCTR:MB]
+
+14	 		8 		"sui @1"
+	* 0 	;																	[MA:opcode]
+	0 0 	FETCH();Carry = 0;PSZValue = A = _CPUSubtract(MB)					[PCTR:MB]
+
+1C	 		8 		"sbi @1"
+	* 0 	;																	[MA:opcode]
+	0 0 	FETCH();PSZValue = A = _CPUSubtract(MB)								[PCTR:MB]
+
+24	 		8 		"ani @1"
+	* 0 	;																	[MA:opcode]
+	0 0 	FETCH();Carry = 0;PSZValue = A = A & MB								[PCTR:MB]
+
+2C	 		8 		"xri @1"
+	* 0 	;																	[MA:opcode]
+	0 0 	FETCH();Carry = 0;PSZValue = A = A ^ MB								[PCTR:MB]
+
+34	 		8 		"ori @1"
+	* 0 	;																	[MA:opcode]
+	0 0 	FETCH();Carry = 0;PSZValue = A = A | MB								[PCTR:MB]
+
+3C	 		8 		"cpi @1"	
+	* 0 	;																	[MA:opcode]
+	0 0 	FETCH();Carry = 0;PSZValue = _CPUSubtract(MB)						[PCTR:MB]
+
+// ************************************************************************************************************
+//										Accumulator Rotate Instructions
+// ************************************************************************************************************
+
+02 			5 		"rlc"
+	0 0 	Carry = (A >> 7);A = ((A << 1) | Carry) & 0xFF						[PCTR:opcode]
+
+0A 			5 		"rrc"
+	0 0 	Carry = A & 1;A = (A >> 1) | (Carry << 7)							[PCTR:opcode]
+
+12 			5 		"ral"
+	0 0 	temp16 = (A << 1) | Carry;A = temp16 & 0xFF;Carry = temp16 >> 8		[PCTR:opcode]
+
+1A 			5 		"rar"
+	0 0		temp16 = A | (Carry << 8);A = temp16 >> 1;Carry = temp16 & 1		[PCTR:opcode]
+
+// ************************************************************************************************************
+//									Unconditional Jump or Call instructions
+// ************************************************************************************************************
+
+44-7C,8 	11 		"jmp @2"
+	* 0 	;																	[PCTR:opcode]
+	* 0 	FETCH();temp16 = MB; 												[PCTR:MB]
+	0 0 	FETCH2();PCTR = temp16												[temp16:MB]
+
+46-7E,8 	11 		"call @2"
+	* 0 	;																	[PCTR:opcode]
+	* 0 	FETCH();temp16 = MB; 												[PCTR:MB]
+	0 0 	FETCH2();PUSH();PCTR = temp16										[temp16:MB]
+
+// ************************************************************************************************************
+//									Conditional Jump or Call instructions
+// ************************************************************************************************************
+
+40-78,8 	10 		"j$C @2"
+	* 0 	;																	[PCTR:opcode]
+	* 0 	FETCH();MA = temp16; 												[PCTR:MB]
+	0 0 	FETCH2();if ($T) { PCTR = temp16; }									[PCTR:MB]
+
+42-7A,8 	10 		"c$C @2"
+	* 0 	;																	[PCTR:opcode]
+	* 0 	FETCH();temp16 = MB; 												[PCTR:MB]
+	0 0 	FETCH2();if ($T) { PUSH();PCTR = temp16; }							[PCTR:MB]
+
+// ************************************************************************************************************
+//									Unconditional Return instruction
+// ************************************************************************************************************
+
+03-3B,8 	5 		"ret"
+	0 0 	PULL();																[PCTR:opcode]
+
+// ************************************************************************************************************
+//									Conditional Return instruction
+// ************************************************************************************************************
+
+07-3F,8 	4 		"r$C"
+	0 0 	if ($T) PULL();														[PCTR:opcode]
+
+// ************************************************************************************************************
+//											Restart instruction
+// ************************************************************************************************************
+
+05-3D,8 	5 		"rst $H"
+	0 0		PUSH();PCTR = 0x$H 													[PCTR:opcode]
+
+// ************************************************************************************************************
+//											Output instruction
+// ************************************************************************************************************
+
+51-7F,2		6 		"out $P"	
+	0 * 	MA = 0x$P 															[(MA << 8)|A:opcode]
+	0 0 	MB = A;WRITEPORT() 													[PCTR:A]
+
+// ************************************************************************************************************
+//											Input instruction
+// ************************************************************************************************************
+
+41-4F,2		8 		"in $P"	
+	0 * 	MA = 0x$P 															[(MA << 8)|A:opcode]
+	0 0 	READPORT();A = MB 													[PCTR:A]
+
+// ************************************************************************************************************
+//											Halt instruction
+// ************************************************************************************************************
+
+00-01 		4 		"hlt"
+	0 0 	HaltFlag = 1 														[PCTR:opcode]
+
+FF 			4 		"hlt"
+	0 0 	HaltFlag = 1 														[PCTR:opcode]

@@ -1,0 +1,1 @@
+#define BINARY_SIZE 2048

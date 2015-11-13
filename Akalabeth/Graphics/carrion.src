@@ -1,0 +1,13 @@
+// *************************************************************************
+//
+//                            Draw Carrion Crawler
+//
+// *************************************************************************
+350       hplot y.m - 20 / dI,79 - dist.rect.y(distance) to y.m - 20 / dI,x.m - 88 / dI to y.m - 10 / dI,x.m - 83 / dI to y.m + 10 / dI,x.m - 83 / dI to y.m + 20 / dI,x.m - 88 / dI to y.m + 20 / dI,79 - dist.rect.y(distance) to y.m - 20 / dI,79 - dist.rect.y(dI)
+351       hplot y.m - 20 / dI,x.m - 88 / dI to y.m - 30 / dI,x.m - 83 / dI to y.m - 30 / dI,x.m - 78 / dI:
+          hplot y.m + 20 / dI,x.m - 88 / dI to y.m + 30 / dI,x.m - 83 / dI to y.m + 40 / dI,x.m - 83 / dI
+352       hplot y.m - 15 / dI,x.m - 86 / dI to y.m - 20 / dI,x.m - 83 / dI to y.m - 20 / dI,x.m - 78 / dI to y.m - 30 / dI,x.m - 73 / dI to y.m - 30 / dI,x.m - 68 / dI to y.m - 20 / dI,x.m - 63 / dI
+353       hplot y.m - 10 / dI,x.m - 83 / dI to y.m - 10 / dI,x.m - 58 / dI to y.m,x.m - 50 / dI:
+          hplot y.m + 10 / dI,x.m - 83 / dI to y.m + 10 / dI,x.m - 78 / dI to y.m + 20 / dI,x.m - 73 / dI to y.m + 20 / dI,x.m - 40 / dI
+354       hplot y.m + 15 / dI,x.m - 85 / dI to y.m + 20 / dI,x.m - 78 / dI to y.m + 30 / dI,x.m - 76 / dI to y.m + 30 / dI,x.m - 60 / dI
+355       hplot y.m,x.m - 83 / dI to y.m,x.m - 73 / dI to y.m + 10 / dI,x.m - 68 / dI to y.m + 10 / dI,x.m - 63 / dI to y.m,x.m - 58 / dI

@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>GlobalsConstants</name>
+    <events>
+        <event-group description="" sid="2027131502576364" title="Constants" />
+        <comment>Monster definition - alternate name and HPs. Should match up with the number of frames in the Monster object animation(s)</comment>
+        <variable comment="Name/HP values split by colons. " constant="1" name="MONSTER_DEF" sid="6820815319431459" static="0" type="text">Spider:3:Grue:7:Dragon:1:Snake:2:Nuibus:9:Wyvern:5</variable>
+        <comment>Margin at the top of the screen, text area</comment>
+        <variable comment="Top of screen where text is" constant="0" name="TOPMARGIN" sid="5106688971115406" static="0" type="number">64</variable>
+        <comment>Width of game map including border</comment>
+        <variable comment="Horizontal size of map" constant="1" name="HMAP" sid="2442017647286707" static="0" type="number">40</variable>
+        <comment>Height of game map including border</comment>
+        <variable comment="Vertical size of map" constant="1" name="VMAP" sid="2096802336306758" static="0" type="number">23</variable>
+        <comment>Size of a cell</comment>
+        <variable comment="Size of tile" constant="1" name="CELLSIZE" sid="4992804711983796" static="0" type="number">32</variable>
+        <event-group description="" sid="5395313374580767" title="Variables" />
+        <comment>Overall control, non zero when game is in progress</comment>
+        <variable comment="Non zero if game is running" constant="0" name="isRunning" sid="824484795995425" static="0" type="number">-1</variable>
+        <event-group description="" sid="4280101698329388" title="Tile Constants" />
+        <comment>Map tilemap on the bottom (actual dungeon)</comment>
+        <variable constant="0" name="TILE_WALL" sid="1406204310388661" static="0" type="number">0</variable>
+        <variable constant="0" name="TILE_DOOR" sid="4231214106648425" static="0" type="number">1</variable>
+        <variable constant="0" name="TILE_FRAME" sid="5090260613680904" static="0" type="number">2</variable>
+        <variable constant="0" name="TILE_PATH" sid="7255346494290311" static="0" type="number">3</variable>
+        <variable constant="0" name="TILE_ROOM" sid="1264091625676623" static="0" type="number">4</variable>
+        <comment>Visibility tilemap on top (hides dungeon)</comment>
+        <variable constant="0" name="VTILE_OPEN" sid="542679725592029" static="0" type="number">2</variable>
+        <variable constant="0" name="VTILE_CLOSED" sid="9252372145101825" static="0" type="number">0</variable>
+        <event-group description="" sid="5402254759472526" title="Note" />
+        <comment>Set layout size (etc.) to the HMAP * CELLSIZE, VMAP * CELLSIZE + TOPMARGIN, in the current values this is 1280 x 800</comment>
+        <comment>On start, position text objects</comment>
+        <event-block sid="613576343119273">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="3666950947736583" type="System" />
+            </conditions>
+            <actions>
+                <action id="-3" name="Set position" sid="189819449270572" type="HitPointsText">
+                    <param id="0" name="X">0</param>
+                    <param id="1" name="Y">2</param>
+                </action>
+                <action id="-3" name="Set position" sid="7122139046193521" type="ExperienceText">
+                    <param id="0" name="X">LayoutWidth/2</param>
+                    <param id="1" name="Y">2</param>
+                </action>
+                <action id="-3" name="Set position" sid="1500471058385542" type="GoldText">
+                    <param id="0" name="X">LayoutWidth</param>
+                    <param id="1" name="Y">2</param>
+                </action>
+                <action id="0" name="Call function" sid="5635503963533301" type="Function">
+                    <param id="0" name="Name">&quot;RefreshStatus&quot;</param>
+                    <param id="1" name="Parameter {n}"></param>
+                </action>
+            </actions>
+        </event-block>
+        <comment>Sort out decision buttons</comment>
+        <event-block sid="7296702421934784">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="5821438308204685" type="System" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="7224861807286836">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="8194080760368846" type="System">
+                            <param id="0" name="Object">DecisionButton</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="5" name="Set frame" sid="3792091035996598" type="DecisionButton">
+                            <param id="0" name="Frame number">(DecisionButton.isTrueButton &lt;&gt; 0 ? 1 : 0)</param>
+                        </action>
+                        <action id="2" name="Stop" sid="2654060589334565" type="DecisionButton" />
+                        <action id="-15" name="Set visible" sid="2633690495126376" type="DecisionButton">
+                            <param id="0" name="Visibility">0</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-group description="" sid="7585910716009394" title="Utility Functions" />
+        <comment>Refresh the status bar values.</comment>
+        <event-block sid="2509100206826085">
+            <conditions>
+                <condition id="0" name="On function" sid="4626960379159197" type="Function">
+                    <param id="0" name="Name">&quot;RefreshStatus&quot;</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="0" name="Set text" sid="6929931756215725" type="ExperienceText">
+                    <param id="0" name="Text">&quot;Exp. &quot; &amp; Player.experience</param>
+                </action>
+                <action id="0" name="Set text" sid="2214443914909311" type="GoldText">
+                    <param id="0" name="Text">&quot;Gold &quot; &amp; Player.gold</param>
+                </action>
+                <action id="0" name="Call function" sid="5652338052912244" type="Function">
+                    <param id="0" name="Name">&quot;RefreshHitPoints&quot;</param>
+                    <param id="1" name="Parameter {n}"></param>
+                </action>
+            </actions>
+        </event-block>
+        <comment>Refresh Hit Points only</comment>
+        <event-block sid="4003594516956038">
+            <conditions>
+                <condition id="0" name="On function" sid="7594356063417356" type="Function">
+                    <param id="0" name="Name">&quot;RefreshHitPoints&quot;</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <comment>This only updates it when the value actually changes .... small optimisation</comment>
+                <event-block sid="7813967582475203">
+                    <conditions>
+                        <condition id="-8" name="Compare two values" sid="3832149679769059" type="System">
+                            <param id="0" name="First value">round(Player.hitPoints)</param>
+                            <param id="1" name="Comparison">1</param>
+                            <param id="2" name="Second value">round(Player.lastShownHP)</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Set text" sid="1027467914936258" type="HitPointsText">
+                            <param id="0" name="Text">&quot;Hit Pts. &quot; &amp; max(0,round(Player.hitPoints))</param>
+                        </action>
+                        <action id="-10" name="Set value" sid="885640614305326" type="Player">
+                            <param id="0" name="Instance variable">hitPoints</param>
+                            <param id="1" name="Value">max(Player.hitPoints,0)</param>
+                        </action>
+                        <action id="-10" name="Set value" sid="1939152936572028" type="Player">
+                            <param id="0" name="Instance variable">lastShownHP</param>
+                            <param id="1" name="Value">Player.hitPoints</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+    </events>
+</c2eventsheet>

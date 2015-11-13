@@ -1,0 +1,1588 @@
+// *************************************************************************
+//
+//       AKLABETH by Richard Garriott, Reverse Engineered by Paul Robson
+//
+// *************************************************************************
+0         onerr goto 4
+1         rem 
+4         pr# 0:
+          in# 0
+5         himem 49151
+// *************************************************************************
+//
+//                              Set up the player
+//
+// *************************************************************************
+7         clear :
+          gosub Died@60000
+//
+//                      Seed the random number generator
+//
+8         zz = rnd ( - abs (lucky.number))
+9         unknown = 0
+10        text :
+          home :
+          normal :
+          vtab (12):
+          print " welcome to akalabeth, world of doom!"
+//
+//                              Dimension Arrays
+//
+20        dim dun.map(10,10),world.map(20,20),dist.rect.x(10),dist.rect.y(10),perspective(10,3),side.door(10,5),hole(10,3),hole.floor(10,5),ladder(10,3)
+// *************************************************************************
+//
+//                      Create Main Map. Draw wall first
+//
+// *************************************************************************
+30        for x = 0 to 20:
+          world.map(x,0) = 1:
+          world.map(0,x) = 1:
+          world.map(x,20) = 1:
+          world.map(20,x) = 1:
+          next 
+35        :
+          vtab (23):
+          print "  (please wait)";
+//
+//                      Fill in the map with other stuff
+//
+40        for x = 1 to 19:
+          for y = 1 to 19:
+          world.map(x,y) = int ( rnd (1) ^ 5 * 4.5)
+//
+//                         Half of towns become spaces
+//
+41        if world.map(x,y) = 3 and rnd (1) > .5 then world.map(x,y) = 0
+42        next :
+          print ".";:
+          next 
+//
+//          One Lord British (5), Init Player pos and make it a town
+//
+50        world.map( int ( rnd (1) * 19 + 1), int ( rnd (1) * 19 + 1)) = 5:
+          world.x = int ( rnd (1) * 19 + 1):
+          world.y = int ( rnd (1) * 19 + 1):
+          world.map(world.x,world.y) = 3
+// *************************************************************************
+//
+//                            Calculate Screen Data
+//
+// *************************************************************************
+51        dist.rect.x(0) = 139:
+          dist.rect.y(0) = 79
+//
+//            Calculate deeper into the maze for perspective view.
+//
+52        for x = 2 to 20 step 2:
+          dist.rect.x(x / 2) = int ( atn (1 / x) / atn (1) * 140 + .5):
+          dist.rect.y(x / 2) = int (dist.rect.x(x / 2) * 4 / 7)
+//
+//                      Calculate screen window for depth
+//
+53        perspective(x / 2,0) = 139 - dist.rect.x(x / 2):
+          perspective(x / 2,1) = 139 + dist.rect.x(x / 2):
+          perspective(x / 2,2) = 79 - dist.rect.y(x / 2):
+          perspective(x / 2,3) = 79 + dist.rect.y(x / 2):
+          next 
+//
+//                     Calculate outermost as whole screen
+//
+54        perspective(0,0) = 0:
+          perspective(0,1) = 279:
+          perspective(0,2) = 0:
+          perspective(0,3) = 159
+//
+//                          Calculate door position.
+//
+55        for x = 1 to 10:
+          hole(x,0) = 139 - dist.rect.x(x) / 3:
+          hole(x,1) = 139 + dist.rect.x(x) / 3:
+          hole(x,2) = 79 - dist.rect.y(x) * .7:
+          hole(x,3) = 79 + dist.rect.y(x):
+          next :
+          print ".";
+//
+//                         Calculate side door array.
+//
+56        for x = 0 to 9:
+          side.door(x,0) = (perspective(x,0) * 2 + perspective(x + 1,0)) / 3:
+          side.door(x,1) = (perspective(x,0) + 2 * perspective(x + 1,0)) / 3:
+          w = side.door(x,0) - perspective(x,0)
+57        side.door(x,2) = perspective(x,2) + w * 4 / 7:
+          side.door(x,3) = perspective(x,2) + 2 * w * 4 / 7:
+          side.door(x,4) = (perspective(x,3) * 2 + perspective(x + 1,3)) / 3:
+          side.door(x,5) = (perspective(x,3) + 2 * perspective(x + 1,3)) / 3
+58        side.door(x,2) = side.door(x,4) - (side.door(x,4) - side.door(x,2)) * .8:
+          side.door(x,3) = side.door(x,5) - (side.door(x,5) - side.door(x,3)) * .8:
+          if side.door(x,3) = side.door(x,4) then side.door(x,3) = side.door(x,3) - 1
+59        next 
+//
+//                        Calculate floor/ceiling grid.
+//
+60        for x = 0 to 9:
+          hole.floor(x,0) = 139 - dist.rect.x(x) / 3:
+          hole.floor(x,1) = 139 + dist.rect.x(x) / 3:
+          hole.floor(x,2) = 139 - dist.rect.x(x + 1) / 3:
+          hole.floor(x,3) = 139 + dist.rect.x(x + 1) / 3
+61        hole.floor(x,4) = 79 + (dist.rect.y(x) * 2 + dist.rect.y(x + 1)) / 3:
+          hole.floor(x,5) = 79 + (dist.rect.y(x) + 2 * dist.rect.y(x + 1)) / 3:
+          next 
+//
+//                          Calculate ladder position
+//
+62        for x = 0 to 9:
+          ladder(x,0) = (hole.floor(x,0) * 2 + hole.floor(x,1)) / 3:
+          ladder(x,1) = (hole.floor(x,0) + 2 * hole.floor(x,1)) / 3:
+          ladder(x,3) = hole.floor(x,4):
+          ladder(x,2) = 159 - ladder(x,3):
+          next 
+68        home :
+          hcolor = 3
+69        poke 34,20:
+          poke 33,29:
+          home 
+70        gosub Draw.World.Map@100:
+          goto Main.Loop@1000
+90        for x = 0 to 9:
+          for y = 0 to 5:
+          print side.door(x,y);" ";:
+          next :
+          print :
+          next :
+          get q$
+// *************************************************************************
+//
+//            Draw current game are (3 x 3 grid, player in centre)
+//
+// *************************************************************************
+100       hgr :
+          for y = - 1 to 1:
+          for x = - 1 to 1
+105       hplot 138,75 to 142,75:
+          hplot 140,73 to 140,77
+110       zz = world.map(world.x + x,world.y + y):
+          x1 = 65 + (x + 1) * 50:
+          y1 = (y + 1) * 50
+120       if zz = 2 then hplot x1 + 20,y1 + 20 to x1 + 30,y1 + 20 to x1 + 30,y1 + 30 to x1 + 20,y1 + 30 to x1 + 20,y1 + 20
+130       if zz = 3 then hplot x1 + 10,y1 + 10 to x1 + 20,y1 + 10 to x1 + 20,y1 + 40 to x1 + 10,y1 + 40 to x1 + 10,y1 + 30 to x1 + 40,y1 + 30 to x1 + 40,y1 + 40 to x1 + 30,y1 + 40 to x1 + 30,y1 + 10 to x1 + 40,y1 + 10 to x1 + 40,y1 + 20 to x1 + 10,y1 + 20 to x1 + 10,y1 + 10
+140       if zz = 4 then hplot x1 + 20,y1 + 20 to x1 + 30,y1 + 30:
+          hplot x1 + 20,y1 + 30 to x1 + 30,y1 + 20
+150       if zz = 5 then hplot x1,y1 to x1 + 50,y1 to x1 + 50,y1 + 50 to x1,y1 + 50 to x1,y1:
+          hplot x1 + 10,y1 + 10 to x1 + 10,y1 + 40 to x1 + 40,y1 + 40 to x1 + 40,y1 + 10 to x1 + 10,y1 + 10 to x1 + 40,y1 + 40:
+          hplot x1 + 10,y1 + 40 to x1 + 40,y1 + 10
+160       if zz = 1 then hplot x1 + 10,y1 + 50 to x1 + 10,y1 + 40 to x1 + 20,y1 + 30 to x1 + 40,y1 + 30 to x1 + 40,y1 + 50:
+          hplot x1,y1 + 10 to x1 + 10,y1 + 10:
+          hplot x1 + 50,y1 + 10 to x1 + 40,y1 + 10:
+          hplot x1,y1 + 40 to x1 + 10,y1 + 40:
+          hplot x1 + 40,y1 + 40 to x1 + 50,y1 + 40
+170       if zz = 1 then hplot x1 + 10,y1 to x1 + 10,y1 + 20 to x1 + 20,y1 + 20 to x1 + 20,y1 + 30 to x1 + 30,y1 + 30 to x1 + 30,y1 + 10 to x1 + 40,y1 + 10 to x1 + 40,y1
+190       next :
+          next :
+          return 
+// *************************************************************************
+//
+//                      Draw current position in dungeon
+//
+// *************************************************************************
+200       hgr :
+          distance = 0:
+          hcolor = 3
+//
+//               Get centre,left,right objects at given distance
+//
+202       centre.obj = dun.map(dung.x + dung.xi * distance,dung.y + dung.yi * distance):
+          left.obj = dun.map(dung.x + dung.xi * distance + dung.yi,dung.y + dung.yi * distance - dung.xi):
+          right.obj = dun.map(dung.x + dung.xi * distance - dung.yi,dung.y + dung.yi * distance + dung.xi)
+//
+//              LRTB1 is current window, LRTB2 inside rectangle.
+//
+204       r1.left = perspective(distance,0):
+          r1.right = perspective(distance,1):
+          r1.top = perspective(distance,2):
+          r1.bottom = perspective(distance,3):
+          r2.left = perspective(distance + 1,0):
+          r2.right = perspective(distance + 1,1):
+          r2.top = perspective(distance + 1,2):
+          r2.bottom = perspective(distance + 1,3)
+205       centre.obj = int (centre.obj):
+          left.obj = int (left.obj):
+          right.obj = int (right.obj)
+//
+//          Extract the monster at this distance, remove from walls.
+//
+206       monster.viewed = int (centre.obj / 10):
+          centre.obj = centre.obj - monster.viewed * 10:
+          left.obj = int ((left.obj / 10 - int (LEF / 10)) * 10 + .1):
+          right.obj = int ((right.obj / 10 - int (RIG / 10)) * 10 + .1)
+//
+//                         Don't draw at current depth
+//
+208       if distance = 0 then 216
+//
+//                           If solid draw the wall
+//
+210       if centre.obj = 1 or centre.obj = 3 or centre.obj = 4 then hplot r1.left,r1.top to r1.right,r1.top to r1.right,r1.bottom to r1.left,r1.bottom to r1.left,r1.top
+//
+//                       If blocked cant draw any deeper
+//
+212       if centre.obj = 1 or centre.obj = 3 then go.on = 1:
+          goto 260
+//
+//                         Draw wall with a hole in it
+//
+214       if centre.obj = 4 then hplot hole(distance,0),hole(distance,3) to hole(distance,0),hole(distance,2) to hole(distance,1),hole(distance,2) to hole(distance,1),hole(distance,3):
+          go.on = 1:
+          goto 260
+//
+//                             Draw sides if solid
+//
+216       if left.obj = 1 or left.obj = 3 or left.obj = 4 then hplot r1.left,r1.top to r2.left,r2.top:
+          hplot r1.left,r1.bottom to r2.left,r2.bottom
+218       if right.obj = 1 or right.obj = 3 or right.obj = 4 then hplot r1.right,r1.top to r2.right,r2.top:
+          hplot r1.right,r1.bottom to r2.right,r2.bottom
+//
+//                              Draw side doors.
+//
+220       if left.obj = 4 and distance > 0 then hplot side.door(distance,0),side.door(distance,4) to side.door(distance,0),side.door(distance,2) to side.door(distance,1),side.door(distance,3) to side.door(distance,1),side.door(distance,5)
+222       if left.obj = 4 and distance = 0 then hplot 0,side.door(distance,2) - 3 to side.door(distance,1),side.door(distance,3) to side.door(distance,1),side.door(distance,5)
+224       if right.obj = 4 and distance > 0 then hplot 279 - side.door(distance,0),side.door(distance,4) to 279 - side.door(distance,0),side.door(distance,2) to 279 - side.door(distance,1),side.door(distance,3) to 279 - side.door(distance,1),side.door(distance,5)
+226       if right.obj = 4 and distance = 0 then hplot 279,side.door(distance,2) - 3 to 279 - side.door(distance,1),side.door(distance,3) to 279 - side.door(distance,1),side.door(distance,5)
+228       if left.obj = 3 or left.obj = 1 or left.obj = 4 then 234
+//
+//                        Draw open left wall if there
+//
+230       if distance < > 0 then hplot r1.left,r1.top to r1.left,r1.bottom
+232       hplot r1.left,r2.top to r2.left,r2.top to r2.left,r2.bottom to r1.left,r2.bottom
+//
+//                        Draw open right wall if there
+//
+234       if right.obj = 3 or right.obj = 1 or right.obj = 4 then 240
+236       if distance < > 0 then hplot r1.right,r1.top to r1.right,r1.bottom
+238       hplot r1.right,r2.top to r2.right,r2.top to r2.right,r2.bottom to r1.right,r2.bottom
+//
+//                        Can go down, draw floor hole
+//
+240       if centre.obj = 7 or centre.obj = 9 then hplot hole.floor(distance,0),hole.floor(distance,4) to hole.floor(distance,2),hole.floor(distance,5) to hole.floor(distance,3),hole.floor(distance,5) to hole.floor(distance,1),hole.floor(distance,4) to hole.floor(distance,0),hole.floor(distance,4)
+//
+//                          Can go up, draw roof hole
+//
+242       if centre.obj = 8 then hplot hole.floor(distance,0),158 - hole.floor(distance,4) to hole.floor(distance,2),158 - hole.floor(distance,5) to hole.floor(distance,3),158 - hole.floor(distance,5) to hole.floor(distance,1),158 - hole.floor(distance,4) to hole.floor(distance,0),158 - hole.floor(distance,4)
+//
+//                                 Draw Ladder
+//
+244       if centre.obj = 7 or centre.obj = 8 then ba = ladder(distance,3):
+          tp = ladder(distance,2):
+          lx = ladder(distance,0):
+          rx = ladder(distance,1):
+          hplot lx,ba to lx,tp:
+          hplot rx,tp to rx,ba
+246       if centre.obj = 7 or centre.obj = 8 then y1 = (ba * 4 + tp) / 5:
+          y2 = (ba * 3 + tp * 2) / 5:
+          y3 = (ba * 2 + tp * 3) / 5:
+          y4 = (ba + tp * 4) / 5:
+          hplot lx,y1 to rx,y1:
+          hplot lx,y2 to rx,y2:
+          hplot lx,y3 to rx,y3:
+          hplot lx,y4 to rx,y4
+//
+//                                  Draw Gold
+//
+248       if distance > 0 and centre.obj = 5 then hplot 139 - 10 / distance,perspective(distance,3) to 139 - 10 / distance,perspective(distance,3) - 10 / distance to 139 + 10 / distance,perspective(distance,3) - 10 / distance to 139 + 10 / distance,perspective(distance,3) to 139 - 10 / distance,perspective(distance,3)
+249       if centre.obj = 5 and distance > 0 then inverse :
+          print "chest!":
+          normal 
+250       if distance > 0 and centre.obj = 5 then hplot 139 - 10 / distance,perspective(distance,3) - 10 / distance to 139 - 5 / distance,perspective(distance,3) - 15 / distance to 139 + 15 / distance,perspective(distance,3) - 15 / distance to 139 + 15 / distance,perspective(distance,3) - 5 / distance to 139 + 10 / distance,perspective(distance,3)
+252       if distance > 0 and centre.obj = 5 then hplot 139 + 10 / distance,perspective(distance,3) - 10 / distance to 139 + 15 / distance,perspective(distance,3) - 15 / distance
+//
+//                                Draw monsters
+//
+260       if monster.viewed < 1 then Draw.Next.Level@490
+265       x.m = 79 + dist.rect.y(distance):
+          y.m = 139
+//
+//                 Special handling for a Mimic (like a chest)
+//
+266       inverse :
+          if monster.viewed = 8 then print "chest!";:
+          call - 868:
+          print :
+          normal :
+          goto 269
+//
+//                             Print monster name
+//
+267       print monster$(monster.viewed);:
+          call - 868:
+          print :
+          normal 
+//
+//                     Don't draw if on top of the monster
+//
+269       if distance = 0 then Draw.Next.Level@490
+// *************************************************************************
+//
+//                            Draw the monster case
+//
+// *************************************************************************
+270       on monster.viewed goto 300,310,320,330,340,350,360,370,380,390
+280       goto Draw.Next.Level@490
+// *************************************************************************
+//
+//                                Draw Skeleton
+//
+// *************************************************************************
+300       hplot y.m - 23 / distance,x.m to y.m - 15 / distance,x.m to y.m - 15 / dI,x.m - 15 / dI to y.m - 8 / dI,x.m - 30 / dI to y.m + 8 / dI,x.m - 30 / dI to y.m + 15 / dI,x.m - 15 / dI to y.m + 15 / dI,x.m to y.m + 23 / dI,x.m
+301       hplot y.m,x.m - 26 / dI to y.m,x.m - 65 / dI:
+          hplot y.m - 2 / dI + .5,x.m - 38 / dI to y.m + 2 / dI + .5,x.m - 38 / dI:
+          hplot y.m - 3 / dI + .5,x.m - 45 / dI to y.m + 3 / dI + .5,x.m - 45 / dI:
+          hplot y.m - 5 / dI + .5,x.m - 53 / dI to y.m + 5 / dI + .5,x.m - 53 / dI
+302       hplot y.m - 23 / dI,x.m - 56 / dI to y.m - 30 / dI,x.m - 53 / dI to y.m - 23 / dI,x.m - 45 / dI to y.m - 23 / dI,x.m - 53 / dI to y.m - 8 / dI,x.m - 38 / dI
+303       hplot y.m - 15 / dI,x.m - 45 / dI to y.m - 8 / dI,x.m - 60 / dI to y.m + 8 / dI,x.m - 60 / dI to y.m + 15 / dI,x.m - 45 / dI:
+          hplot y.m + 15 / dI,x.m - 42 / dI to y.m + 15 / dI,x.m - 57 / dI:
+          hplot y.m + 12 / dI,x.m - 45 / dI to y.m + 20 / dI,x.m - 45 / dI
+304       hplot y.m,x.m - 75 / dI to y.m - 5 / dI + .5,x.m - 80 / dI to y.m - 8 / dI,x.m - 75 / dI to y.m - 5 / dI + .5,x.m - 65 / dI to y.m + 5 / dI + .5,x.m - 65 / dI to y.m + 5 / dI + .5,x.m - 68 / dI to y.m - 5 / dI + .5,x.m - 68 / dI to y.m - 5 / dI + .5,x.m - 65 / dI
+305       hplot to y.m + 5 / dI + .5,x.m - 65 / dI to y.m + 8 / dI,x.m - 75 / dI to y.m + 5 / dI + .5,x.m - 80 / dI to y.m - 5 / dI + .5,x.m - 80 / dI:
+          hplot y.m - 5 / dI + .5,x.m - 72 / dI:
+          hplot y.m + 5 / dI + .5,x.m - 72 / dI
+309       goto Draw.Next.Level@490
+// *************************************************************************
+//
+//                                 Draw Thief
+//
+// *************************************************************************
+310       hplot y.m,x.m - 56 / dI to y.m,x.m - 8 / dI to y.m + 10 / dI,x.m to y.m + 30 / dI,x.m to y.m + 30 / dI,x.m - 45 / dI to y.m + 10 / dI,x.m - 64 / dI to y.m,x.m - 56 / dI
+311       hplot to y.m - 10 / dI,x.m - 64 / dI to y.m - 30 / dI,x.m - 45 / dI to y.m - 30 / dI,x.m to y.m - 10 / dI,x.m to y.m,x.m - 8 / dI
+312       hplot y.m - 10 / dI,x.m - 64 / dI to y.m - 10 / dI,x.m - 75 / dI to y.m,x.m - 83 / dI to y.m + 10 / dI,x.m - 75 / dI to y.m,x.m - 79 / dI to y.m - 10 / dI,x.m - 75 / dI to y.m,x.m - 60 / dI to y.m + 10 / dI,x.m - 75 / dI to y.m + 10 / dI,x.m - 64 / dI
+319       goto Draw.Next.Level@490
+// *************************************************************************
+//
+//                               Draw Giant Rat
+//
+// *************************************************************************
+320       hplot y.m + 5 / dI,x.m - 30 / dI to y.m,x.m - 25 / dI to y.m - 5 / dI,x.m - 30 / dI to y.m - 15 / dI,x.m - 5 / dI to y.m - 10 / dI,x.m to y.m + 10 / dI,x.m to y.m + 15 / dI,x.m - 5 / dI
+321       hplot to y.m + 20 / dI,x.m - 5 / dI to y.m + 10 / dI,x.m to y.m + 15 / dI,x.m - 5 / dI to y.m + 5 / dI,x.m - 30 / dI to y.m + 10 / dI,x.m - 40 / dI to y.m + 3 / dI + .5,x.m - 35 / dI to y.m - 3 / dI + .5,x.m - 35 / dI to y.m - 10 / dI,x.m - 40 / dI to y.m - 5 / dI,x.m - 30 / dI
+322       hplot y.m - 5 / dI,x.m - 33 / dI to y.m - 3 / dI + .5,x.m - 30 / dI:
+          hplot y.m + 5 / dI,x.m - 33 / dI to y.m + 3 / dI + .5,x.m - 30 / dI:
+          hplot y.m - 5 / dI,x.m - 20 / dI to y.m - 5 / dI,x.m - 15 / dI
+323       hplot y.m + 5 / dI,x.m - 20 / dI to y.m + 5 / dI,x.m - 15 / dI:
+          hplot y.m - 7 / dI,x.m - 20 / dI to y.m - 7 / dI,x.m - 15 / dI:
+          hplot y.m + 7 / dI,x.m - 20 / dI to y.m + 7 / dI,x.m - 15 / dI
+329       goto Draw.Next.Level@490
+// *************************************************************************
+//
+//                                  Draw Orc
+//
+// *************************************************************************
+330       hplot y.m,x.m to y.m - 15 / dI,x.m to y.m - 8 / dI,x.m - 8 / dI to y.m - 8 / dI,x.m - 15 / dI to y.m - 15 / dI,x.m - 23 / dI to y.m - 15 / dI,x.m - 15 / dI to y.m - 23 / dI,x.m - 23 / dI
+331       hplot to y.m - 23 / dI,x.m - 45 / dI to y.m - 15 / dI,x.m - 53 / dI to y.m - 8 / dI,x.m - 53 / dI to y.m - 15 / dI,x.m - 68 / dI to y.m - 8 / dI,x.m - 75 / dI to y.m,x.m - 75 / dI
+332       hplot y.m,x.m to y.m + 15 / dI,x.m to y.m + 8 / dI,x.m - 8 / dI to y.m + 8 / dI,x.m - 15 / dI to y.m + 15 / dI,x.m - 23 / dI to y.m + 15 / dI,x.m - 15 / dI to y.m + 23 / dI,x.m - 23 / dI
+333       hplot to y.m + 23 / dI,x.m - 45 / dI to y.m + 15 / dI,x.m - 53 / dI to y.m + 8 / dI,x.m - 53 / dI to y.m + 15 / dI,x.m - 68 / dI to y.m + 8 / dI,x.m - 75 / dI to y.m,x.m - 75 / dI
+334       hplot y.m - 15 / dI,x.m - 68 / dI to y.m + 15 / dI,x.m - 68 / dI:
+          hplot y.m - 8 / dI,x.m - 53 / dI to y.m + 8 / dI,x.m - 53 / dI:
+          hplot y.m - 23 / dI,x.m - 15 / dI to y.m + 8 / dI,x.m - 45 / dI
+335       hplot y.m - 8 / dI,x.m - 68 / dI to y.m,x.m - 60 / dI to y.m + 8 / dI,x.m - 68 / dI to y.m + 8 / dI,x.m - 60 / dI to y.m - 8 / dI,x.m - 60 / dI to y.m - 8 / dI,x.m - 68 / dI
+336       hplot y.m,x.m - 38 / dI to y.m - 8 / dI,x.m - 38 / dI to y.m + 8 / dI,x.m - 53 / dI to y.m + 8 / dI,x.m - 45 / dI to y.m + 15 / dI,x.m - 45 / dI to y.m,x.m - 30 / dI to y.m,x.m - 38 / dI
+339       goto Draw.Next.Level@490
+// *************************************************************************
+//
+//                                 Draw Viper
+//
+// *************************************************************************
+340       hplot y.m - 10 / dI,x.m - 15 / dI to y.m - 10 / dI,x.m - 30 / dI to y.m - 15 / dI,x.m - 20 / dI to y.m - 15 / dI,x.m - 15 / dI to y.m - 15 / dI,x.m to y.m + 15 / dI,x.m to y.m + 15 / dI,x.m - 15 / dI to y.m - 15 / dI,x.m - 15 / dI
+341       hplot y.m - 15 / dI,x.m - 10 / dI to y.m + 15 / dI,x.m - 10 / dI:
+          hplot y.m - 15 / dI,x.m - 5 / dI to y.m + 15 / dI,x.m - 5 / dI
+342       hplot y.m,x.m - 15 / dI to y.m - 5 / dI,x.m - 20 / dI to y.m - 5 / dI,x.m - 35 / dI to y.m + 5 / dI,x.m - 35 / dI to y.m + 5 / dI,x.m - 20 / dI to y.m + 10 / dI,x.m - 15 / dI
+343       hplot y.m - 5 / dI,x.m - 20 / dI to y.m + 5 / dI,x.m - 20 / dI:
+          hplot y.m - 5 / dI,x.m - 25 / dI to y.m + 5 / dI,x.m - 25 / dI:
+          hplot y.m - 5 / dI,x.m - 30 / dI to y.m + 5 / dI,x.m - 30 / dI
+344       hplot y.m - 10 / dI,x.m - 35 / dI to y.m - 10 / dI,x.m - 40 / dI to y.m - 5 / dI,x.m - 45 / dI to y.m + 5 / dI,x.m - 45 / dI to y.m + 10 / dI,x.m - 40 / dI to y.m + 10 / dI,x.m - 35 / dI
+345       hplot y.m - 10 / dI,x.m - 40 / dI to y.m,x.m - 45 / dI to y.m + 10 / dI,x.m - 40 / dI
+346       hplot y.m - 5 / dI,x.m - 40 / dI to y.m + 5 / dI,x.m - 40 / dI to y.m + 15 / dI,x.m - 30 / dI to y.m,x.m - 40 / dI to y.m - 15 / dI,x.m - 30 / dI to y.m - 5 / dI + .5,x.m - 40 / dI
+349       goto Draw.Next.Level@490
+// *************************************************************************
+//
+//                            Draw Carrion Crawler
+//
+// *************************************************************************
+350       hplot y.m - 20 / dI,79 - dist.rect.y(distance) to y.m - 20 / dI,x.m - 88 / dI to y.m - 10 / dI,x.m - 83 / dI to y.m + 10 / dI,x.m - 83 / dI to y.m + 20 / dI,x.m - 88 / dI to y.m + 20 / dI,79 - dist.rect.y(distance) to y.m - 20 / dI,79 - dist.rect.y(dI)
+351       hplot y.m - 20 / dI,x.m - 88 / dI to y.m - 30 / dI,x.m - 83 / dI to y.m - 30 / dI,x.m - 78 / dI:
+          hplot y.m + 20 / dI,x.m - 88 / dI to y.m + 30 / dI,x.m - 83 / dI to y.m + 40 / dI,x.m - 83 / dI
+352       hplot y.m - 15 / dI,x.m - 86 / dI to y.m - 20 / dI,x.m - 83 / dI to y.m - 20 / dI,x.m - 78 / dI to y.m - 30 / dI,x.m - 73 / dI to y.m - 30 / dI,x.m - 68 / dI to y.m - 20 / dI,x.m - 63 / dI
+353       hplot y.m - 10 / dI,x.m - 83 / dI to y.m - 10 / dI,x.m - 58 / dI to y.m,x.m - 50 / dI:
+          hplot y.m + 10 / dI,x.m - 83 / dI to y.m + 10 / dI,x.m - 78 / dI to y.m + 20 / dI,x.m - 73 / dI to y.m + 20 / dI,x.m - 40 / dI
+354       hplot y.m + 15 / dI,x.m - 85 / dI to y.m + 20 / dI,x.m - 78 / dI to y.m + 30 / dI,x.m - 76 / dI to y.m + 30 / dI,x.m - 60 / dI
+355       hplot y.m,x.m - 83 / dI to y.m,x.m - 73 / dI to y.m + 10 / dI,x.m - 68 / dI to y.m + 10 / dI,x.m - 63 / dI to y.m,x.m - 58 / dI
+359       goto Draw.Next.Level@490
+// *************************************************************************
+//
+//                                Draw Gremlin
+//
+// *************************************************************************
+360       hplot y.m + 5 / dI + .5,x.m - 10 / dI to y.m - 5 / dI + .5,x.m - 10 / dI to y.m,x.m - 15 / dI to y.m + 10 / dI,x.m - 20 / dI to y.m + 5 / dI + .5,x.m - 15 / dI to y.m + 5 / dI + .5,x.m - 10 / dI
+361       hplot to y.m + 7 / dI + .5,x.m - 6 / dI to y.m + 5 / dI + .5,x.m - 3 / dI to y.m - 5 / dI + .5,x.m - 3 / dI to y.m - 7 / dI + .5,x.m - 6 / dI to y.m - 5 / dI + .5,x.m - 10 / dI
+362       hplot y.m + 2 / dI + .5,x.m - 3 / dI to y.m + 5 / dI + .5,x.m to y.m + 8 / dI,x.m:
+          hplot y.m - 2 / dI + .5,x.m - 3 / dI to y.m - 5 / dI + .5,x.m to y.m - 8 / dI,x.m:
+          hplot y.m + 3 / dI + .5,x.m - 8 / dI:
+          hplot y.m - 3 / dI + .5,x.m - 8 / dI:
+          hplot y.m + 3 / dI + .5,x.m - 5 / dI to y.m - 3 / dI + .5,x.m - 5 / dI
+363       goto Draw.Next.Level@490
+// *************************************************************************
+//
+//                                 Draw Mimic
+//
+// *************************************************************************
+370       hplot 139 - 10 / distance,perspective(distance,3) to 139 - 10 / distance,perspective(distance,3) - 10 / distance to 139 + 10 / distance,perspective(distance,3) - 10 / distance to 139 + 10 / distance,perspective(distance,3) to 139 - 10 / distance,perspective(distance,3)
+371       hplot 139 - 10 / distance,perspective(distance,3) - 10 / distance to 139 - 5 / distance,perspective(distance,3) - 15 / distance to 139 + 15 / distance,perspective(distance,3) - 15 / distance to 139 + 15 / distance,perspective(distance,3) - 5 / distance to 139 + 10 / distance,perspective(distance,3)
+372       hplot 139 + 10 / distance,perspective(distance,3) - 10 / distance to 139 + 15 / distance,perspective(distance,3) - 15 / distance
+373       goto Draw.Next.Level@490
+// *************************************************************************
+//
+//                                 Draw Daemon
+//
+// *************************************************************************
+380       hplot y.m - 14 / dI,x.m - 46 / dI to y.m - 12 / dI,x.m - 37 / dI to y.m - 20 / dI,x.m - 32 / dI to y.m - 30 / dI,x.m - 32 / dI to y.m - 22 / dI,x.m - 24 / dI to y.m - 40 / dI,x.m - 17 / dI to y.m - 40 / dI,x.m - 7 / dI to y.m - 38 / dI,x.m - 5 / dI to y.m - 40 / dI,x.m - 3 / dI to y.m - 40 / dI,x.m
+381       hplot to y.m - 36 / dI,x.m to y.m - 34 / dI,x.m - 2 / dI to y.m - 32 / dI,x.m to y.m - 28 / dI,x.m to y.m - 28 / dI,x.m - 3 / dI to y.m - 30 / dI,x.m - 5 / dI to y.m - 28 / dI,x.m - 7 / dI to y.m - 28 / dI,x.m - 15 / dI to y.m,x.m - 27 / dI
+382       hplot y.m + 14 / dI,x.m - 46 / dI to y.m + 12 / dI,x.m - 37 / dI to y.m + 20 / dI,x.m - 32 / dI to y.m + 30 / dI,x.m - 32 / dI to y.m + 22 / dI,x.m - 24 / dI to y.m + 40 / dI,x.m - 17 / dI to y.m + 40 / dI,x.m - 7 / dI to y.m + 38 / dI,x.m - 5 / dI to y.m + 40 / dI,x.m - 3 / dI to y.m + 40 / dI,x.m
+383       hplot to y.m + 36 / dI,x.m to y.m + 34 / dI,x.m - 2 / dI to y.m + 32 / dI,x.m to y.m + 28 / dI,x.m to y.m + 28 / dI,x.m - 3 / dI to y.m + 30 / dI,x.m - 5 / dI to y.m + 28 / dI,x.m - 7 / dI to y.m + 28 / dI,x.m - 15 / dI to y.m,x.m - 27 / dI
+384       hplot y.m + 6 / dI,x.m - 48 / dI to y.m + 38 / dI,x.m - 41 / dI to y.m + 40 / dI,x.m - 42 / dI to y.m + 18 / dI,x.m - 56 / dI to y.m + 12 / dI,x.m - 56 / dI to y.m + 10 / dI,x.m - 57 / dI to y.m + 8 / dI,x.m - 56 / dI to y.m - 8 / dI,x.m - 56 / dI to y.m - 10 / dI,x.m - 58 / dI to y.m + 14 / dI,x.m - 58 / dI to y.m + 16 / dI,x.m - 59 / dI
+385       hplot to y.m + 8 / dI,x.m - 63 / dI to y.m + 6 / dI,x.m - 63 / dI to y.m + 2 / dI + .5,x.m - 70 / dI to y.m + 2 / dI + .5,x.m - 63 / dI to y.m - 2 / dI + .5,x.m - 63 / dI to y.m - 2 / dI + .5,x.m - 70 / dI to y.m - 6 / dI,x.m - 63 / dI to y.m - 8 / dI,x.m - 63 / dI to y.m - 16 / dI,x.m - 59 / dI to y.m - 14 / dI,x.m - 58 / dI
+386       hplot to y.m - 10 / dI,x.m - 57 / dI to y.m - 12 / dI,x.m - 56 / dI to y.m - 18 / dI,x.m - 56 / dI to y.m - 36 / dI,x.m - 47 / dI to y.m - 36 / dI,x.m - 39 / dI to y.m - 28 / dI,x.m - 41 / dI to y.m - 28 / dI,x.m - 46 / dI to y.m - 20 / dI,x.m - 50 / dI to y.m - 18 / dI,x.m - 50 / dI to y.m - 14 / dI,x.m - 46 / dI
+387       goto 3087
+// *************************************************************************
+//
+//                                 Draw Balrog
+//
+// *************************************************************************
+390       hplot y.m + 6 / dI,x.m - 60 / dI to y.m + 30 / dI,x.m - 90 / dI to y.m + 60 / dI,x.m - 30 / dI to y.m + 60 / dI,x.m - 10 / dI to y.m + 30 / dI,x.m - 40 / dI to y.m + 15 / dI,x.m - 40 / dI
+391       hplot y.m - 6 / dI,x.m - 60 / dI to y.m - 30 / dI,x.m - 90 / dI to y.m - 60 / dI,x.m - 30 / dI to y.m - 60 / dI,x.m - 10 / dI to y.m - 30 / dI,x.m - 40 / dI to y.m - 15 / dI,x.m - 40 / dI
+392       hplot y.m,x.m - 25 / dI to y.m + 6 / dI,x.m - 25 / dI to y.m + 10 / dI,x.m - 20 / dI to y.m + 12 / dI,x.m - 10 / dI to y.m + 10 / dI,x.m - 6 / dI to y.m + 10 / dI,x.m to y.m + 14 / dI,x.m to y.m + 15 / dI,x.m - 5 / dI to y.m + 16 / dI,x.m to y.m + 20 / dI,x.m
+393       hplot to y.m + 20 / dI,x.m - 6 / dI to y.m + 18 / dI,x.m - 10 / dI to y.m + 18 / dI,x.m - 20 / dI to y.m + 15 / dI,x.m - 30 / dI to y.m + 15 / dI,x.m - 45 / dI to y.m + 40 / dI,x.m - 60 / dI to y.m + 40 / dI,x.m - 70 / dI
+394       hplot to y.m + 10 / dI,x.m - 55 / dI to y.m + 6 / dI,x.m - 60 / dI to y.m + 10 / dI,x.m - 74 / dI to y.m + 6 / dI,x.m - 80 / dI to y.m + 4 / dI + .5,x.m - 80 / dI to y.m + 3 / dI + .5,x.m - 82 / dI to y.m + 2 / dI + .5,x.m - 80 / dI to y.m,x.m - 80 / dI
+395       hplot y.m,x.m - 25 / dI to y.m - 6 / dI,x.m - 25 / dI to y.m - 10 / dI,x.m - 20 / dI to y.m - 12 / dI,x.m - 10 / dI to y.m - 10 / dI,x.m - 6 / dI to y.m - 10 / dI,x.m to y.m - 14 / dI,x.m to y.m - 15 / dI,x.m - 5 / dI to y.m - 16 / dI,x.m to y.m - 20 / dI,x.m
+396       hplot to y.m - 20 / dI,x.m - 6 / dI to y.m - 18 / dI,x.m - 10 / dI to y.m - 18 / dI,x.m - 20 / dI to y.m - 15 / dI,x.m - 30 / dI to y.m - 15 / dI,x.m - 45 / dI to y.m - 40 / dI,x.m - 60 / dI to y.m - 40 / dI,x.m - 70 / dI
+397       hplot to y.m - 10 / dI,x.m - 55 / dI to y.m - 6 / dI,x.m - 60 / dI to y.m - 10 / dI,x.m - 74 / dI to y.m - 6 / dI,x.m - 80 / dI to y.m - 4 / dI + .5,x.m - 80 / dI to y.m - 3 / dI + .5,x.m - 82 / dI to y.m - 2 / dI + .5,x.m - 80 / dI to y.m,x.m - 80 / dI
+398       hplot y.m - 6 / dI,x.m - 25 / dI to y.m,x.m - 6 / dI to y.m + 10 / dI,x.m to y.m + 4 / dI + .5,x.m - 8 / dI to y.m + 6 / dI,x.m - 25 / dI:
+          hplot y.m - 40 / dI,x.m - 64 / dI to y.m - 40 / dI,x.m - 90 / dI to y.m - 52 / dI,x.m - 80 / dI to y.m - 52 / dI,x.m - 40 / dI
+399       hplot y.m + 40 / dI,x.m - 86 / dI to y.m + 38 / dI,x.m - 92 / dI to y.m + 42 / dI,x.m - 92 / dI to y.m + 40 / dI,x.m - 86 / dI to y.m + 40 / dI,x.m - 50 / dI
+400       hplot y.m + 4 / dI + .5,x.m - 70 / dI to y.m + 6 / dI,x.m - 74 / dI:
+          hplot y.m - 4 / dI + .5,x.m - 70 / dI to y.m - 6 / dI,x.m - 74 / dI:
+          hplot y.m,x.m - 64 / dI to y.m,x.m - 60 / dI:
+          goto Draw.Next.Level@490
+//
+//                            Can we go any further
+//
+490       if go.on = 1 then go.on = 0:
+          return 
+491       distance = distance + 1:
+          goto 202
+// *************************************************************************
+//
+//             Create the dungeon. Seed RNG according to position
+//
+// *************************************************************************
+500       zz = rnd ( - abs (lucky.number) - world.x * 10 - world.y * 1000 + dun.level * 31.4)
+//
+//                       Blank Dungeon Array, Draw Sides
+//
+501       for x = 1 to 9:
+          for y = 1 to 9:
+          dun.map(x,y) = 0:
+          next :
+          next 
+510       for x = 0 to 10:
+          dun.map(x,0) = 1:
+          dun.map(x,10) = 1:
+          dun.map(0,x) = 1:
+          dun.map(10,x) = 1:
+          next 
+//
+//                    Fill Dungeon with chessboard pattern
+//
+520       for x = 2 to 8 step 2:
+          for y = 1 to 9:
+          dun.map(x,y) = 1:
+          dun.map(y,x) = 1:
+          next :
+          next 
+530       for x = 2 to 8 step 2:
+          for y = 1 to 9 step 2
+540       if rnd (1) > .95 then dun.map(x,y) = 2
+541       if rnd (1) > .95 then dun.map(y,x) = 2
+542       if rnd (1) > .6 then dun.map(y,x) = 3
+543       if rnd (1) > .6 then dun.map(x,y) = 3
+544       if rnd (1) > .6 then dun.map(x,y) = 4
+545       if rnd (1) > .6 then dun.map(y,x) = 4
+546       if rnd (1) > .97 then dun.map(y,x) = 9
+547       if rnd (1) > .97 then dun.map(x,y) = 9
+548       if rnd (1) > .94 then dun.map(x,y) = 5
+549       if rnd (1) > .94 then dun.map(y,x) = 5
+568       next :
+          next 
+//
+//                    Put stairs up and down in the dungeon
+//
+569       dun.map(2,1) = 0:
+          if dun.level / 2 = int (dun.level / 2) then dun.map(7,3) = 7:
+          dun.map(3,7) = 8
+570       if dun.level / 2 < > int (dun.level / 2) then dun.map(7,3) = 8:
+          dun.map(3,7) = 7
+//
+//                   Dungeon First floor is a special case.
+//
+580       if dun.level = 1 then dun.map(1,1) = 8:
+          dun.map(7,3) = 0
+585       gosub Put.Monsters.In@2000
+590       return 
+// *************************************************************************
+//
+//                               Main game loop
+//
+// *************************************************************************
+1000      vtab (24):
+          print "command? ";:
+          call - 868
+//
+//                      Get Key, Tidy up Apple II memory
+//
+1001      x = peek ( - 16384):
+          if x < 128 then Draw.World.Map@1001
+1002      q = fre (0)
+1010      poke - 16368,0
+//
+//                                North/Forward
+//
+1030      if x = 141 then on sgn (dun.level) + 1 goto 1100,1150
+//
+//                                 East/Right
+//
+1040      if x = 149 then on sgn (dun.level) + 1 goto 1200,1250
+//
+//                                  West/Left
+//
+1050      if x = 136 then on sgn (dun.level) + 1 goto 1300,1350
+//
+//                                 South/Turn
+//
+1060      if x = 175 then on sgn (dun.level) + 1 goto 1400,1450
+1070      if x = 216 then on sgn (dun.level) + 1 goto 1500,1550
+//
+//                                   Attack
+//
+1080      if x = 193 or x = 155 then on sgn (dun.level) + 1 goto 1600,1650
+//
+//                                    Pass
+//
+1081      if x = 160 then print "pass":
+          goto Continue.Move@1090
+//
+//                                   Status
+//
+1085      if x = 211 then Display.Status@1700
+//
+//                              Pause On and Off
+//
+1086      if x = 208 then if pause = 1 then pause = 0:
+          print "pause off":
+          goto Main.Loop@1000
+1087      if x = 208 then if pause = 0 then pause = 1:
+          print "pause on":
+          goto Main.Loop@1000
+1089      print "huh?":
+          goto Main.Loop@1000
+// *************************************************************************
+//
+//               Consume Food etc, come back here after a move.
+//
+// *************************************************************************
+1090      object.food(0) = object.food(0) - 1 + sgn (dun.level) * .9:
+          if object.food(0) < 0 then attr.hp = 0:
+          print :
+          print "you have starved!!!!!":
+          goto 1093
+//
+//                               Refresh Status
+//
+1091      poke 33,40:
+          vtab (22):
+          htab (30):
+          print "food=";object.food(0);:
+          call - 868:
+          vtab (23):
+          htab (30):
+          print "h.p.=";attr.hp;:
+          call - 868:
+          vtab (24):
+          htab (30):
+          print "gold=";attr.gold;:
+          call - 868:
+          poke 33,29:
+          htab (1)
+//
+//                             Make values integer
+//
+1092      object.food(0) = int (object.food(0) * 10) / 10
+//
+//                                Check if Dead
+//
+1093      if attr.hp < = 0 then Died@6000
+//
+//                       Check for monsters bashing you
+//
+1095      if dun.level > 0 then gosub Bash by monsters@4000:
+          if attr.hp < = 0 then 1093
+//
+//                             Refresh more stats
+//
+1096      poke 33,40:
+          vtab (22):
+          htab (30):
+          print "food=";object.food(0);:
+          call - 868:
+          vtab (23):
+          htab (30):
+          print "h.p.=";attr.hp;:
+          call - 868:
+          vtab (24):
+          htab (30):
+          print "gold=";attr.gold;:
+          call - 868:
+          poke 33,29:
+          htab (1)
+//
+//                     Redraw the display, whatever it is.
+//
+1097      if dun.level = 0 then gosub Draw.World.Map@100:
+          goto Main.Loop@1000
+1098      if dun.level > 0 then gosub Draw.Dungeon.View@200:
+          goto Main.Loop@1000
+// *************************************************************************
+//
+//                                Go North Code
+//
+// *************************************************************************
+1100      print "north":
+          if world.map(world.x,world.y - 1) = 1 then print "you can't pass the mountains":
+          goto Continue.Move@1090
+1110      world.y = world.y - 1:
+          goto Continue.Move@1090
+// *************************************************************************
+//
+//                               Go Forward Code
+//
+// *************************************************************************
+1150      if dun.map(dung.x + dung.xi,dung.y + dung.yi) < > 1 and dun.map(dung.x + dung.xi,dung.y + dung.yi) < 10 then dung.x = dung.x + dung.xi:
+          dung.y = dung.y + dung.yi
+1155      print "forward"
+// *************************************************************************
+//
+//                        Post move check, traps first
+//
+// *************************************************************************
+1160      if dun.map(dung.x,dung.y) = 2 then print "aaarrrggghhh!!! a trap!":
+          attr.hp= attr.hp - int ( rnd (1) * dun.level + 3):
+          _unknown = 1:
+          dun.level = dun.level + 1:
+          print "falling to level ";dun.level:
+          gosub Create.Dungeon@500:
+          goto Continue.Move@1090
+//
+//                               Check for Gold
+//
+1165      z = 0
+1170      if dun.map(dung.x,dung.y) = 5 then dun.map(dung.x,dung.y) = 0:
+          print "gold!!!!!":
+          z = int ( rnd (1) * 5 * dun.level + dun.level):
+          print z;"-pieces of eight":
+          attr.gold = attr.gold + z
+//
+//                              Check for Object
+//
+1175      if z > 0 then z = int ( rnd (1) * 6):
+          print "and a ";object$(z):
+          object(z) = object(z) + 1:
+          goto Continue.Move@1090
+1190      goto Continue.Move@1090
+// *************************************************************************
+//
+//                                Go East Code
+//
+// *************************************************************************
+1200      print "east":
+          if world.map(world.x + 1,world.y) = 1 then print "you can't pass the mountains":
+          goto Continue.Move@1090
+1210      world.x = world.x + 1:
+          goto Continue.Move@1090
+// *************************************************************************
+//
+//                                Go Right Code
+//
+// *************************************************************************
+1250      print "turn right"
+1255      if dung.xi < > 0 then dung.yi = dung.xi:
+          dung.xi = 0:
+          goto Continue.Move@1090
+1260      dung.xi = - dung.yi:
+          dung.yi = 0:
+          goto Continue.Move@1090
+// *************************************************************************
+//
+//                                Go West Code
+//
+// *************************************************************************
+1300      print "west":
+          if world.map(world.x - 1,world.y) = 1 then print "you can't pass the mountains":
+          goto Continue.Move@1090
+1310      world.x = world.x - 1:
+          goto Continue.Move@1090
+// *************************************************************************
+//
+//                                Go Left Code
+//
+// *************************************************************************
+1350      print "turn left"
+1355      if dung.xi < > 0 then dung.yi = - dung.xi:
+          dung.xi = 0:
+          goto Continue.Move@1090
+1360      dung.xi = dung.yi:
+          dung.yi = 0:
+          goto Continue.Move@1090
+// *************************************************************************
+//
+//                                Go South Code
+//
+// *************************************************************************
+1400      print "south":
+          if world.map(world.x,world.y + 1) = 1 then print "you can't pass the mountains":
+          goto Continue.Move@1090
+1410      world.y = world.y + 1:
+          goto Continue.Move@1090
+// *************************************************************************
+//
+//                               Turn Round Code
+//
+// *************************************************************************
+1450      print "turn around":
+          dung.xi = - dung.xi:
+          dung.yi = - dung.yi:
+          goto Continue.Move@1090
+// *************************************************************************
+//
+//                    Enter Code. Check if entering a town
+//
+// *************************************************************************
+1500      if world.map(world.x,world.y) = 3 then gosub 60080:
+          gosub 60200:
+          goto Continue.Move@1090
+//
+//                          Check entering a dungeon
+//
+1510      if world.map(world.x,world.y) = 4 and dun.level = 0 then print "go dungeon":
+          print "please wait ":
+          dun.level = 1:
+          gosub Create.Dungeon@500:
+          dung.xi = 1:
+          dung.yi = 0:
+          dung.x = 1:
+          dung.y = 1:
+          goto Continue.Move@1090
+//
+//                    Check entering Lord British's Castle
+//
+1515      if world.map(world.x,world.y) = 5 then Lord.British@7000
+1520      print "huh?":
+          goto Main.Loop@1000
+// *************************************************************************
+//
+//                Entering a dungeon (e.g. up or down a level)
+//
+// *************************************************************************
+1550      if dun.map(dung.x,dung.y) < > 7 and dun.map(dung.x,dung.y) < > 9 then 1580
+//
+//                                Stairs or Pit
+//
+1555      print "go down to level ";dun.level + 1
+1560      dun.level = dun.level + 1:
+          gosub Create.Dungeon@500:
+          _unknown = 1:
+          goto Continue.Move@1090
+//
+//                               Check stairs up
+//
+1580      if dun.map(dung.x,dung.y) < > 8 then print "huh?":
+          goto Continue.Move@1090
+//
+//                             Leaving the dungeon
+//
+1581      if dun.level = 1 then print "leave dungeon":
+          dun.level = 0:
+          goto 1586
+//
+//                                 Up a level
+//
+1584      print "go up to level ";dun.level - 1
+1585      dun.level = dun.level - 1:
+          gosub Create.Dungeon@500:
+          _unknown = 1
+//
+//                         Reward leaving the dungeon
+//
+1586      if dun.level = 0 then print "thou hast gained":
+          print hpgain;" hit points":
+          attr.hp = attr.hp + hpgain:
+          hpgain = 0
+1587      goto Continue.Move@1090
+// *************************************************************************
+//
+//                     Attack on the world map (you can't)
+//
+// *************************************************************************
+1600      goto Continue.Move@1090
+// *************************************************************************
+//
+//                    Attack in the dungeon. Select weapon
+//
+// *************************************************************************
+1650      monster.id = 0:
+          weapon.damage = 0:
+          print "attack":
+          print "which weapon ";:
+          get q$
+//
+//                           Check owned, get damage
+//
+1651      if q$ = "r" then weapon.damage = 10:
+          print "rapier":
+          if object.rapier(1) < 1 then print "not owned":
+          goto 1650
+1652      if q$ = "a" then weapon.damage = 5:
+          print "axe":
+          if object.axe(2) < 1 then print "not owned":
+          goto 1650
+1653      if q$ = "s" then weapon.damage = 1:
+          print "shield":
+          if object.shield(3) < 1 then print "not owned":
+          goto 1650
+1654      if q$ = "b" then weapon.damage = 4:
+          print "bow":
+          if object.bow(4) < 1 then print "not owned":
+          goto 1650
+1655      if q$ = "m" then print "magic amulet":
+          goto 1680
+//
+//               Check class (Mages can't use Bows, or Rapiers)
+//
+1656      if q$ = "b" and class$ = "m" then print "mages can't use bows!":
+          goto 1650
+1657      if q$ = "r" and class$ = "m" then print "mages can't use rapiers!":
+          goto 1650
+1659      if weapon.damage = 0 then print "hands"
+1660      if weapon.damage = 5 or weapon.damage = 4 then 1670
+//
+//                         Check what monster is here
+//
+1661      monster.id = dun.map(dung.x + dung.xi,dung.y + dung.yi) / 10:
+          monster.id = int (monster.id)
+//
+//          Check can hit (dexterity), and there is something to hit.
+//
+1662      if monster.id < 1 or attr.dex - rnd (1) * 25 < monster.id + dun.level then print "you missed":
+          goto 1668
+//
+//                            Calculate Damage Done
+//
+1663      print "hit!!! ":
+          weapon.damage ( rnd (1) * weapon.damage + attr.strength / 5):
+          mons.stat(monster.id,1) = mons.stat(monster.id,1) - weapon.damage
+1664      print monster$(monster.id);"'s hit points=";mons.stat(monster.id,1)
+//
+//                   Is it dead ? If so, you win some stuff
+//
+1665      if mons.stat(monster.id,1) < 1 then print "thou hast killed a ";monster$(monster.id):
+          print "thou shalt receive":
+          monster.gives = int (monster.id + dun.level):
+          print monster.gives;" pieces of eight"
+//
+//                     Remove dead monsters from the map.
+//
+1666      if mons.stat(monster.id,1) < 1 then attr.gold = int (attr.gold + monster.gives):
+          dun.map(mons.pos(monster.id,0),mons.pos(monster.id,1)) = dun.map(mons.pos(monster.id,0),mons.pos(monster.id,1)) - 10 * monster.id:
+          mons.stat(monster.id,0) = 0
+//
+//                Add to HP gain on exit, check done LB's task
+//
+1667      hpgain = hpgain + int (monster.id * dun.level / 2):
+          if monster.id = task.set then task.set = - task.set
+//
+//                                 Pause Check
+//
+1668      if pause = 1 then print "-cr- to cont. ";:
+          input q$
+1669      goto Continue.Move@1090
+// *************************************************************************
+//
+//                Axe and/or Bow code. Check how it'll be used.
+//
+// *************************************************************************
+1670      if weapon.damage = 5 then print "to throw or swing:
+          ";:
+          get q$:
+          if q$ < > "t" then print "swing":
+          goto 1661
+//
+//                           You lose a thrown axe.
+//
+1671      if weapon.damage = 5 then print "throw":
+          object.axe(2) = object.axe(2) - 1
+//
+//                   Look down the dungeon, see what's there
+//
+1672      for y = 1 to 5:
+          if dung.x + dung.xi * y < 1 or dung.x + dung.xi * y > 9 or dung.y + dung.yi * y > 9 or dung.y + dung.yi * y < 0 then 1662
+1673      monster.id = dun.map(dung.x + dung.xi * y,dung.y + dung.yi * y):
+          monster.id = int (monster.id / 10):
+          if monster.id > 0 then 1662
+1674      next :
+          goto 1662
+// *************************************************************************
+//
+//                            Magic Amulet Routine
+//
+// *************************************************************************
+1680      if object.amulet(5) < 1 then print "none owned":
+          goto 1650
+//
+//                         Random effect for fighters.
+//
+1681      if class$ = "f" then q = int ( rnd (1) * 4 + 1):
+          goto 1685
+//
+//                     Choose your poison if you're a Mage
+//
+1682      print "1-ladder-up","2-ladder-dn":
+          print "3-kill","4-bad??":
+          print "choice ";:
+          get q$:
+          q = val (q$):
+          print q:
+          if q < 1 or q > 4 then 1682
+//
+//                    Vanishes 1 time in 4, it's pot luck.
+//
+1683      if rnd (1) > .75 then print "last charge on this amulet!":
+          object.amulet(5) = object.amulet(5) - 1
+//
+//                         Do the Magic Amulet Command
+//
+1685      on q goto 1686,1690,1691,1692
+//
+//                              Create Ladder Up
+//
+1686      print "ladder up":
+          dun.map(dung.x,dung.y) = 8:
+          goto Continue.Move@1090
+//
+//                             Create Ladder Down
+//
+1690      print "ladder down":
+          dun.map(dung.x,dung.y) = 7:
+          goto Continue.Move@1090
+//
+//                                Magic Attack
+//
+1691      print "magic attack":
+          weapon.damage = 10 + dun.level:
+          goto 1672
+//
+//                                 Bad effects
+//
+1692      on int ( rnd (1) * 3 + 1) goto 1693,1695,1697
+//
+//                             Turned into a Toad
+//
+1693      print "you have been turned":
+          print "into a toad!"
+1694      for z2 = 1 to 4:
+          attrib(z2) = 3:
+          next z2:
+          goto Continue.Move@1090
+//
+//                          Turned into a Lizard Man
+//
+1695      print "you have been turned":
+          print "into a lizard man":
+          for y = 0 to 4:
+          attrib(y) = int (attrib(y) * 2.5):
+          next :
+          goto Continue.Move@1090
+//
+//                         Backfire, halves your stats
+//
+1697      print "backfire":
+          attr.hp = attr.hp / 2:
+          goto Continue.Move@1090
+// *************************************************************************
+//
+//                               Display Status
+//
+// *************************************************************************
+1700      gosub 60080:
+          home :
+          print "press -cr- to continue";:
+          input q$:
+          text :
+          home :
+          goto Continue.Move@1090
+// *************************************************************************
+//
+//               Put the monsters in the dungeon, one at a time
+//
+// *************************************************************************
+2000      mons.count = 0:
+          for x = 1 to 10
+//
+//                 Strength depends on Dungeon Level and Type
+//
+2005      mons.stat(x,0) = 0:
+          mons.stat(x,1) = x + 3 + dun.level
+//
+//         Worse monsters as you go down, and not always there anyway
+//
+2010      if x - 2 > dun.level or rnd (1) > .4 then 2090
+//
+//                         Find a spot for the monster
+//
+2020      mons.pos(x,0) = int ( rnd (1) * 9 + 1):
+          mons.pos(x,1) = int ( rnd (1) * 9 + 1)
+2030      if dun.map(mons.pos(x,0),mons.pos(x,1)) < > 0 then 2020
+//
+//                             Not where you are !
+//
+2040      if mons.pos(x,0) = dung.x and mons.pos(x,1) = dung.y then 2020
+//
+//                  Set the monster value in the dungeon map
+//
+2050      dun.map(mons.pos(x,0),mons.pos(x,1)) = x * 10
+//
+//                  Mark Alive, Increment number of Monsters
+//
+2051      mons.stat(x,0) = 1
+2052      mons.count = mons.count + 1
+//
+//                        Recalculate monster strength
+//
+2055      mons.stat(x,1) = x * 2 + dun.level * 2 * skill
+2090      next :
+          return 
+// *************************************************************************
+//
+//                       Drawing the demon.... continued
+//
+// *************************************************************************
+3087      hplot y.m - 28 / dI,x.m - 41 / dI to y.m + 30 / dI,x.m - 55 / dI:
+          hplot y.m + 28 / dI,x.m - 58 / dI to y.m + 22 / dI,x.m - 56 / dI to y.m + 22 / dI,x.m - 53 / dI to y.m + 28 / dI,x.m - 52 / dI to y.m + 34 / dI,x.m - 54 / dI:
+          hplot y.m + 20 / dI,x.m - 50 / dI to y.m + 26 / dI,x.m - 47 / dI
+3088      hplot y.m + 10 / dI,x.m - 58 / dI to y.m + 10 / dI,x.m - 61 / dI to y.m + 4 / dI,x.m - 58 / dI:
+          hplot y.m - 10 / dI,x.m - 58 / dI to y.m - 10 / dI,x.m - 61 / dI to y.m - 4 / dI,x.m - 58 / dI:
+          hplot y.m + 40 / dI,x.m - 9 / dI to y.m + 50 / dI,x.m - 12 / dI to y.m + 40 / dI,x.m - 7 / dI
+3089      hplot y.m - 8 / dI,x.m - 25 / dI to y.m + 6 / dI,x.m - 7 / dI to y.m + 28 / dI,x.m - 7 / dI to y.m + 28 / dI,x.m - 9 / dI to y.m + 20 / dI,x.m - 9 / dI to y.m + 6 / dI,x.m - 25 / dI:
+          goto Draw.Next.Level@490
+// *************************************************************************
+//
+//                             Bashed by monsters
+//
+// *************************************************************************
+4000      for monster = 1 to 10:
+          if mons.stat(monster,0) = 0 then 4999
+//
+//                       Monster exists. How far is it ?
+//
+4010      dist.monster = sqr ((dung.x - mons.pos(monster,0)) ^ 2 + (dung.y - mons.pos(monster,1)) ^ 2)
+//
+//                      If monster too weak, don't attack
+//
+4011      if mons.stat(monster,1) < dun.level * skill then 4030
+//
+//                     If near enough the monster attacks
+//
+4020      if dist.monster < 1.3 then 4500
+//
+//                   If a mimic and too far away, do nothing
+//
+4025      if monster = 8 and dist.monster < 3 then 4999
+//
+//                            Work out where to go
+//
+4030      x1 = sgn (dung.x - mons.pos(monster,0)):
+          y1 = sgn (dung.y - mons.pos(monster,1))
+//
+//                       If monster too weak, run away.
+//
+4031      if mons.stat(monster,1) < dun.level * skill then x1 = - x1:
+          y1 = - y1
+//
+//                               Check the move
+//
+4035      if y1 = 0 then 4045
+4040      d = dun.map(mons.pos(monster,0),(mons.pos(monster,1) + y1 + .5)):
+          if d = 1 or d > 9 or d = 2 then 4045
+4042      x1 = 0:
+          goto 4050
+4045      y1 = 0:
+          if x1 = 0 then 4050
+4046      d = dun.map((mons.pos(monster,0) + x1 + .5),mons.pos(monster,1)):
+          if d = 1 or d > 9 or d = 2 then x1 = 0:
+          goto 4081
+//
+//                         Remove old monster position
+//
+4050      dun.map(mons.pos(monster,0),mons.pos(monster,1)) = dun.map(mons.pos(monster,0),mons.pos(monster,1)) - 10 * monster
+//
+//                            Can't move to player.
+//
+4055      if mons.pos(monster,0) + x1 = dung.x and mons.pos(monster,1) + y1 = dung.y then 4999
+//
+//                           Calculate new position
+//
+4060      mons.pos(monster,0) = mons.pos(monster,0) + x1:
+          mons.pos(monster,1) = mons.pos(monster,1) + y1
+//
+//                         Put it in the new position
+//
+4080      dun.map(mons.pos(monster,0),mons.pos(monster,1)) = (dun.map(mons.pos(monster,0),mons.pos(monster,1)) + 10 * monster + .5)
+//
+//                          If moved, no attack now.
+//
+4081      if x1 < > 0 or y1 < > 0 then 4999
+//
+//                          Strong Enough to Attack ?
+//
+4082      if mons.stat(monster,1) < dun.level * skill and dist.monster < 1.3 then 4500
+//
+//                          Recovers if didn't attack
+//
+4083      if mons.stat(monster,1) < dun.level * skill then mons.stat(monster,1) = mons.stat(monster,1) + monster + dun.level
+4499      goto 4999
+// *************************************************************************
+//
+//                               Monster Attacks
+//
+// *************************************************************************
+4500      if monster = 2 or monster = 7 then 4600
+//
+//                   Not a stealing monster (thief/gremlin)
+//
+4509      print "you are being attacked":
+          print "by a ";monster$(monster)
+//
+//                                Check if hit
+//
+4510      if rnd (1) * 20 - sgn (object.shield(3)) - attr.stamina + monster + dun.level < 0 then print "missed":
+          goto 4525
+//
+//                          Reduce Hit points if hit.
+//
+4520      print "hit":
+          attr.hp = attr.hp - int ( rnd (1) * monster + dun.level)
+//
+//                                 Pause Check
+//
+4525      if pause = 1 then print "-cr- to cont. ";:
+          input q$
+4530      goto 4999
+// *************************************************************************
+//
+//                      Stealing Monster (thief/gremlin)
+//
+// *************************************************************************
+4600      if rnd (1) < .5 then 4509
+//
+//         Only steals half the time, Gremlins steal *HALF* your food.
+//
+4610      if monster = 7 then object.food(0) = int (object.food(0) / 2):
+          print "a gremlin stole some food":
+          goto 4525
+//
+//                   Thief code, pick random item to steal.
+//
+4620      zz = int ( rnd (1) * 6):
+          if object(zz) < 1 then 4620
+4630      print "a thief stole a ";object$(zz):
+          object(zz) = object(zz) - 1:
+          goto 4525
+4999      next :
+          return 
+// *************************************************************************
+//
+//                                You have died
+//
+// *************************************************************************
+6000      poke 33,40:
+          print :
+          print :
+          print "        we mourn the passing of"
+6005      if len (name$) > 22 then name$ = ""
+6010      if name$ = "" then name$ = "the peasant"
+6020      name$ = name$ + " and his computer"
+6030      htab (20 - int ( len (name$) / 2)):
+          print name$
+6035      print "  to invoke a miracle of ressurection"
+6040      print "             <hit esc key>";
+6050      if peek ( - 16384) = 155 then 1
+6060      goto 6050
+// *************************************************************************
+//
+//                            Lord British's Castle
+//
+// *************************************************************************
+7000      home :
+          text :
+          home 
+7001      call 62450
+//
+//                    If first visit, get the players name
+//
+7010      if name$ < > "" then 7500
+7020      print :
+          print :
+          print "     welcome peasant into the halls of":
+          print "the mighty lord british. herein thou maychoose to dare battle with the evil":
+          print "creatures of the depths, for great":
+          print "reward!"
+7030      print :
+          print "what is thy name peasant ";:
+          input name$
+//
+//              Check if quest wanted, you'll get booted if not.
+//
+7040      print "doest thou wish for grand adventure ? ";:
+          get q$:
+          if q$ < > "y" then print :
+          print "then leave and begone!":
+          name$ = "":
+          print :
+          print "         press -space- to cont.";:
+          get q$:
+          goto Continue.Move@1090
+7045      print 
+//
+//                         Select what the target is.
+//
+7050      print :
+          print "good! thou shalt try to become a ":
+          print "knight!!!":
+          print :
+          print "thy first task is to go into the":
+          print "dungeons and to return only after":
+          print "killing a(n) ";:
+          task.set = int (attr.wisdom / 3):
+          print monster$(task.set)
+//
+//                              Boost your status
+//
+7060      print :
+          print "     go now upon this quest, and may":
+          print "lady luck be fair unto you.....":
+          print ".....also i, british, have increased":
+          print "each of thy attributes by one!"
+7070      print :
+          print "         press -space- to cont.";:
+          get q$:
+          for x = 0 to 5:
+          attrib(x) = attrib(x) + 1:
+          next :
+          home :
+          goto Continue.Move@1090
+//
+//          On return visit, check if task not done and if not rant.
+//
+7500      if task.set > 0 then print :
+          print :
+          print name$;" why hast thou returned?":
+          print "thou must kill a(n) ";monster$(task.set):
+          print "go now and complete thy quest!":
+          print :
+          print "         press -space- to cont.";:
+          get q$:
+          home :
+          goto Continue.Move@1090
+//
+//                    Task done. Check if the game is over.
+//
+7510      print :
+          print :
+          print :
+          print "aahh!!.....";name$:
+          print :
+          print "thou hast acomplished thy quest!":
+          if abs (task.set) = 10 then 7900
+//
+//               Another monster. Still, your stats go up again
+//
+7520      print "unfortunately, this is not enough to":
+          print "become a knight.":
+          task.set = abs (task.set) + 1:
+          print :
+          print "now thou must kill a(n) ";monster$(task.set)
+7530      goto 7060
+// *************************************************************************
+//
+//                          You have beaten Aklabeth
+//
+// *************************************************************************
+7900      text :
+          home :
+          print :
+          print :
+          print :
+          name$ = "lord " + name$:
+          print "     ";name$;","
+7910      print "       thou hast proved thyself worthy":
+          print "of knighthood, continue play if thou":
+          print "doth wish, but thou hast acomplished":
+          print "the main objective of this game..."
+//
+//                             Check at what level
+//
+7920      if skill = 10 then 7950
+7930      print :
+          print "   now maybe thou art foolhearty":
+          print "enough to try difficulty level ";skill + 1
+7940      goto 7070
+// *************************************************************************
+//
+//            You've won at skill level 10. Ring up the authors :)
+//
+// *************************************************************************
+7950      print :
+          print "...call california pacific computer":
+          print "at (415)-569-9126 to report this":
+          print "amazing feat!"
+7990      goto 7070
+// *************************************************************************
+//
+//                             Initialise the game
+//
+// *************************************************************************
+60000     text :
+          home :
+          vtab (5):
+          input "type thy lucky number.....";q$:
+          lucky.number = val (q$)
+//
+//                            Read the skill level.
+//
+60005     vtab (7):
+          input "level of play (1-10)......";q$:
+          skill = int ( val (q$))
+60006     if skill < 1 or skill > 10 then Died@60005
+//
+//                      Seed the random number generator
+//
+60010     zz = rnd ( - abs (lucky.number))
+60020     data "hit points.....","strength.......","dexterity......","stamina........","wisdom.........","gold..........."
+60025     dim object.amulet(5)
+//
+//                            Read attribute names
+//
+60030     dim attrib$(5):
+          for x = 0 to 5:
+          read attrib$(x):
+          next 
+60040     dim attr.gold
+//
+//                          Read monster information
+//
+60041     dim monster$(10),mons.pos(10,1),mons.stat(10,1)
+60042     data "skeleton","thief","giant rat","orc","viper","carrion crawler","gremlin","mimic","daemon","balrog"
+60043     for x = 1 to 10:
+          read monster$(x):
+          next 
+//
+//                            Generate a character
+//
+60050     for x = 0 to 5:
+          attrib(x) = int ( sqr ( rnd (1)) * 21 + 4):
+          next x
+//
+//                   Until you are happy with the character
+//
+60060     home :
+          vtab (8):
+          for x = 0 to 5:
+          print attrib$(x),attrib(x):
+          next :
+          print :
+          print "shalt thou play with these qualities?":
+          htab (20):
+          get q$:
+          if q$ < > "y" then 60050
+//
+//                             Get type of player
+//
+60061     vtab (15):
+          print :
+          print "and shalt thou be a fighter or a mage?":
+          htab (20):
+          get class$
+60062     if class$ = "m" or class$ = "f" then 60070
+60063     goto 60061
+//
+//                              Read Object Names
+//
+60070     dim object$(5):
+          data "food","rapier","axe","shield","bow and arrows","magic amulet":
+          for x = 0 to 5:
+          read object$(x):
+          next 
+60075     gosub 60080:
+          gosub 60200:
+          return 
+//
+//                            Draw Inventory Screen
+//
+60080     text :
+          home :
+          print :
+          print :
+          print "     stat's              weapons":
+          print :
+          for x = 0 to 5:
+          print attrib$(x);attrib(x); TAx.m( 24);"0-";object$(x):
+          next :
+          poke 34,12:
+          home :
+          poke 35,15
+60081     vtab (11):
+          htab (18):
+          print "q-quit"
+60082     if object.food(0) > 0 then call 62450
+60085     for z = 0 to 5:
+          vtab (5 + z):
+          htab (25 - len ( str$ (object(z)))):
+          print object(z);:
+          next 
+60090     vtab (17):
+          htab (5):
+          print "price";:
+          htab (15):
+          print "damage";:
+          htab (25):
+          print "item"
+60100     for x = 0 to 5:
+          vtab (19 + x):
+          htab (25):
+          print object$(x):
+          next 
+60110     vtab (19):
+          htab (5):
+          print "1 for 10":
+          htab (15):
+          print "n/a":
+          vtab (20):
+          htab (5):
+          print "8":
+          htab (15):
+          print "1-10":
+          vtab (21):
+          htab (5):
+          print "5":
+          htab (15):
+          print "1-5"
+60120     vtab (22):
+          htab (5):
+          print "6":
+          htab (15):
+          print "1":
+          vtab (23):
+          htab (5):
+          print "3":
+          htab (15):
+          print "1-4":
+          vtab (24):
+          htab (5):
+          print "15":
+          htab (15):
+          print "?????":
+          home 
+60130     return 
+// *************************************************************************
+//
+//                            The Adventurers Shop
+//
+// *************************************************************************
+60200     home :
+          print "welcome to the adventure shop"
+//
+//                              What will you buy
+//
+60210     print "which item shalt thou buy ";:
+          get q$:
+          if q$ = "q" then print :
+          print "bye":
+          for z = 1 to 1000:
+          next :
+          text :
+          home :
+          return 
+//
+//                     Convert to object number and price
+//
+60215     z = - 1
+60220     if q$ = "f" then print "food":
+          z = 0:
+          cost = 1
+60221     if q$ = "r" then print "rapier":
+          z = 1:
+          cost = 8
+60222     if q$ = "a" then print "axe":
+          z = 2:
+          cost = 5
+60223     if q$ = "s" then print "shield":
+          z = 3:
+          cost = 6
+60224     if q$ = "b" then print "bow":
+          z = 4:
+          cost = 3
+60225     if q$ = "m" then print "amulet":
+          z = 5:
+          cost = 15
+60226     if z = - 1 then print q$:
+          print "i'm sorry we don't have that.":
+          goto 60210
+//
+//               Mages can't use some objects, so don't buy them
+//
+60227     if q$ = "r" and class$ = "m" then print "i'm sorry mages":
+          print "can't use that!":
+          goto 60210
+60228     if q$ = "b" and class$ = "m" then print "i'm sorry mages":
+          print "can't use that!":
+          goto 60210
+//
+//                        Check the cash is sufficient.
+//
+60230     if attr.gold - cost < 0 then print "m'lord thou can not afford that item.":
+          goto 60210
+//
+//                 Special fix for food (buy 10 units, not 1)
+//
+60235     if z = 0 then object(z) = object(z) + 9
+//
+//                               Give the money
+//
+60236     object(z) = object(z) + 1:
+          attr.gold = attr.gold - cost
+//
+//                           Refresh, and try again
+//
+60237     vtab (10):
+          htab (16):
+          print attr.gold;"  "
+60240     vtab (5 + z):
+          htab (25 - len ( str$ (object(z)))):
+          print object(z);:
+          htab (1):
+          vtab (14):
+          print 
+60250     goto 60210
+

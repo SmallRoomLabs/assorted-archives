@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Interface Refresh</name>
+    <events>
+        <event-group description="Refresh the interface from the various components, and globals from switches where used for clarity" sid="9721154337622603" title="Interface Refresh" />
+        <event-block sid="5511620127731644">
+            <conditions>
+                <condition id="-1" name="Every tick" sid="7497277527542433" type="System" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <comment>Update address data (Counter and 2 x LEDs)</comment>
+                <event-block sid="6962994183555509">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="5336562376446113" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="1" name="Set key" sid="6116626332337285" type="InterfaceData">
+                            <param id="0" name="Key">&quot;address&quot;</param>
+                            <param id="1" name="Value">programCounter</param>
+                        </action>
+                        <action id="1" name="Set key" sid="261055631824769" type="InterfaceData">
+                            <param id="0" name="Key">&quot;codeaddress&quot;</param>
+                            <param id="1" name="Value">(programCounter % 2 = 0) ? 1 : 0</param>
+                        </action>
+                        <action id="1" name="Set key" sid="4928237805046227" type="InterfaceData">
+                            <param id="0" name="Key">&quot;ioaddress&quot;</param>
+                            <param id="1" name="Value">(programCounter % 2 = 0) ? 0 : 1</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>Update program memory data (4 LEDs)</comment>
+                <event-block sid="2640778287218754">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="7385140540230037" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="1" name="Set key" sid="8868252964559019" type="InterfaceData">
+                            <param id="0" name="Key">&quot;memorydata&quot;</param>
+                            <param id="1" name="Value">programMemory.At(programCounter)</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>Update Result Register</comment>
+                <event-block sid="8605685018933765">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="5273412172465319" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="1" name="Set key" sid="9512024458806708" type="InterfaceData">
+                            <param id="0" name="Key">&quot;rr&quot;</param>
+                            <param id="1" name="Value">resultRegister</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>Update 16 bit output latch</comment>
+                <event-block sid="1642385068278228">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="7770944050053195" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="1" name="Set key" sid="6210049961562501" type="InterfaceData">
+                            <param id="0" name="Key">&quot;hardwareoutput&quot;</param>
+                            <param id="1" name="Value">outputLatches</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>Copy the run mode to the global variable that mirrors it.</comment>
+                <event-block sid="2800694648148708">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="8982949995891702" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="8839911933527024" type="System">
+                            <param id="0" name="Variable">isInRunMode</param>
+                            <param id="1" name="Value">InterfaceData.Get(&quot;singlestep&quot;)= 0</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>Update disassembly helper feature</comment>
+                <event-block sid="423925460263628">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="6302853318075161" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Set text" sid="7649822885219353" type="Disassembly">
+                            <param id="0" name="Text">tokenat(OPCODES,programMemory.At(programCounter),&quot;:&quot;)</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+    </events>
+</c2eventsheet>

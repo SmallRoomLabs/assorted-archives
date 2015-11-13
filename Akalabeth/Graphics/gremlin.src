@@ -1,0 +1,12 @@
+// *************************************************************************
+//
+//                                Draw Gremlin
+//
+// *************************************************************************
+360       hplot y.m + 5 / dI + .5,x.m - 10 / dI to y.m - 5 / dI + .5,x.m - 10 / dI to y.m,x.m - 15 / dI to y.m + 10 / dI,x.m - 20 / dI to y.m + 5 / dI + .5,x.m - 15 / dI to y.m + 5 / dI + .5,x.m - 10 / dI
+361       hplot to y.m + 7 / dI + .5,x.m - 6 / dI to y.m + 5 / dI + .5,x.m - 3 / dI to y.m - 5 / dI + .5,x.m - 3 / dI to y.m - 7 / dI + .5,x.m - 6 / dI to y.m - 5 / dI + .5,x.m - 10 / dI
+362       hplot y.m + 2 / dI + .5,x.m - 3 / dI to y.m + 5 / dI + .5,x.m to y.m + 8 / dI,x.m:
+          hplot y.m - 2 / dI + .5,x.m - 3 / dI to y.m - 5 / dI + .5,x.m to y.m - 8 / dI,x.m:
+          hplot y.m + 3 / dI + .5,x.m - 8 / dI:
+          hplot y.m - 3 / dI + .5,x.m - 8 / dI:
+          hplot y.m + 3 / dI + .5,x.m - 5 / dI to y.m - 3 / dI + .5,x.m - 5 / dI

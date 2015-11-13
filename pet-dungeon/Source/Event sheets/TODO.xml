@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>TODO</name>
+    <events>
+        <event-group description="" sid="4940798240039771" title="To Do List" />
+        <comment>Exit-lose (HP &lt; 1)</comment>
+        <comment>Exit-win (All gold collected)</comment>
+    </events>
+</c2eventsheet>

@@ -1,0 +1,549 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Monsters</name>
+    <events>
+        <event-group description="" sid="9155021282236117" title="Monsters" />
+        <comment>At start, reset all monster HPs</comment>
+        <event-block sid="1880447748641585">
+            <conditions>
+                <condition id="-2" name="On start of layout" sid="9160467081899723" type="System" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="514652465454452">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="2001946160939746" type="System">
+                            <param id="0" name="Object">Monster</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Call function" sid="7799629248640045" type="Function">
+                            <param id="0" name="Name">&quot;ResetMonsterHP&quot;</param>
+                            <param id="1" name="Parameter {n}">Monster.UID</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Every 1/4 second, reset the HP of all the monsters *except* the one nearest to you</comment>
+        <event-block sid="2136517072079993">
+            <conditions>
+                <condition id="-6" name="Every X seconds" sid="4874475647583339" type="System">
+                    <param id="0" name="Interval (seconds)">0.25</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <variable constant="0" name="nearestUID" sid="2712544815207035" static="0" type="number">0</variable>
+                <event-block sid="7744059479681073">
+                    <conditions>
+                        <condition id="-15" name="Pick nearest/furthest" sid="4737323318949416" type="Monster">
+                            <param id="0" name="Which">0</param>
+                            <param id="1" name="X">Player.X</param>
+                            <param id="2" name="Y">Player.Y</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="632655855797406" type="System">
+                            <param id="0" name="Variable">nearestUID</param>
+                            <param id="1" name="Value">Monster.UID</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="2481697189978368">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="4333456127886534" type="System">
+                            <param id="0" name="Object">Monster</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block sid="972655516843483">
+                            <conditions>
+                                <condition id="-14" name="Compare variable" sid="3709190705828482" type="System">
+                                    <param id="0" name="Variable">nearestUID</param>
+                                    <param id="1" name="Comparison">1</param>
+                                    <param id="2" name="Value">Monster.UID</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="0" name="Call function" sid="2369280782598099" type="Function">
+                                    <param id="0" name="Name">&quot;ResetMonsterHP&quot;</param>
+                                    <param id="1" name="Parameter {n}">Monster.UID</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Check for monster near</comment>
+        <event-block sid="6556092263647385">
+            <conditions>
+                <condition id="-1" name="Every tick" sid="1910940559894771" type="System" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <comment>Pick the nearest</comment>
+                <event-block sid="5856132930084032">
+                    <conditions>
+                        <condition id="-15" name="Pick nearest/furthest" sid="6305569744047952" type="Monster">
+                            <param id="0" name="Which">0</param>
+                            <param id="1" name="X">Player.X</param>
+                            <param id="2" name="Y">Player.Y</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <comment>If in range, and first time, display Monster near message</comment>
+                        <event-block sid="7169895060094973">
+                            <conditions>
+                                <condition id="-8" name="Compare two values" sid="8784251410891709" type="System">
+                                    <param id="0" name="First value">distance(Player.X,Player.Y,Monster.X,Monster.Y)</param>
+                                    <param id="1" name="Comparison">2</param>
+                                    <param id="2" name="Second value">CELLSIZE*4</param>
+                                </condition>
+                                <condition id="-4" name="Trigger once while true" sid="3886044366521953" type="System" />
+                            </conditions>
+                            <actions>
+                                <action id="0" name="Call function" sid="7819647429375842" type="Function">
+                                    <param id="0" name="Name">&quot;AddMessageToQueue&quot;</param>
+                                    <param id="1" name="Parameter {n}">&quot;A &quot; &amp; Monster.name &amp; &quot; with &quot; &amp;  Monster.hitPoints &amp; &quot; points is near.&quot;</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Head monster to new position if any</comment>
+        <event-block sid="907869568760055">
+            <conditions>
+                <condition id="-1" name="Every tick" sid="3212306056862742" type="System" />
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="7962338192171788">
+                    <conditions>
+                        <condition id="-11" name="For Each" sid="3356579592755055" type="System">
+                            <param id="0" name="Object">Monster</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block any="1" sid="2953197515281419">
+                            <conditions>
+                                <condition id="-1" name="Compare X" sid="8668051670534767" type="Monster">
+                                    <param id="0" name="Comparison">1</param>
+                                    <param id="1" name="X co-ordinate">Monster.xTarget</param>
+                                </condition>
+                                <condition id="-2" name="Compare Y" sid="9255900230164065" type="Monster">
+                                    <param id="0" name="Comparison">1</param>
+                                    <param id="1" name="Y co-ordinate">Monster.yTarget</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-1" name="Set X" sid="1316590783783913" type="Monster">
+                                    <param id="0" name="X">min(abs(Monster.X-Monster.xTarget),64*dt) * ((Monster.X &lt; Monster.xTarget) ? 1 : -1) + Monster.X</param>
+                                </action>
+                                <action id="-2" name="Set Y" sid="9863162027123121" type="Monster">
+                                    <param id="0" name="Y">min(abs(Monster.Y-Monster.yTarget),64*dt) * ((Monster.Y &lt; Monster.yTarget) ? 1 : -1) + Monster.Y</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-group description="" sid="5218928020016206" title="Monster Fighting" />
+        <comment>This is the code 1000-1200</comment>
+        <event-block sid="6273555377010279">
+            <conditions>
+                <condition id="0" name="On collision with another object" sid="635203018707743" type="Player">
+                    <param id="0" name="Object">Monster</param>
+                </condition>
+                <condition id="-8" inverted="1" name="Is boolean instance variable set" sid="4188073063522999" type="Player">
+                    <param id="0" name="Instance variable">waitingForOffer</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="0" name="Call function" sid="2831609941530496" type="Function">
+                    <param id="0" name="Name">&quot;AddMessageToQueue&quot;</param>
+                    <param id="1" name="Parameter {n}">&quot;An attack !!&quot;</param>
+                </action>
+                <action id="0" name="Call function" sid="2668505692397242" type="Function">
+                    <param id="0" name="Name">&quot;Wobble&quot;</param>
+                    <param id="1" name="Parameter {n}">Monster.UID</param>
+                </action>
+                <action id="0" name="Call function" sid="9215010729424917" type="Function">
+                    <param id="0" name="Name">&quot;Wobble&quot;</param>
+                    <param id="1" name="Parameter {n}">Player.UID</param>
+                </action>
+            </actions>
+            <sub-events>
+                <variable constant="0" name="power" sid="7829268576934189" static="0" type="number">0</variable>
+                <comment>1000-1010, calculate damage done, and deduct from the HPs</comment>
+                <event-block sid="9965143108047461">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="4637958273494592" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="324874214252464" type="System">
+                            <param id="0" name="Variable">power</param>
+                            <param id="1" name="Value">Player.hitPoints + Player.experience</param>
+                        </action>
+                        <action id="-12" name="Subtract from" sid="2077552263010474" type="Player">
+                            <param id="0" name="Instance variable">hitPoints</param>
+                            <param id="1" name="Value">round(random(0,Monster.hitPoints/ 2) + Monster.hitPoints/4)</param>
+                        </action>
+                        <action id="-12" name="Subtract from" sid="2501223486810573" type="Monster">
+                            <param id="0" name="Instance variable">hitPoints</param>
+                            <param id="1" name="Value">round(random(0,power/2)+power / 4)</param>
+                        </action>
+                        <action id="0" name="Call function" sid="5715161169172722" type="Function">
+                            <param id="0" name="Name">&quot;RefreshHitPoints&quot;</param>
+                            <param id="1" name="Parameter {n}"></param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <comment>If player still alive</comment>
+                        <event-block sid="1437465918142344">
+                            <conditions>
+                                <condition id="-7" name="Compare instance variable" sid="973521451381082" type="Player">
+                                    <param id="0" name="Instance variable">hitPoints</param>
+                                    <param id="1" name="Comparison">5</param>
+                                    <param id="2" name="Value">1</param>
+                                </condition>
+                            </conditions>
+                            <actions />
+                            <sub-events>
+                                <comment>Offer a bribe, maybe</comment>
+                                <event-block sid="8104886627921372">
+                                    <conditions>
+                                        <condition id="-8" name="Compare two values" sid="2401143880324361" type="System">
+                                            <param id="0" name="First value">Monster.hitPoints/(Player.hitPoints+1)</param>
+                                            <param id="1" name="Comparison">2</param>
+                                            <param id="2" name="Second value">2</param>
+                                        </condition>
+                                        <condition id="-8" inverted="1" name="Is boolean instance variable set" sid="8469682656463596" type="Monster">
+                                            <param id="0" name="Instance variable">bribeAttempted</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="0" name="Call function" sid="8410377960251258" type="Function">
+                                            <param id="0" name="Name">&quot;AddMessageToQueue&quot;</param>
+                                            <param id="1" name="Parameter {n}">&quot;The &quot; &amp; Monster.name &amp; &quot; will leave for half your gold&quot;</param>
+                                        </action>
+                                        <action id="-13" name="Set boolean" sid="6831977024100704" type="Player">
+                                            <param id="0" name="Instance variable">waitingForOffer</param>
+                                            <param id="1" name="Value">1</param>
+                                        </action>
+                                        <action id="-15" name="Set visible" sid="7563404582147514" type="DecisionButton">
+                                            <param id="0" name="Visibility">1</param>
+                                        </action>
+                                        <action id="-13" name="Set boolean" sid="3793560400298826" type="Monster">
+                                            <param id="0" name="Instance variable">bribeAttempted</param>
+                                            <param id="1" name="Value">1</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <comment>No, call the code to end the fight. Is done also if rejects the offer.</comment>
+                                <event-block sid="5868691735009039">
+                                    <conditions>
+                                        <condition id="-22" name="Else" sid="9215215728890675" type="System" />
+                                    </conditions>
+                                    <actions>
+                                        <action id="0" name="Call function" sid="437486976004877" type="Function">
+                                            <param id="0" name="Name">&quot;ExitFightCode&quot;</param>
+                                            <param id="1" name="Parameter {n}"></param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Result of offer</comment>
+        <event-block sid="2198834177754675">
+            <conditions>
+                <condition id="17" name="On tap object" sid="6636089767934833" type="Touch">
+                    <param id="0" name="Object">DecisionButton</param>
+                </condition>
+                <condition id="-8" name="Is boolean instance variable set" sid="2629950356920184" type="Player">
+                    <param id="0" name="Instance variable">waitingForOffer</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="-13" name="Set boolean" sid="3717922888792007" type="Player">
+                    <param id="0" name="Instance variable">waitingForOffer</param>
+                    <param id="1" name="Value">0</param>
+                </action>
+            </actions>
+            <sub-events>
+                <comment>Accepted monsters offer</comment>
+                <event-block sid="3584535925811548">
+                    <conditions>
+                        <condition id="-8" name="Is boolean instance variable set" sid="5739895925367419" type="DecisionButton">
+                            <param id="0" name="Instance variable">isTrueButton</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-10" name="Set value" sid="6984864912702371" type="Player">
+                            <param id="0" name="Instance variable">gold</param>
+                            <param id="1" name="Value">round(Player.gold/2)</param>
+                        </action>
+                        <action id="0" name="Call function" sid="5807778637193452" type="Function">
+                            <param id="0" name="Name">&quot;RefreshStatus&quot;</param>
+                            <param id="1" name="Parameter {n}"></param>
+                        </action>
+                    </actions>
+                    <sub-events>
+                        <event-block sid="1559501358999318">
+                            <conditions>
+                                <condition id="-15" name="Pick nearest/furthest" sid="2457368715200662" type="Monster">
+                                    <param id="0" name="Which">0</param>
+                                    <param id="1" name="X">Player.X</param>
+                                    <param id="2" name="Y">Player.Y</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action behavior="Fade" id="1" name="Start fade" sid="8046803173477418" type="Monster" />
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>Turned down monster&apos;s offer.</comment>
+                <event-block sid="7878760606041279">
+                    <conditions>
+                        <condition id="-22" name="Else" sid="3042140257789682" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Call function" sid="154198448149216" type="Function">
+                            <param id="0" name="Name">&quot;ExitFightCode&quot;</param>
+                            <param id="1" name="Parameter {n}"></param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="648173446496944">
+                    <conditions>
+                        <condition id="-19" name="Pick all" sid="7462740070667986" type="System">
+                            <param id="0" name="Object">DecisionButton</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-15" name="Set visible" sid="9741620977879392" type="DecisionButton">
+                            <param id="0" name="Visibility">0</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Handle the monster code exiting routine - called when doesn&apos;t bribe, or when bribe turned down.</comment>
+        <event-block sid="8265299334188284">
+            <conditions>
+                <condition id="0" name="On function" sid="2188328074647016" type="Function">
+                    <param id="0" name="Name">&quot;ExitFightCode&quot;</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <comment>Reselect the monster currently fighting</comment>
+                <event-block sid="5975787991381712">
+                    <conditions>
+                        <condition id="-15" name="Pick nearest/furthest" sid="4193427480017865" type="Monster">
+                            <param id="0" name="Which">0</param>
+                            <param id="1" name="X">Player.X</param>
+                            <param id="2" name="Y">Player.Y</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <comment>Monster is dead</comment>
+                        <variable comment="angle from player" constant="0" name="angleMove" sid="4553286757396584" static="0" type="number">0</variable>
+                        <event-block sid="9945237627997266">
+                            <conditions>
+                                <condition id="-7" name="Compare instance variable" sid="7537037845628198" type="Monster">
+                                    <param id="0" name="Instance variable">hitPoints</param>
+                                    <param id="1" name="Comparison">2</param>
+                                    <param id="2" name="Value">1</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action behavior="Fade" id="1" name="Start fade" sid="9511952479299131" type="Monster" />
+                                <action id="0" name="Call function" sid="5071063987590154" type="Function">
+                                    <param id="0" name="Name">&quot;AddMessageToQueue&quot;</param>
+                                    <param id="1" name="Parameter {n}">&quot;The &quot; &amp; Monster.name &amp; &quot; is dead!&quot;</param>
+                                </action>
+                                <action id="-11" name="Add to" sid="7083058303062407" type="Player">
+                                    <param id="0" name="Instance variable">experience</param>
+                                    <param id="1" name="Value">1</param>
+                                </action>
+                                <action id="-11" name="Add to" sid="601124405360297" type="Player">
+                                    <param id="0" name="Instance variable">killCount</param>
+                                    <param id="1" name="Value">1</param>
+                                </action>
+                                <action id="0" name="Call function" sid="1333047777836221" type="Function">
+                                    <param id="0" name="Name">&quot;RefreshStatus&quot;</param>
+                                    <param id="1" name="Parameter {n}"></param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <comment>Level up</comment>
+                                <event-block sid="4385868058301173">
+                                    <conditions>
+                                        <condition id="-7" name="Compare instance variable" sid="9590818389090784" type="Player">
+                                            <param id="0" name="Instance variable">experience</param>
+                                            <param id="1" name="Comparison">5</param>
+                                            <param id="2" name="Value">Player.previousExperience*2</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-10" name="Set value" sid="4714069302357514" type="Player">
+                                            <param id="0" name="Instance variable">previousExperience</param>
+                                            <param id="1" name="Value">Player.experience</param>
+                                        </action>
+                                        <action id="-10" name="Set value" sid="9512250358578781" type="Player">
+                                            <param id="0" name="Instance variable">hitPoints</param>
+                                            <param id="1" name="Value">Player.hitPoints*3</param>
+                                        </action>
+                                        <action id="-10" name="Set value" sid="3364590354012458" type="Player">
+                                            <param id="0" name="Instance variable">maxHitPoints</param>
+                                            <param id="1" name="Value">max(Player.hitPoints,Player.maxHitPoints)</param>
+                                        </action>
+                                        <action id="0" name="Call function" sid="1099693296940054" type="Function">
+                                            <param id="0" name="Name">&quot;AddMessageToQueue&quot;</param>
+                                            <param id="1" name="Parameter {n}">&quot;Your hit pts. have been raised.&quot;</param>
+                                        </action>
+                                        <action id="0" name="Call function" sid="575429925900565" type="Function">
+                                            <param id="0" name="Name">&quot;RefreshStatus&quot;</param>
+                                            <param id="1" name="Parameter {n}"></param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                        <comment>Otherwise, announce the monster is still alive and move it.</comment>
+                        <event-block sid="4962530938354281">
+                            <conditions>
+                                <condition id="-22" name="Else" sid="9787920615702547" type="System" />
+                            </conditions>
+                            <actions>
+                                <action id="0" name="Call function" sid="5604697654069329" type="Function">
+                                    <param id="0" name="Name">&quot;AddMessageToQueue&quot;</param>
+                                    <param id="1" name="Parameter {n}">&quot;The &quot; &amp; Monster.name &amp; &quot; has &quot; &amp; Monster.hitPoints &amp; &quot; hit points.&quot;</param>
+                                </action>
+                                <action id="-9" name="Set value" sid="1378198536871603" type="System">
+                                    <param id="0" name="Variable">angleMove</param>
+                                    <param id="1" name="Value">angle(Player.X,Player.Y,Monster.X,Monster.Y)+random(150,210)</param>
+                                </action>
+                            </actions>
+                            <sub-events>
+                                <comment>It must stay in the room</comment>
+                                <event-block sid="4579988473524966">
+                                    <conditions>
+                                        <condition id="-23" name="While" sid="4207928505719347" type="System" />
+                                        <condition id="-8" name="Compare two values" sid="1635111859385307" type="System">
+                                            <param id="0" name="First value">Map.TileAt(Map.PositionToTileX(Player.X+cos(angleMove)*CELLSIZE*2),Map.PositionToTileY(Player.Y+sin(angleMove)*CELLSIZE*2))  % 8</param>
+                                            <param id="1" name="Comparison">1</param>
+                                            <param id="2" name="Second value">TILE_ROOM</param>
+                                        </condition>
+                                    </conditions>
+                                    <actions>
+                                        <action id="-9" name="Set value" sid="7887270003531123" type="System">
+                                            <param id="0" name="Variable">angleMove</param>
+                                            <param id="1" name="Value">random(0,360)</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                                <comment>Set the new target</comment>
+                                <event-block sid="3094213315378874">
+                                    <conditions>
+                                        <condition id="-1" name="Every tick" sid="5549095404987497" type="System" />
+                                    </conditions>
+                                    <actions>
+                                        <action id="-10" name="Set value" sid="9097540034650373" type="Monster">
+                                            <param id="0" name="Instance variable">xTarget</param>
+                                            <param id="1" name="Value">Player.X+cos(angleMove)*CELLSIZE*2</param>
+                                        </action>
+                                        <action id="-10" name="Set value" sid="728005935234223" type="Monster">
+                                            <param id="0" name="Instance variable">yTarget</param>
+                                            <param id="1" name="Value">Player.Y+sin(angleMove)*CELLSIZE*2</param>
+                                        </action>
+                                    </actions>
+                                </event-block>
+                            </sub-events>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-group description="" sid="6480964871453668" title="Monster Helper Functions" />
+        <comment>Reset a monster&apos;s Hit Points</comment>
+        <event-block sid="216560388465838">
+            <conditions>
+                <condition id="0" name="On function" sid="8503674066160523" type="Function">
+                    <param id="0" name="Name">&quot;ResetMonsterHP&quot;</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="4599567972927854">
+                    <conditions>
+                        <condition id="-14" name="Pick by unique ID" sid="3097214610367664" type="Monster">
+                            <param id="0" name="Unique ID">Function.Param(0)</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-10" name="Set value" sid="5503018452822572" type="Monster">
+                            <param id="0" name="Instance variable">hitPoints</param>
+                            <param id="1" name="Value">round(random(0,Player.hitPoints) + Player.previousExperience / Monster.monsterHPCalcValue + Player.hitPoints / 4)</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <comment>Cause a game object to wobble briefly</comment>
+        <event-block sid="9032371117075324">
+            <conditions>
+                <condition id="0" name="On function" sid="60870605675577" type="Function">
+                    <param id="0" name="Name">&quot;Wobble&quot;</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="8658917676469266">
+                    <conditions>
+                        <condition id="-14" name="Pick by unique ID" sid="5635723297695143" type="GameObject">
+                            <param id="0" name="Unique ID">Function.Param(0)</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action behavior="Sine" id="0" name="Set active" sid="6298491953701042" type="GameObject">
+                            <param id="0" name="State">1</param>
+                        </action>
+                        <action behavior="Timer" id="0" name="Start timer" sid="6155317223768283" type="GameObject">
+                            <param id="0" name="Duration">0.6</param>
+                            <param id="1" name="Type">0</param>
+                            <param id="2" name="Tag">&quot;StopWobble&quot;</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-block sid="5272015362270474">
+            <conditions>
+                <condition behavior="Timer" id="0" name="On timer" sid="5153141537100907" type="GameObject">
+                    <param id="0" name="Tag">&quot;StopWobble&quot;</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action behavior="Sine" id="0" name="Set active" sid="6210752958011439" type="GameObject">
+                    <param id="0" name="State">0</param>
+                </action>
+            </actions>
+        </event-block>
+    </events>
+</c2eventsheet>

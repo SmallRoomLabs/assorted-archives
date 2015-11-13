@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c2eventsheet>
+    <!--All the 'name' attributes are ignored by Construct 2 - they are there for readability only.-->
+    <name>Emulation</name>
+    <events>
+        <event-group description="Note that because of the prefetch/execute this either copies the instruction or latches the i/o address" sid="6945750394037851" title="Single Instruction Emulation" />
+        <variable comment="Operation Code" constant="0" name="XOpcode" sid="5247260633539543" static="0" type="number">0</variable>
+        <variable comment="Operand (I/O Address)" constant="0" name="XOperand" sid="2809753275141671" static="0" type="number">0</variable>
+        <event-block sid="9610526518496704">
+            <conditions>
+                <condition id="0" name="On function" sid="4679335070821583" type="Function">
+                    <param id="0" name="Name">&quot;ExecuteOne&quot;</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="6617511664144499">
+                    <conditions>
+                        <condition id="-8" name="Compare two values" sid="148517390700499" type="System">
+                            <param id="0" name="First value">programCounter % 2</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Second value">0</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="1279054859276951" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Value">programMemory.At(programCounter)</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="2914306902012783">
+                    <conditions>
+                        <condition id="-22" name="Else" sid="3535876701926889" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="2855256891885273" type="System">
+                            <param id="0" name="Variable">XOperand</param>
+                            <param id="1" name="Value">programMemory.At(programCounter)</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="803446700542612">
+                    <conditions>
+                        <condition id="-1" name="Every tick" sid="3975498540628469" type="System" />
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="2716841462963733" type="System">
+                            <param id="0" name="Variable">programCounter</param>
+                            <param id="1" name="Value">(programCounter+1) % 256</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>0000 : NOP0</comment>
+                <event-block sid="8206844804607442">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="2297406878777339" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">0</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="3251111311730247" type="System">
+                            <param id="0" name="Variable">isFreeRunning</param>
+                            <param id="1" name="Value">0</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>0001 : LD</comment>
+                <event-block sid="3549562603836068">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="9754952912095561" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">1</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="6936439207597201" type="System">
+                            <param id="0" name="Variable">resultRegister</param>
+                            <param id="1" name="Value">Function.Call(&quot;ReadInput&quot;)*oenFlag</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>0010 : LDC</comment>
+                <event-block sid="4625521093520945">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="6850648726632801" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">2</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="1814342348879264" type="System">
+                            <param id="0" name="Variable">resultRegister</param>
+                            <param id="1" name="Value">1 - Function.Call(&quot;ReadInput&quot;) *oenFlag</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>0011 : AND</comment>
+                <event-block sid="3657597317255812">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="3979181318001786" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">3</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="1561409902769311" type="System">
+                            <param id="0" name="Variable">XOperand</param>
+                            <param id="1" name="Value">resultRegister &amp; (Function.Call(&quot;ReadInput&quot;)*oenFlag)</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>0100 : ANDC</comment>
+                <event-block sid="1075067138176639">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="5809674637684186" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">4</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="149357875502715" type="System">
+                            <param id="0" name="Variable">resultRegister</param>
+                            <param id="1" name="Value">resultRegister &amp; (1 - (Function.Call(&quot;ReadInput&quot;) * oenFlag))</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>0101 : OR</comment>
+                <event-block sid="5940002315279638">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="9343544485334211" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">5</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="3801839773828409" type="System">
+                            <param id="0" name="Variable">resultRegister</param>
+                            <param id="1" name="Value">resultRegister | (Function.Call(&quot;ReadInput&quot;)*oenFlag)</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>0110 : ORC</comment>
+                <event-block sid="1567067605138843">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="3328459248178734" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">6</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="6143498387281625" type="System">
+                            <param id="0" name="Variable">resultRegister</param>
+                            <param id="1" name="Value">resultRegister | (1 - (Function.Call(&quot;ReadInput&quot;)*oenFlag))</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>0111 : XNOR</comment>
+                <event-block sid="4431539140184109">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="6315925752414042" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">7</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="6925851564492442" type="System">
+                            <param id="0" name="Variable">resultRegister</param>
+                            <param id="1" name="Value">(resultRegister = Function.Call(&quot;ReadInput&quot;)*oenFlag) ? 1 : 0</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>1000 : STO</comment>
+                <event-block sid="7316920448495394">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="8965207816324982" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">8</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Call function" sid="7144972991820637" type="Function">
+                            <param id="0" name="Name">&quot;WriteOutput&quot;</param>
+                            <param id="1" name="Parameter {n}">resultRegister</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>1001 : STOC</comment>
+                <event-block sid="7160765594018283">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="5209455962640856" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">9</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="0" name="Call function" sid="4878382236932926" type="Function">
+                            <param id="0" name="Name">&quot;WriteOutput&quot;</param>
+                            <param id="1" name="Parameter {n}">1-resultRegister</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>1010 : IEN</comment>
+                <event-block sid="776386144189723">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="6079596667653577" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">10</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="560099823109161" type="System">
+                            <param id="0" name="Variable">ienFlag</param>
+                            <param id="1" name="Value">Function.Call(&quot;ReadInput&quot;)</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>1011 : OEN</comment>
+                <event-block sid="7120724877299701">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="8052703889127386" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">11</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="1624883061080663" type="System">
+                            <param id="0" name="Variable">oenFlag</param>
+                            <param id="1" name="Value">Function.Call(&quot;ReadInput&quot;)</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <comment>1100 : JMP</comment>
+                <event-block sid="1713644709150428">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="4903475914661399" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">12</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                </event-block>
+                <comment>1101 : RTN</comment>
+                <event-block sid="3789648814327524">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="6069383988807919" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">13</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                </event-block>
+                <comment>1110 : SKZ</comment>
+                <event-block sid="6747357789061297">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="9232021463633363" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">14</param>
+                        </condition>
+                    </conditions>
+                    <actions />
+                    <sub-events>
+                        <event-block sid="5739627264315093">
+                            <conditions>
+                                <condition id="-14" name="Compare variable" sid="941153892052374" type="System">
+                                    <param id="0" name="Variable">resultRegister</param>
+                                    <param id="1" name="Comparison">0</param>
+                                    <param id="2" name="Value">0</param>
+                                </condition>
+                            </conditions>
+                            <actions>
+                                <action id="-9" name="Set value" sid="1554832527662333" type="System">
+                                    <param id="0" name="Variable">programCounter</param>
+                                    <param id="1" name="Value">(programCounter+2) % 256</param>
+                                </action>
+                            </actions>
+                        </event-block>
+                    </sub-events>
+                </event-block>
+                <comment>1111 : NOPF</comment>
+                <event-block sid="3673136836238443">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="2823663534366531" type="System">
+                            <param id="0" name="Variable">XOpcode</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">15</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="6779934036994822" type="System">
+                            <param id="0" name="Variable">programCounter</param>
+                            <param id="1" name="Value">InterfaceData.Get(&quot;addressswitches&quot;)</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-group description="Read input from RR, remapped output, or switches." sid="1457586083101861" title="Read " />
+        <event-block sid="6953571813683501">
+            <conditions>
+                <condition id="0" name="On function" sid="1260821471761734" type="Function">
+                    <param id="0" name="Name">&quot;ReadInput&quot;</param>
+                </condition>
+            </conditions>
+            <actions>
+                <action id="1" name="Set return value" sid="4157808250271203" type="Function">
+                    <param id="0" name="Value">getbit(InterfaceData.Get(&quot;hardwareinput&quot;),XOperand)</param>
+                </action>
+            </actions>
+            <sub-events>
+                <event-block sid="708606991391152">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="6967936829279705" type="System">
+                            <param id="0" name="Variable">XOperand</param>
+                            <param id="1" name="Comparison">0</param>
+                            <param id="2" name="Value">INPUT_BIT_RR</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="1" name="Set return value" sid="2915719621191752" type="Function">
+                            <param id="0" name="Value">resultRegister</param>
+                        </action>
+                    </actions>
+                </event-block>
+                <event-block sid="4382505676443459">
+                    <conditions>
+                        <condition id="-21" name="Is between values" sid="9520365067057285" type="System">
+                            <param id="0" name="Value">XOperand</param>
+                            <param id="1" name="Lower bound">INPUT_BIT_DATA_LOW</param>
+                            <param id="2" name="Upper bound">INPUT_BIT_DATA_HIGH</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="1" name="Set return value" sid="9715920376252684" type="Function">
+                            <param id="0" name="Value">getbit(outputLatches,XOperand)</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+        <event-group description="Write RR to output (if OEN set)" sid="6661737089755608" title="Write" />
+        <event-block sid="2235160727135148">
+            <conditions>
+                <condition id="0" name="On function" sid="2991400753008693" type="Function">
+                    <param id="0" name="Name">&quot;WriteOutput&quot;</param>
+                </condition>
+            </conditions>
+            <actions />
+            <sub-events>
+                <event-block sid="2187608584620032">
+                    <conditions>
+                        <condition id="-14" name="Compare variable" sid="9905874104709455" type="System">
+                            <param id="0" name="Variable">oenFlag</param>
+                            <param id="1" name="Comparison">1</param>
+                            <param id="2" name="Value">0</param>
+                        </condition>
+                    </conditions>
+                    <actions>
+                        <action id="-9" name="Set value" sid="3944814036265562" type="System">
+                            <param id="0" name="Variable">outputLatches</param>
+                            <param id="1" name="Value">setbit(outputLatches,XOperand,resultRegister)</param>
+                        </action>
+                    </actions>
+                </event-block>
+            </sub-events>
+        </event-block>
+    </events>
+</c2eventsheet>

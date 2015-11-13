@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="agkdoc.css">
+</head>
+<body>
+<div id="title">Module : library-dragndrop</div>
+<div id="body"><i> Defined in '.\library-dragndrop.agc'</i></div>
+<div id="body"><p>This library provides basic drag and drop functionality. It can handle both sprites, text and the whole screen. Each object you want to involve can be categorised as a clickable, targettable and draggable (except the whole screen cannot be dragged). Clickable objects can be clicked on. Draggable objects can be dragged around the screen. Targettable objects are recipients for draggables (this can include the whole display). Objects can have all three behaviours - they can be clicked on, clicked and dragged, and have other things dropped on them. Successful clicks or drops are recorded by a value being returned from the main function (DNDHandlePointer). A structure (DVDEventInfo) is passed to the DNDHandlePointer() function so the caller knows what has been clicked, dragged, dropped etc.</p><p> Note that this function deliberately leaves everything in the same position when it has finished. If you drag and drop something from one place to another it will record this but it will end up in the same state it started in. <i>If you want to physically move it you must do it yourself by responding to the callback</i> - the example code shows how to do this. </p><p> Note that objects that are clickable and draggable respond to click on button release - because when the button goes down they don't know which it is.</p></div>
+<table>
+  <tr>
+    <td>Name</td>
+    <td>library-dragndrop</td>
+  </tr>
+  <tr class="alt">
+    <td>Author</td>
+    <td>Paul Scott Robson</td>
+  </tr>
+  <tr>
+    <td>Email</td>
+    <td>paulscottrobson@gmail.com</td>
+  </tr>
+  <tr class="alt">
+    <td>License</td>
+    <td>MIT</td>
+  </tr>
+  <tr>
+    <td>Prefix</td>
+    <td>DND</td>
+  </tr>
+  <tr class="alt">
+    <td>Version</td>
+    <td>0.9</td>
+  </tr>
+  <tr>
+    <td>Created</td>
+    <td>18-Feb-15</td>
+  </tr>
+  <tr class="alt">
+    <td>Updated</td>
+    <td>27-Feb-15</td>
+  </tr>
+  <tr>
+    <td>Provides</td>
+    <td>dragndrop</td>
+  </tr>
+</table>
+<div id="title">User Defined Type : DNDControl</div>
+<div id="body"><i> Defined in '.\library-dragndrop.agc'</i></div>
+<div id="body">This structure defines a single drag and drop group. Its internal structure should not be assumed.</div>
+<table>
+  <tr>
+    <th>Member</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>state</td>
+    <td>integer</td>
+    <td>State.</td>
+  </tr>
+  <tr class="alt">
+    <td>pointerState</td>
+    <td>integer</td>
+    <td>Button state.</td>
+  </tr>
+  <tr>
+    <td>lastPointerState</td>
+    <td>integer</td>
+    <td>Previous button state</td>
+  </tr>
+  <tr class="alt">
+    <td>dragObjectID</td>
+    <td>integer</td>
+    <td>Object identified as being dragged</td>
+  </tr>
+  <tr>
+    <td>dragPhysicalID</td>
+    <td>integer</td>
+    <td>Object that is actually being physically moved.</td>
+  </tr>
+  <tr class="alt">
+    <td>dragWidth</td>
+    <td>float</td>
+    <td>Width of drag object</td>
+  </tr>
+  <tr>
+    <td>dragHeight</td>
+    <td>float</td>
+    <td>Height of drag object.</td>
+  </tr>
+  <tr class="alt">
+    <td>pointer</td>
+    <td>DNDPoint</td>
+    <td>Pointer position.</td>
+  </tr>
+  <tr>
+    <td>originPointer</td>
+    <td>DNDPoint</td>
+    <td>Pointer position on first click.</td>
+  </tr>
+  <tr class="alt">
+    <td>offset</td>
+    <td>DNDPoint</td>
+    <td>Offset from click point to object centre.</td>
+  </tr>
+  <tr>
+    <td>origin</td>
+    <td>DNDPoint</td>
+    <td>Where we started from (position of sprite/text)</td>
+  </tr>
+  <tr class="alt">
+    <td>endPoint</td>
+    <td>DNDPoint</td>
+    <td>Where the drag ended (position of sprite/text)</td>
+  </tr>
+  <tr>
+    <td>isClickable</td>
+    <td>integer</td>
+    <td>1 if identified object is clickable</td>
+  </tr>
+  <tr class="alt">
+    <td>isDraggable</td>
+    <td>integer</td>
+    <td>1 if identified object is draggable</td>
+  </tr>
+  <tr>
+    <td>msClickTime</td>
+    <td>integer</td>
+    <td>Time in ms when object clicked</td>
+  </tr>
+  <tr class="alt">
+    <td>msDropTime</td>
+    <td>integer</td>
+    <td>Time in ms when dropped.</td>
+  </tr>
+  <tr>
+    <td>draggable</td>
+    <td>integer[0]</td>
+    <td>IDs of objects that can be dragged</td>
+  </tr>
+  <tr class="alt">
+    <td>clickable</td>
+    <td>integer[0]</td>
+    <td>IDs of object that can be clicked.</td>
+  </tr>
+  <tr>
+    <td>targettable</td>
+    <td>integer[0]</td>
+    <td>IDs of object that can be dropped on.</td>
+  </tr>
+</table>
+<div id="title">User Defined Type : DNDEventInfo</div>
+<div id="body"><i> Defined in '.\library-dragndrop.agc'</i></div>
+<div id="body">This structure is passed when a callback event occurs - this means at present that a drop has successfully happened.</div>
+<table>
+  <tr>
+    <th>Member</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>event</td>
+    <td>integer</td>
+    <td>What happened (DND_NOTHING/CLICK/DROPPED)</td>
+  </tr>
+  <tr class="alt">
+    <td>clickedObjectType</td>
+    <td>integer</td>
+    <td>What was clicked (type)</td>
+  </tr>
+  <tr>
+    <td>clickedObjectID</td>
+    <td>integer</td>
+    <td>What was clicked (id)</td>
+  </tr>
+  <tr class="alt">
+    <td>draggedObjectType</td>
+    <td>integer</td>
+    <td>What was dragged (type)</td>
+  </tr>
+  <tr>
+    <td>draggedObjectID</td>
+    <td>integer</td>
+    <td>What was dragged (id)</td>
+  </tr>
+  <tr class="alt">
+    <td>droppedObjectID</td>
+    <td>integer</td>
+    <td>Upon what object was it dropped</td>
+  </tr>
+  <tr>
+    <td>offset</td>
+    <td>DNDPoint</td>
+    <td>Where on object was it dropped ?</td>
+  </tr>
+</table>
+<div id="title">User Defined Type : DNDPoint</div>
+<div id="body"><i> Defined in '.\library-dragndrop.agc'</i></div>
+<div id="body">This is a utility type representing a point in 2D space.</div>
+<table>
+  <tr>
+    <th>Member</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>x</td>
+    <td>float</td>
+    <td></td>
+  </tr>
+  <tr class="alt">
+    <td>y</td>
+    <td>float</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : DNDAddObject(dnd,storage,otype,index)</div>
+<div id="body"><i> Defined in '.\library-dragndrop.agc'</i></div>
+<div id="body">Add an index to one of the DCT arrays.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>dnd</td>
+    <td>ref DNDControl</td>
+    <td></td>
+  </tr>
+  <tr class="alt">
+    <td>storage</td>
+    <td>string</td>
+    <td>which to go in combinations of D,C,T</td>
+  </tr>
+  <tr>
+    <td>otype</td>
+    <td>integer</td>
+    <td>type of object to add..</td>
+  </tr>
+  <tr class="alt">
+    <td>index</td>
+    <td>integer</td>
+    <td>object to add</td>
+  </tr>
+  <tr>
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : DNDDestroy(dnd)</div>
+<div id="body"><i> Defined in '.\library-dragndrop.agc'</i></div>
+<div id="body">Destroy a drag and drop control object</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>dnd</td>
+    <td>ref DNDControl</td>
+    <td>DND Control object</td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<div id="title">Function : DNDHandlePointer(dnd,dei)</div>
+<div id="body"><i> Defined in '.\library-dragndrop.agc'</i></div>
+<div id="body">Get Button Pressed with DND Interface - this handles all of the dragging and the dropping. This function returns non-zero if either a drag/drop or click event has occurred, and in this case the description of that event will be in the DNDEventInfo structure passed in to the call.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>dnd</td>
+    <td>ref DNDControl</td>
+    <td>DND Control object</td>
+  </tr>
+  <tr class="alt">
+    <td>dei</td>
+    <td>ref DNDEventInfo</td>
+    <td>Return info regarding what happened, if anything.</td>
+  </tr>
+  <tr>
+    <td><i>returns</i></td>
+    <td>integer</td>
+    <td>non zero if click or drop occurred.</td>
+  </tr>
+</table>
+<div id="title">Function : DNDInitialise(dnd)</div>
+<div id="body"><i> Defined in '.\library-dragndrop.agc'</i></div>
+<div id="body">Initialise a Drag and Drop control object, ready to use.</div>
+<table>
+  <tr>
+    <th>Parameter</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>dnd</td>
+    <td>ref DNDControl</td>
+    <td></td>
+  </tr>
+  <tr class="alt">
+    <td><i>returns</i></td>
+    <td>none</td>
+    <td></td>
+  </tr>
+</table>
+<br /><div><i>Generated by agkdoc.py on 02/27/15 18:55:23</i></div>
+</body>
+</html>

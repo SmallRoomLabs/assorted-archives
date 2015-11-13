@@ -1,0 +1,56 @@
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 1 - 10/23/2015 8:20:53
+
+
+       1/       0 :                     ; ******************************************************************************************************************
+       2/       0 :                     ;
+       3/       0 :                     ;		
+       4/       0 :                     ;
+       5/       0 :                     ; ******************************************************************************************************************
+       6/       0 :                     
+       7/       0 :                     
+       8/       0 :                     		cpu	sc/mp
+       9/       0 :                     
+      10/       0 :                     		org 	0x0000
+      11/       0 : 08                  		nop
+      12/       1 : 90 00               l2:		jmp		L1
+      13/       3 : C0 FD               L1:		ld 		l2
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 2 - 10/23/2015 8:20:53
+
+
+  symbol table (* = unused):
+  ------------------------
+
+*ARCHITECTURE :  i386-unknown-win32 - | *BIGENDIAN :                      0 - |
+*BRANCHEXT :                      0 - | *CASESENSITIVE :                  0 - |
+*CONSTPI :        3.141592653589793 - | *DATE :                  10/23/2015 - |
+*FALSE :                          0 - | *FULLPMMU :                       1 - |
+*HAS64 :                          1 - | *HASDSP :                         0 - |
+*HASFPU :                         0 - | *HASPMMU :                        0 - |
+*INEXTMODE :                      0 - | *INLWORDMODE :                    0 - |
+*INMAXMODE :                      0 - | *INSRCMODE :                      0 - |
+*INSUPMODE :                      0 - |  L1 :                             3 C |
+ L2 :                             1 C | *LISTON :                         1 - |
+*MACEXP :                         1 - | *MOMCPU :                         C - |
+*MOMCPUNAME :                 SC/MP - | *NESTMAX :                      100 - |
+*PACKING :                        0 - | *PADDING :                        1 - |
+*RELAXED :                        0 - | *TIME :                     8:20:53 - |
+*TRUE :                           1 - | *VERSION :                     142F - |
+
+     30 symbols
+     28 unused symbols
+
+ AS V1.42 Beta [Bld 102] - source file test.asm - page 3 - 10/23/2015 8:20:53
+
+
+  codepages:
+  ----------
+
+STANDARD (0 changed characters)
+
+
+0.00 seconds assembly time
+
+     13 lines source file
+      2 passes
+      0 errors
+      0 warnings

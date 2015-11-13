@@ -1,0 +1,1848 @@
+Crasm 1.7:                                                   page  1
+
+                         1  ; **********************************************
+  ****************************************************
+                         2  ; **********************************************
+  ****************************************************
+                         3  ;
+                         4  ;                                               
+                                                PDS for Sphere 6800
+                         5  ;
+                         6  ;                                               
+                                                Version:V3N
+                         7  ;
+                         8  ;               Programmed by Eric Jameson 1976 
+                (Sphere Corporation)
+                         9  ;               Transcribed by Paul Robson Febru
+                ary 2014 (CRASM format)
+                        10  ;
+                        11  ;               The PDS is a set of programs res
+                iding on EPROM for the development of computer programs.
+                        12  ;               It includes a cursor based edito
+                r, a mini-assembler and a debugger, and 16 bit utility 
+                        13  ;               routines.
+                        14  ;
+                        15  ;               *IMPORTANT* Crasm incorrectly as
+                sembles BLE as $8F not $2F in version 1.7.
+                        16  ;                                       This wil
+                                        l cause a bug in the ASCTOBIN/BINTOA
+                                        SC routines (it is used twice)
+                        17  ;                                       It assem
+                                        bles to STS so it will crash any emu
+                                        lation.
+                        18  ;
+                        19  ; **********************************************
+  ****************************************************
+                        20  ; **********************************************
+  ****************************************************
+                        21  
+                        22                  cpu 6800                        
+                            ; code for 6800 Microprocessor
+                        23  
+  FC00                  24                  * = $FC00                       
+                            ; 1k ROM from FC00-FCFF
+                        25  
+  0000                  26                  tmp             = $00
+  0002                  27                  tmp1    = $02
+  0004                  28                  arb             = $04           
+                            ; 16 bit Pseudo Register B
+  0004                  29                  ar3     = $04
+  0005                  30                  ar2     = $05
+  0006                  31                  ara     = $06                   
+                            ; 16 bit Pseudo Register A
+  0006                  32                  ar1     = $06
+  0007                  33                  ar0     = $07
+  0008                  34                  digit   = $08                   
+                            ; Digit used for ASCII -> Binary
+  000A                  35                  outend  = $0A                   
+                            ; End of Output Buffer Text
+  000C                  36                  bufadr  = $0C                   
+                            ; Start of I/O Buffer
+  000E                  37                  bufend  = $0E                   
+                            ; End of I/O Buffer
+  0011                  38                  outbuf  = $11                   
+                            ; Start of output buffer
+
+
+Crasm 1.7:                                                   page  2
+
+  0014                  39                  srcadr  = $14                   
+                            ; Source for text moves
+  0016                  40                  dstadr  = $16                   
+                            ; Destination for text moves
+  001A                  41                  endmem  = $1A                   
+                            ; last address of real memory
+  001C                  42                  csrptr  = $1C                   
+                            ; on screen cursor pointer
+  001E                  43                  bufptr  = $1E                   
+                            ; temporary pointer used by outstr
+  0020                  44                  bufflo  = $20                   
+                            ; ptr to end of low edit text
+  0022                  45                  buffhi  = $22                   
+                            ; ptr to start of hi text
+  0024                  46                  scnptr  = $24                   
+                            ; ptr to buffered text start
+  0026                  47                  srcasm  = $26                   
+                            ; ptr to assembler source code
+  002A                  48                  ondval  = $2A                   
+                            ; operand value
+  002C                  49                  symval  = $2C                   
+                            ; symbol value
+  002E                  50                  brksav  = $2E                   
+                            ; save for breakpoint data
+  0030                  51                  brkadr  = $30                   
+                            ; address of breakpoint
+  0032                  52                  edit    = $32                   
+                            ; 0 if editor not running
+  0035                  53                  iobuff  = $35                   
+                            ; I/O Buffer for debugger
+  0040                  54                  pcval   = $40                   
+                            ; program counter for assembler
+                        55  
+                        56                  ; 80-FF is used by the assembler
+                  to store label values.
+                        57  
+  E01F                  58                  frstln  = $E01F                 
+                            ; rightmost character of line 1
+  E1E0                  59                  lastln  = $E1E0                 
+                            ; left most character of bottom line
+  E1FF                  60                  lastch  = $E1FF                 
+                            ; last character on CRT display
+                        61  
+  F040                  62                  kbdpia  = $F040                 
+                            ; Keyboard 2 PIA
+                        63  
+                        64  ; **********************************************
+  ****************************************************
+                        65  ;
+                        66  ;                                               
+                                                System Initialisation
+                        67  ;
+                        68  ;       Sets up initial values upon system reset
+                        69  ;       
+                        70  ; **********************************************
+  ****************************************************
+                        71  
+FC00 8E01FF             72  start   lds     #$1FF                           
+                            ; initialise stack pointer
+FC03 30                 73                  tsx                             
+                            ; put in index register
+FC04 DF26               74                  stx     srcasm                  
+
+
+Crasm 1.7:                                                   page  3
+
+                            ; sets assembler output pointer
+FC06 DF0C               75                  stx     bufadr                  
+                            ; sets input buffer address
+                        76  
+FC08 861F               77                  ldaa    #$1F                    
+                            ; initialise Keyboard PIA
+FC0A B7F041             78                  staa    kbdpia+1                
+                            ; write 00011111 to Control Register A
+                        79                                                  
+                            ; CA1 Control = 11      (IRQ on CA1 high transit
+  ion)
+                        80                                                  
+                            ; DDRA Access = 1               (Peripheral Regi
+  ster, DDR I/P by default)
+                        81                                                  
+                            ; CA2 Control = 011     (IRQ on CA2 high transit
+  ion)
+                        82                                                  
+                            ; IRQA1/2 = 0                   (Clear Interrupt
+  Flag Bits)
+                        83  
+FC0D CE0FFF             84                  ldx     #$FFF                   
+                            ; location of memory end (assumes 4k machine)
+FC10 DF0E               85                  stx     bufend                  
+                            ; end of edit buffer
+FC12 DF1A               86                  stx     endmem                  
+                            ; and end of memory
+                        87  
+                        88  ; **********************************************
+  ****************************************************
+                        89  ;
+                        90  ;                                               
+                                                Command Language
+                        91  ;
+                        92  ;       Accepts commands from the keyboard to de
+        termine what utility is to be run.  
+                        93  ;
+                        94  ; **********************************************
+  ****************************************************
+                        95  
+FC14 8D21               96  exec    bsr     home                            
+                            ; home cursor
+FC16 8D25               97                  bsr     clear                   
+                            ; clear screen
+                        98  
+FC18 8D73               99  exec1   bsr     cr1                             
+                            ; new line (CR/LF)
+FC1A BDFE71            100                  jsr     inpchr                  
+                            ; read character from keyboard and echo it
+FC1D 8101              101                  cmpa    #$01                    
+                            ; is it Ctrl-A
+FC1F 2603              102                  bne     exec2
+FC21 BDFDA1            103                  jsr     asmblr                  
+                            ; call the assembler
+                       104  
+FC24 8105              105  exec2   cmpa    #$05                            
+                            ; is it Ctrl-E
+FC26 2602              106                  bne     exec3
+FC28 8D3D              107                  bsr     editor                  
+                            ; call the editor
+                       108  
+FC2A 8112              109  exec3   cmpa    #$12                            
+
+
+Crasm 1.7:                                                   page  4
+
+                            ; is it Ctrl-R
+FC2C 2602              110                  bne     exec4
+FC2E 8D3F              111                  bsr     reedit                  
+                            ; call re-edit text
+                       112  
+FC30 8104              113  exec4   cmpa    #$04                            
+                            ; is it Ctrl-D
+FC32 26E4              114                  bne     exec1                   
+                            ; if no, then get another keystroke.
+FC34 7EFE64            115                  jmp     debug                   
+                            ; yes, go to debugger
+                       116  
+                       117  ; **********************************************
+  ****************************************************
+                       118  ;
+                       119  ;                                               
+                                                Home Cursor
+                       120  ;
+                       121  ; **********************************************
+  ****************************************************
+                       122  
+FC37 CEE000            123  home    ldx     #$E000                          
+                            ; loads X with home position on screen
+FC3A DF1C              124                  stx     csrptr                  
+                            ; store in cursor pointer
+FC3C 39                125                  rts
+                       126  
+                       127  ; **********************************************
+  ****************************************************
+                       128  ;
+                       129  ;                                               
+                                                Clear Screen from Cursor Poi
+                                                nter onwards
+                       130  ;
+                       131  ; **********************************************
+  ****************************************************
+                       132  
+FC3D C660              133  clear   ldab    #$60                            
+                            ; load blank character $60
+FC3F CEE200            134                  ldx     #lastch+1               
+                            ; load last charcter on screen, plus one
+                       135  
+FC42 09                136  clear1  dex                                     
+                            ; go to previous char
+FC43 E700              137                  stab    0,x                     
+                            ; store blank there
+FC45 9C1C              138                  cpx     csrptr                  
+                            ; reached the cursor
+FC47 26F9              139                  bne     clear1                  
+                            ; no keep going
+FC49 39                140                  rts
+                       141  
+                       142  ; **********************************************
+  ****************************************************
+                       143  ;
+                       144  ;                                       Input Ch
+                                        aracter into Acc A, blinking cursor 
+                                        while waiting
+                       145  ;
+                       146  ; **********************************************
+  ****************************************************
+                       147  
+
+
+Crasm 1.7:                                                   page  5
+
+FC4A DE1C              148  getchr  ldx     csrptr                          
+                            ; invert character at cursor, making it solid
+FC4C 6300              149                  com     0,x
+FC4E CE26F0            150                  ldx     #9968                   
+                            ; delay for blink
+FC51 09                151  get1    dex
+FC52 27F6              152                  beq     getchr                  
+                            ; when times out, invert character again, flashi
+  ng
+                       153  
+FC54 8640              154                  ldaa    #$40                    
+                            ; test bit 6 of the keyboard PIA flag register
+FC56 B5F041            155                  bita    kbdpia+1
+FC59 27F6              156                  beq     get1                    
+                            ; if clear, no key available so carry on blink l
+  oop
+                       157  
+FC5B DE1C              158                  ldx     csrptr                  
+                            ; check to see if the cursor character is solid
+FC5D A600              159                  ldaa    0,x
+FC5F 2A02              160                  bpl     get2                    
+                            ; if not, then skip
+FC61 6300              161                  com     0,x                     
+                            ; re-inverting it
+FC63 B6F040            162  get2    ldaa    kbdpia                          
+                            ; read keyboard character
+FC66 39                163                  rts
+                       164  
+                       165  ; **********************************************
+  ****************************************************
+                       166  ;
+                       167  ;       The Editor allows input from the keyboar
+        d into a buffer memory. Input is shown on the screen
+                       168  ;       and can be edited. When the screen is fu
+        ll or editing is finished, it is scrolled into the
+                       169  ;       edit buffer. It is stored in the top of 
+        the edit Buffer from the high buffer pointer (buffhi)
+                       170  ;       to the end of buffer pointer (bufend)
+                       171  ;
+                       172  ; **********************************************
+  ****************************************************
+                       173  
+FC67 DE0C              174  editor  ldx     bufadr                          
+                            ; put the buffer address into buff lo
+FC69 DF20              175                  stx     bufflo
+FC6B DE0E              176                  ldx     bufend                  
+                            ; put buffer end into buffhi
+FC6D DF22              177                  stx     buffhi
+                       178  
+                       179  ; **********************************************
+  ****************************************************
+                       180  ;                                               
+                                                Re-enter Editor
+                       181  ; **********************************************
+  ****************************************************
+                       182  
+FC6F 8DC6              183  reedit  bsr     home                            
+                            ; home cursor, clear screen
+FC71 8DCA              184                  bsr     clear
+                       185  
+FC73 9732              186  editrd  staa    edit                            
+                            ; turn editing on.
+
+
+Crasm 1.7:                                                   page  6
+
+                       187  
+FC75 DE1C              188  editin  ldx     csrptr                          
+                            ; set screen pointer to cursor pointer
+FC77 DF24              189                  stx     scnptr
+                       190  
+FC79 8DCF              191  edread  bsr     getchr                          
+                            ; X <- csrptr and A <- key pressed
+FC7B 811B              192  endchr  cmpa    #$1B                            
+                            ; was escape pressed ?
+FC7D 2604              193                  bne     ed1                     
+                            ; skip if not
+                       194  
+FC7F 7F0032            195                  clr     edit                    
+                            ; clear edit flag
+FC82 39                196                  rts                             
+                            ; and exit editor.
+                       197  
+FC83 8D0A              198  ed1     bsr     insert                          
+                            ; edits character
+FC85 20F2              199                  bra     edread                  
+                            ; and go round again.
+                       200  
+                       201  ; **********************************************
+  ****************************************************
+                       202  
+FC87 810D              203  cr              cmpa    #$0D                    
+                            ; test for carriage return
+FC89 2DAC              204                  blt     home                    
+                            ; if < this then it is home cursor
+FC8B 2E12              205                  bgt     rtscr                   
+                            ; if > then next command test
+                       206  
+FC8D 8660              207  cr1     ldaa    #$60                            
+                            ; load internal return value
+                       208  
+                       209  ; **********************************************
+  ****************************************************
+                       210  ;                                               
+                                                Handle one editor / characte
+                                                r
+                       211  ; **********************************************
+  ****************************************************
+                       212  
+FC8F 8109              213  insert  cmpa    #$09                            
+                            ; test for CTRL+I
+FC91 2D16              214                  blt     delete                  
+                            ; if < this it is a delete command ($08)
+FC93 2EF2              215                  bgt     cr                      
+                            ; if > check for return.
+                       216  
+FC95 D632              217  insrt1  ldab    edit                            
+                            ; check edit flag [[CTRL+I]]
+FC97 2703              218                  beq     insrt2                  
+                            ; if editor off skip to exit
+FC99 BDFD46            219                  jsr     move2                   
+                            ; move last line to buffer high
+FC9C 7EFD74            220  insrt2  jmp     scrldn                          
+                            ; move all lines down 1.
+                       221  
+FC9F 8112              222  rtscr   cmpa    #$12                            
+                            ; check right arrow 
+FCA1 2D28              223                  blt     sub32                   
+
+
+Crasm 1.7:                                                   page  7
+
+                            ; go to up arrow code.
+FCA3 2E08              224                  bgt     lftcsr
+                       225  
+FCA5 DE1C              226  rtarro  ldx     csrptr                          
+                            ; load cursor pointer [[RIGHT ARROW]]
+FCA7 201F              227                  bra     putch1                  
+                            ; increment cursor and check.
+                       228  
+FCA9 8D67              229  delete  bsr     ovr1a                           
+                            ; scrolls up one line [DELETE]
+FCAB 2040              230                  bra     ovr3                    
+                            ; moves new last screen line.
+                       231  
+FCAD 8114              232  lftcsr  cmpa    #$14                            
+                            ; test if left arrow
+FCAF 2D24              233                  blt     add32                   
+                            ; if < go to down arrow code
+FCB1 2E03              234                  bgt     cler
+                       235  
+FCB3 09                236                  dex                             
+                            ; sub 1 from csrptr [[LEFT ARROW]]
+FCB4 2025              237                  bra     add2                    
+                            ; stores cursor pointer, check underflow
+                       238  
+FCB6 811F              239  cler    cmpa    #$1F                            
+                            ; test for control back arrow
+FCB8 2D83              240                  blt     clear                   
+                            ; if < go to clear screen.
+FCBA 2741              241                  beq     lftjst                  
+                            ; move cursor to left of screen.
+                       242  
+                       243  ; **********************************************
+  ****************************************************
+                       244  ;                       Display character on CRT
+                        , Increment Cursor Pointer, check and handle CR
+                       245  ; **********************************************
+  ****************************************************
+                       246  
+FCBC DE1C              247  putchr  ldx     csrptr                          
+                            ; load old cursor pointer
+FCBE 810D              248                  cmpa    #$0D                    
+                            ; is it a CR keystroke ?
+FCC0 2752              249                  beq     crlf                    
+                            ; yes, do a CRLF.
+                       250  
+FCC2 A700              251                  staa    0,x                     
+                            ; write to screen
+FCC4 8160              252                  cmpa    #$60                    
+                            ; is it an internal CR ?
+FCC6 274C              253  crlf1   beq     crlf                            
+                            ; yes, do the CRLF
+                       254  
+FCC8 08                255  putch1  inx                                     
+                            ; increment cursor pointer
+FCC9 2010              256                  bra     add2                    
+                            ; test for overflow and underflow
+                       257  
+FCCB DE1C              258  sub32   ldx     csrptr                          
+                            ; fetch cursor pointer [[UP ARROW]]
+FCCD C620              259                  ldab    #32                     
+                            ; we are going to go up one line (e.g. left 32 t
+  imes)
+
+
+Crasm 1.7:                                                   page  8
+
+FCCF 09                260  sub32a  dex
+FCD0 5A                261                  decb
+FCD1 26FC              262                  bne     sub32a                  
+                            ; so go back 32 positions
+FCD3 2006              263                  bra     add2                    
+                            ; and check for underflow.
+                       264  
+FCD5 C620              265  add32   ldab    #32                             
+                            ; go forward 32 positions [[DOWN ARROW]]
+FCD7 08                266  add32a  inx
+FCD8 5A                267                  decb
+FCD9 26FC              268                  bne     add32a
+                       269  
+FCDB DF1C              270  add2    stx     csrptr                          
+                            ; save cursor pointer
+                       271  
+                       272  ; **********************************************
+  ****************************************************
+                       273  ;                                               
+                                                check for cursor off the top
+                                                of the screen (NDRFLO)
+                       274  ; **********************************************
+  ****************************************************
+                       275  
+FCDD 8CE000            276  ndrflo  cpx     #$E000                          
+                            ; tests if CSRPTR >= $E000
+FCE0 2C04              277                  bge     ovrflo                  
+                            ; go to overflow if okay.
+                       278  
+FCE2 8DB1              279                  bsr     insrt1                  
+                            ; scroll down and move line.
+FCE4 8D32              280                  bsr     move3                   
+                            ; move BUFFLO to the top of the CRT
+                       281  
+                       282  ; **********************************************
+  ****************************************************
+                       283  ;                                               
+                                                check for cursor off the top
+                                                of the screen (OVRFLO)
+                       284  ; **********************************************
+  ****************************************************
+                       285  
+FCE6 8CE200            286  ovrflo  cpx     #$E200                          
+                            ; test if cursor on screen
+FCE9 2B18              287                  bmi     ovrext                  
+                            ; if it is, then exit.
+FCEB 8D17              288                  bsr     ovr1                    
+                            ; does OVR1 checking
+                       289  
+FCED D632              290  ovr3    ldab    edit                            
+                            ; check if edit is on.
+FCEF 2712              291                  beq     ovrext                  
+                            ; if off, then exit.
+                       292  
+FCF1 DE22              293                  ldx     buffhi                  
+                            ; load hi text pointer
+FCF3 9C0E              294                  cpx     bufend                  
+                            ; tests if pointers different
+FCF5 270C              295                  beq     ovrext                  
+                            ; exit if no text.
+FCF7 8D3C              296                  bsr     move1a                  
+                            ; moves chrs to the last line
+
+
+Crasm 1.7:                                                   page  9
+
+FCF9 DE14              297                  ldx     srcadr                  
+                            ; resets new buffhi location
+FCFB DF22              298                  stx     buffhi
+                       299  
+                       300  ; **********************************************
+  ****************************************************
+                       301  ;                                               
+                                                Force cursor to LHS
+                       302  ; **********************************************
+  ****************************************************
+                       303  
+FCFD D61D              304  lftjst  ldab    csrptr+1                        
+                            ; load low byte of ptr
+FCFF C4E0              305                  andb    #$E0                    
+                            ; force to left side of this line
+FD01 D71D              306                  stab    csrptr+1                
+                            ; write it back.        
+                       307  
+FD03 39                308  ovrext  rts
+                       309  
+                       310  ; **********************************************
+  ****************************************************
+                       311  ;                                               
+                                                Scroll screen up.
+                       312  ; **********************************************
+  ****************************************************
+                       313  
+FD04 D632              314  ovr1    ldab    edit                            
+                            ; test if edit is on.
+FD06 270A              315                  beq     ovr1a                   
+                            ; if it is off, just scroll the screen
+                       316  
+FD08 DE20              317                  ldx     bufflo                  
+                            ; load text pointer
+FD0A DF16              318                  stx     dstadr                  
+                            ; destination of text move
+FD0C DE24              319                  ldx     scnptr                  
+                            ; where its coming from.
+FD0E 8D26              320                  bsr             move1           
+                            ; move line 1 to buff lo.
+FD10 DF20              321                  stx     bufflo                  
+                            ; save new buffer low pointer
+                       322  
+FD12 204B              323  ovr1a   bra     scrlup
+                       324  
+                       325  ; **********************************************
+  ****************************************************
+                       326  ;                                               
+                                                Carriage Return / Line Feed 
+                                                cursor
+                       327  ; **********************************************
+  ****************************************************
+                       328  
+FD14 8DBF              329  crlf    bsr     add32                           
+                            ; go down one line.
+FD16 20E5              330                  bra     lftjst                  
+                            ; and carriage return to the left.
+                       331  
+                       332  ; **********************************************
+  ****************************************************
+                       333  ;               Caclaulates the source address o
+                f the data in Bufflo to move to first line on CRT.
+
+
+Crasm 1.7:                                                   page 10
+
+                       334  ; **********************************************
+  ****************************************************
+                       335  
+FD18 DE24              336  move3   ldx     scnptr                          
+                            ; csrptr gets $E000
+FD1A DF16              337                  stx     dstadr                  
+                            ; set move address
+FD1C DE20              338                  ldx     bufflo                  
+                            ; loads low buffer adddress
+FD1E 9C0C              339                  cpx     bufadr                  
+                            ; test if anything there
+FD20 2723              340                  beq     movext                  
+                            ; exit if empty.
+FD22 09                341                  dex                             
+                            ; moves back from blank
+                       342  
+FD23 9C0C              343  mv31    cpx     bufadr                          
+                            ; test if srcadr == buffadr
+FD25 2708              344                  beq     mv32                    
+                            ; moves if start of line
+FD27 09                345                  dex                             
+                            ; back one character
+FD28 E600              346                  ldab    0,x                     
+                            ; read it
+FD2A C160              347                  cmpb    #$60                    
+                            ; is it internal CR
+FD2C 26F5              348                  bne     mv31                    
+                            ; no, keep going back.
+FD2E 08                349                  inx                             
+                            ; points back to first char (e.g. after CR)
+FD2F DF20              350  mv32    stx     bufflo                          
+                            ; savves low address
+FD31 2003              351                  bra     move1
+                       352  
+                       353  ; **********************************************
+  ****************************************************
+                       354  ;                               Move a line from
+                                SRCADR to DSTADR (Move1 , from X to DSTADR)
+                       355  ; **********************************************
+  ****************************************************
+                       356  
+FD33 DE14              357  move    ldx     srcadr                          
+                            ; load src address into X
+FD35 08                358  move1a  inx                                     
+                            ; next source character
+FD36 E600              359  move1   ldab    0,x                             
+                            ; read source character
+FD38 DF14              360                  stx     srcadr                  
+                            ; save source pointer
+FD3A DE16              361                  ldx     dstadr                  
+                            ; load destination address
+FD3C E700              362                  stab    0,x                     
+                            ; save it there.
+FD3E 08                363                  inx                             
+                            ; bump the destination address
+FD3F DF16              364                  stx     dstadr
+FD41 C160              365                  cmpb    #$60                    
+                            ; done the complete line
+FD43 26EE              366                  bne     move
+FD45 39                367  movext  rts
+                       368  
+                       369  ; **********************************************
+
+
+Crasm 1.7:                                                   page 11
+
+  ****************************************************
+                       370  ;                               Move Last line o
+                                n the screen ot the high area of the buffer 
+                                (BUFFHI)
+                       371  ; **********************************************
+  ****************************************************
+                       372  
+FD46 CEE1E0            373  move2   ldx     #lastln                         
+                            ; address of last line
+FD49 5F                374                  clrb
+                       375  
+FD4A 37                376  mv21    pshb
+FD4B E600              377                  ldab    0,x                     
+                            ; loads source character
+FD4D 08                378                  inx
+FD4E C160              379                  cmpb    #$60                    
+                            ; reached end of line
+FD50 26F8              380                  bne     mv21
+                       381  
+FD52 DE22              382  mv22    ldx     buffhi                          
+                            ; initial destination
+FD54 E700              383  mv23    stab    0,x                             
+                            ; stores character (first one $60)
+FD56 09                384                  dex                             
+                            ; previous location
+FD57 DF22              385                  stx     buffhi
+FD59 33                386                  pulb                            
+                            ; pull off stack
+FD5A C100              387                  cmpb    #0                      
+                            ; if not terminating zero
+FD5C 26F6              388                  bne     mv23                    
+                            ; then keep going round
+FD5E 39                389  movex   rts
+                       390  
+                       391  ; **********************************************
+  ****************************************************
+                       392  ;                                               
+                                                Scroll up and clears last li
+                                                ne
+                       393  ; **********************************************
+  ****************************************************
+                       394  
+FD5F CEE000            395  scrlup  ldx     #$E000                          
+                            ; move the screen data up
+FD62 E620              396  scrp1   ldab    $20,x
+FD64 E700              397                  stab    0,x
+FD66 08                398                  inx
+FD67 8CE1E0            399                  cpx     #lastln
+FD6A 26F6              400                  bne     scrp1
+FD6C DF1C              401                  stx     csrptr                  
+                            ; save as cursor pointer
+FD6E DF16              402                  stx     dstadr                  
+                            ; dest for next move
+FD70 BDFC3D            403                  jsr     clear                   
+                            ; clear last line
+FD73 39                404                  rts
+                       405  
+                       406  ; **********************************************
+  ****************************************************
+                       407  ;                                               
+                                                Scroll all lines down one an
+                                                d clears the top line
+
+
+Crasm 1.7:                                                   page 12
+
+                       408  ; **********************************************
+  ****************************************************
+                       409  
+FD74 CEE1DF            410  scrldn  ldx     #lastln-1                       
+                            ; physically move screen data down
+FD77 E600              411  scrd1   ldab    0,x
+FD79 E720              412                  stab    $20,x
+FD7B DF1C              413                  stx     csrptr                  
+                            ; will home cursor at the same time
+FD7D 09                414                  dex
+FD7E 8CDFFF            415                  cpx     #$DFFF
+FD81 26F4              416                  bne     scrd1
+FD83 C660              417                  ldab    #$60                    
+                            ; now clear the top line
+FD85 08                418  scrd2   inx
+FD86 E700              419                  stab    0,x
+FD88 8CE01F            420                  cpx     #frstln
+FD8B 26F8              421                  bne     scrd2
+FD8D 39                422                  rts
+                       423  
+                       424  ; **********************************************
+  ****************************************************
+                       425  ;                                               
+                                                Output String between OutBuf
+                                                and BufEnd
+                       426  ; **********************************************
+  ****************************************************
+                       427  
+FD8E DE11              428  outstr  ldx     outbuf                          
+                            ; start of text
+FD90 A600              429  out1    ldaa    0,x                             
+                            ; output character
+FD92 DF1E              430                  stx     bufptr                  
+                            ; save position
+FD94 BDFCBC            431                  jsr     putchr                  
+                            ; print character
+FD97 DE1E              432                  ldx     bufptr                  
+                            ; restore position
+FD99 9C0A              433                  cpx     outend                  
+                            ; exit if at end
+FD9B 2703              434                  beq     out2
+FD9D 08                435                  inx                             
+                            ; else bump pointer and do next.
+FD9E 20F0              436                  bra     out1
+FDA0 39                437  out2    rts
+                       438  
+                       439  ; **********************************************
+  ****************************************************
+                       440  ;
+                       441  ;                       Mini assembler - A fixe 
+                        field one instruction per line 2 pass assembler
+                       442  ;
+                       443  ; **********************************************
+  ****************************************************
+                       444  
+                       445  
+FDA1 7F0004            446  asmblr  clr     ar3                             
+                            ; pass counter to zero (first pass)
+                       447  
+FDA4 DE20              448  asm1    ldx     bufflo                          
+                            ; set PC counter to start of object code (end of
+  edit)
+
+
+Crasm 1.7:                                                   page 13
+
+FDA6 DF40              449                  stx     pcval
+                       450  
+FDA8 DE26              451                  ldx     srcasm                  
+                            ; loads address of first line.
+                       452  ; **********************************************
+  ****************************************************
+                       453  ;                               Next Instruction
+                                . First Part processes the label and possibl
+                                e equate
+                       454  ; **********************************************
+  ****************************************************
+                       455  
+FDAA DF02              456  asm1a   stx     tmp1                            
+                            ; save line addresss
+FDAC A608              457                  ldaa    8,x                     
+                            ; loads symbol (label)
+FDAE E607              458                  ldab    7,x                     
+                            ; load operand type code (R,D,E or blank)
+FDB0 C140              459                  cmpb    #'@'                    
+                            ; if it is @, loads data in symbol
+FDB2 276B              460                  beq     indadr
+FDB4 08                461                  inx                             
+                            ; set index to start of operand number (add 7 to
+  x)
+FDB5 08                462                  inx
+FDB6 08                463                  inx
+FDB7 08                464                  inx
+FDB8 08                465                  inx
+FDB9 08                466                  inx
+FDBA 08                467                  inx
+FDBB BDFF22            468                  jsr     ascbin                  
+                            ; convert number to binary in B:A
+FDBE D72A              469  asm1b   stab    ondval                          
+                            ; store operand value in ondval
+FDC0 972B              470                  staa    ondval+1
+                       471  
+FDC2 DE02              472  symbl   ldx     tmp1                            
+                            ; loads line pointer back into index register
+FDC4 A600              473                  ldaa    0,x                     
+                            ; loads the label for this instruction into A
+FDC6 E601              474                  ldab    1,x                     
+                            ; load label control character into B
+FDC8 DE40              475                  ldx     pcval                   
+                            ; copy PCVal to SYMVal (e.g. this is going to be
+  equated)
+                       476  
+FDCA DF2C              477                  stx     symval
+FDCC C13D              478                  cmpb    #'='                    
+                            ; is it an equate
+FDCE 2606              479                  bne     asm2                    
+                            ; if not equated skip
+                       480  
+FDD0 DE2A              481                  ldx     ondval                  
+                            ; because it is a= <xxx> then use the operand va
+  lue as the
+FDD2 DF2C              482                  stx     symval                  
+                            ; symbol value
+FDD4 200E              483                  bra     asm3                    
+                            ; and continue the assembly.
+                       484  
+FDD6 C120              485  asm2    cmpb    #" "                            
+                            ; test for end of program - something other than
+
+
+Crasm 1.7:                                                   page 14
+
+  space.
+FDD8 270A              486                  beq     asm3                    
+                            ; if it is a space then assemble it.
+                       487  
+FDDA 7D0004            488                  tst     ar3                     
+                            ; is it the second pass ? (e.g. ar3 is non zero)
+FDDD 2701              489                  beq     asm2a                   
+                            ; if it is then exit
+FDDF 39                490                  rts
+FDE0 D704              491  asm2a   stab    ar3                             
+                            ; set ar3 to non-zero to mark pass 2
+FDE2 20C0              492                  bra     asm1                    
+                            ; and run a second pass.
+                       493  
+FDE4 8D41              494  asm3    bsr     symptr                          
+                            ; set X for symble table address of A
+FDE6 962C              495                  ldaa    symval                  
+                            ; and copy symval into it
+FDE8 A700              496                  staa    0,x                     
+                            ; note space/blank is used for non-label lines, 
+  so this is always done.
+FDEA 962D              497                  ldaa    symval+1
+FDEC A701              498                  staa    1,x
+                       499  
+                       500  ; **********************************************
+  ****************************************************
+                       501  ;                                               
+                                                Construct the operation code
+                                                .
+                       502  ; **********************************************
+  ****************************************************
+                       503  
+FDEE DE02              504  ldop    ldx     tmp1                            
+                            ; get the line start
+FDF0 08                505                  inx                             
+                            ; and point the opcode character.
+FDF1 08                506                  inx
+FDF2 08                507                  inx
+FDF3 A600              508                  ldaa    0,x                     
+                            ; look at the opcode character
+FDF5 8120              509                  cmpa    #' '                    
+                            ; is there an opcode there
+FDF7 270A              510                  beq     oprnd                   
+                            ; if no, then it is a data item.
+FDF9 BDFF22            511                  jsr     ascbin                  
+                            ; evaluate the operand
+FDFC DE40              512                  ldx     pcval                   
+                            ; stores into object code
+FDFE A700              513                  staa    0,x
+FE00 08                514                  inx                             
+                            ; bump object code pointer and save back
+FE01 DF40              515                  stx     pcval
+                       516  
+                       517  ; **********************************************
+  ****************************************************
+                       518  ;                                               
+                                                Construct the operand
+                       519  ; **********************************************
+  ****************************************************
+                       520  
+FE03 DE02              521  oprnd   ldx     tmp1                            
+                            ; get current line
+
+
+Crasm 1.7:                                                   page 15
+
+FE05 A606              522                  ldaa    6,x                     
+                            ; get operansd size char (R,E,D)
+FE07 DE40              523                  ldx     pcval                   
+                            ; object code pointer.
+FE09 8145              524                  cmpa    #'E'                    
+                            ; compare against E
+FE0B 2E31              525                  bgt     reltiv                  
+                            ; if > then it is R, do relative code
+FE0D 2721              526                  beq     extend                  
+                            ; if = then it is extended mode.
+FE0F 8144              527                  cmpa    #"D"                    
+                            ; if it is D then do direct
+FE11 2722              528                  beq     direct
+                       529  
+FE13 DE02              530  asm4    ldx     tmp1                            
+                            ; go to next line
+FE15 08                531  asm4a   inx                                     
+                            ; go down line looking for end of line marker
+FE16 A600              532                  ldaa    0,x
+FE18 8160              533                  cmpa    #$60
+FE1A 26F9              534                  bne     asm4a
+FE1C 08                535                  inx                             
+                            ; skip EOL marker
+FE1D 208B              536                  bra     asm1a                   
+                            ; and do the next line.
+                       537  
+FE1F 8D06              538  indadr  bsr     symptr                          
+                            ; point X to the symbol (operand was @something)
+FE21 EE00              539                  ldx     0,x                     
+                            ; read the value stored there
+FE23 DF2A              540                  stx     ondval                  
+                            ; use that as an operand
+FE25 209B              541                  bra     symbl                   
+                            ; continue assembly from the 'decode label' poin
+  t
+                       542  
+                       543  ; **********************************************
+  ****************************************************
+                       544  ;                                               
+                                                Convert Symbol to Address of
+                                                Symbol Table
+                       545  ; **********************************************
+  ****************************************************
+                       546  
+FE27 48                547  symptr  asla                                    
+                            ; B:A is symbol x 2
+FE28 5F                548                  clrb
+FE29 9701              549  loadx   staa    tmp+1                           
+                            ; and copy that into X
+FE2B D700              550                  stab    tmp
+FE2D DE00              551                  ldx     tmp
+FE2F 39                552                  rts
+                       553  
+FE30 D62A              554  extend  ldab    ondval                          
+                            ; process extended, direct operands
+FE32 E700              555                  stab    0,x
+FE34 08                556                  inx
+FE35 962B              557  direct  ldaa    ondval+1
+FE37 A700              558                  staa    0,x
+FE39 08                559                  inx
+FE3A DF40              560                  stx     pcval                   
+                            ; write pointer back
+
+
+Crasm 1.7:                                                   page 16
+
+FE3C 20D5              561                  bra     asm4                    
+                            ; go to next line
+                       562  
+FE3E 08                563  reltiv  inx                                     
+                            ; increment PC Pt to point to next byte and save
+  it.
+FE3F DF40              564                  stx     pcval
+FE41 962B              565                  ldaa    ondval+1                
+                            ; load low byte of operand
+FE43 9041              566                  suba    pcval+1                 
+                            ; calculate relative offset of byte after the in
+  struction
+FE45 09                567                  dex                             
+                            ; write it in the place just skipped past
+FE46 A700              568                  staa    0,x
+FE48 20C9              569                  bra     asm4                    
+                            ; go to next line.
+                       570  
+                       571  ; **********************************************
+  ****************************************************
+                       572  ;
+                       573  ;                                               
+                                                Debugger
+                       574  ;
+                       575  ; **********************************************
+  ****************************************************
+                       576  
+FE4A 30                577  bkentr  tsx                                     
+                            ; stack pointer to index (BRK comes here)
+FE4B E605              578                  ldab    5,x                     
+                            ; get return address (hi)
+FE4D A606              579                  ldaa    6,x                     
+                            ; (lo)
+FE4F 8001              580                  suba    #1                      
+                            ; decrement return address
+FE51 C200              581                  sbcb    #0                      
+                            ; (16 bit value)
+FE53 E705              582                  stab    5,x                     
+                            ; make the return address point to the breakpoin
+  t
+FE55 A706              583                  staa    6,x
+FE57 200B              584                  bra     debug                   
+                            ; and enter the debugger.
+                       585  
+FE59 810D              586  line    cmpa    #13                             
+                            ; test for CR
+FE5B 2D7D              587                  blt     jmplcn                  
+                            ; if < goto 'JSR' (Ctrl+J) routine
+FE5D 2E4E              588                  bgt     opnreg                  
+                            ; if > goto next (Ctrl+R) tests
+FE5F BDFCCB            589                  jsr     sub32                   
+                            ; scroll up one line.
+FE62 31                590  poplin  ins                                     
+                            ; tidy up stack for display of CR
+FE63 31                591                  ins
+                       592  
+FE64 8D76              593  debug   bsr     newlin                          
+                            ; print CR then > (debug prompt)
+FE66 8D09              594  dbug1   bsr     inpchr                          
+                            ; reset command
+FE68 BDFCA5            595                  jsr     rtarro                  
+                            ; move cursor right
+
+
+Crasm 1.7:                                                   page 17
+
+FE6B DE40              596                  ldx     pcval                   
+                            ; load currently opened location
+FE6D 8D09              597                  bsr     runbug                  
+                            ; execute debug command
+FE6F 20F5              598                  bra     dbug1                   
+                            ; go back to next command.
+                       599  
+FE71 BDFC4A            600  inpchr  jsr     getchr                          
+                            ; read a character and echo it.
+FE74 BDFCBC            601                  jsr     putchr
+FE77 39                602                  rts
+                       603  
+FE78 8103              604  runbug  cmpa    #03                             
+                            ; check for Control+C
+FE7A 2D25              605                  blt     brkset                  
+                            ; if < it is Ctrl+B, set breakpoint
+FE7C 2E45              606                  bgt     exit                    
+                            ; if > skip to next command text
+                       607  
+FE7E DE30              608  clrbrk  ldx     brkadr                          
+                            ; [[clear break point]]
+FE80 962E              609                  ldaa    brksav                  
+                            ; save inserted breakpoint at (brkadr)
+FE82 A700              610                  staa    0,x
+FE84 2066              611                  bra     dspadr                  
+                            ; go to open the location
+                       612  
+FE86 8120              613  change  cmpa    #" "                            
+                            ; check for a space command.
+FE88 2D12              614                  blt     exectv                  
+                            ; if < return to executive (Ctrl+X)
+FE8A 2E09              615                  bgt     opnpre                  
+                            ; if > other command tests
+                       616  
+FE8C 8D56              617  space   bsr     inpnum                          
+                            ; Space [[Change Memory]]       
+FE8E DE40              618                  ldx     pcval                   
+                            ; write inputted number at pcval address
+FE90 A700              619                  staa    0,x
+                       620  
+FE92 08                621  opnnxt  inx                                     
+                            ; go to next location address [[next address]]
+FE93 2057              622                  bra     dspadr                  
+                            ; go to open location.
+                       623  
+FE95 812D              624  opnpre  cmpa    #'-'                            
+                            ; is it -
+FE97 2DF9              625                  blt     opnnxt                  
+                            ; if <, assume + and move to the next address
+FE99 09                626                  dex                             
+                            ; otherwise go to [[previous address]]
+FE9A 2050              627                  bra     dspadr                  
+                            ; and open the location
+                       628  
+FE9C 31                629  exectv  ins                                     
+                            ; clean up the stack (remove the call) [[go exec
+  utive]]
+FE9D 31                630                  ins
+FE9E 7EFC14            631                  jmp     exec                    
+                            ; return to the executive.
+                       632  
+FEA1 A600              633  brkset  ldaa    0,x                             
+
+
+Crasm 1.7:                                                   page 18
+
+                            ; set breakpoint [[set break]]
+FEA3 972E              634                  staa    brksav                  
+                            ; save byte which will be replaced by SWI
+FEA5 DF30              635                  stx     brkadr                  
+                            ; save breakpoint address
+FEA7 863F              636                  ldaa    #$3F                    
+                            ; $3F is 6800 SWI Instruction
+FEA9 A700              637                  staa    0,x                     
+                            ; overwrite code
+FEAB 20B5              638                  bra     poplin                  
+                            ; and fix up stack and do next instruction.
+                       639  
+FEAD 8112              640  opnreg  cmpa    #$12                            
+                            ; tests for (Ctrl+R) TOS
+FEAF 2D0A              641                  blt     opnloc                  
+                            ; if < go to openlocation
+FEB1 2E19              642                  bgt     opntbl                  
+                            ; if > next test
+                       643  
+FEB3 30                644                  tsx                             
+                            ; access TOS and lose 2 bytes used to call this 
+  routine [[display stack]]
+FEB4 08                645                  inx
+FEB5 08                646                  inx
+FEB6 2034              647                  bra     dspadr                  
+                            ; go to display routine.
+                       648  
+FEB8 35                649  setstk  txs                                     
+                            ; set stack - stack pointer gets PCVAL [[set sta
+  ck pointer]]
+FEB9 20A9              650                  bra     debug                   
+                            ; go to input command.
+                       651  
+FEBB 8D27              652  opnloc  bsr     inpnum                          
+                            ; load a 16 bit number [[go to a location]]
+FEBD D740              653  opnlc1  stab    pcval                           
+                            ; save in PCVAL
+FEBF 9741              654                  staa    pcval+1
+FEC1 202B              655                  bra     dspad1                  
+                            ; display that location
+                       656  
+FEC3 8107              657  exit    cmpa    #$07                            
+                            ; is it conrol E
+FEC5 2711              658                  beq     golocn                  
+                            ; if so, go to the go command
+FEC7 2E90              659                  bgt     line                    
+                            ; go to next command test
+FEC9 31                660                  ins                             
+                            ; clear up the stack and return
+FECA 31                661                  ins
+FECB 3B                662                  rti
+                       663  
+FECC 8114              664  opntbl  cmpa    #$14                            
+                            ; test if Ctrl+T (table)
+FECE 2DE8              665                  blt     setstk                  
+                            ; if < goto set stack
+FED0 2EB4              666                  bgt     change                  
+                            ; if > change memory location
+FED2 8D9D              667                  bsr     inpchr                  
+                            ; load a with a symbol from the keyboard
+FED4 48                668                  asla                            
+                            ; set AB to the location of that symbols value
+
+
+Crasm 1.7:                                                   page 19
+
+FED5 5F                669                  clrb
+FED6 20E5              670                  bra     opnlc1                  
+                            ; save and display address.
+                       671  
+FED8 31                672  golocn  ins                                     
+                            ; go to location - clean up the stack
+FED9 31                673                  ins
+FEDA 6E00              674  jmplcn  jmp     0,x                             
+                            ; jump to users program
+                       675  
+FEDC 860D              676  newlin  ldaa    #$0D                            
+                            ; print CR
+FEDE 8D3E              677                  bsr     pntbf1
+FEE0 863E              678                  ldaa    #">"                    
+                            ; print > prompt
+FEE2 203A              679                  bra     pntbf1
+                       680  
+FEE4 BDFC75            681  inpnum  jsr     editin                          
+                            ; input a string of digits
+FEE7 DE24              682                  ldx     scnptr                  
+                            ; load address of first digit
+FEE9 8D37              683                  bsr     ascbin                  
+                            ; convert to integer
+FEEB 39                684                  rts                             
+                            ; return to caller.
+                       685  
+FEEC DF40              686  dspadr  stx     pcval                           
+                            ; save pc value
+FEEE 8DEC              687  dspad1  bsr     newlin                          
+                            ; print CR >
+FEF0 8D0A              688                  bsr     pntdig                  
+                            ; print out PC value in hexadecimal.
+FEF2 BDFCA5            689                  jsr     rtarro                  
+                            ; move right
+FEF5 DE40              690                  ldx     pcval                   
+                            ; read byte at pcval
+FEF7 A600              691                  ldaa    0,x
+FEF9 8D07              692                  bsr     pntbyt                  
+                            ; print it and return
+FEFB 39                693                  rts
+                       694  
+FEFC 9640              695  pntdig  ldaa    pcval                           
+                            ; print pcval
+FEFE 8D02              696                  bsr     pntbyt
+FF00 9641              697                  ldaa    pcval+1
+FF02 CE0010            698  pntbyt  ldx     #16                             
+                            ; base to convert
+FF05 DF04              699                  stx     arb
+FF07 5F                700                  clrb
+FF08 CE0035            701                  ldx     #iobuff                 
+                            ; address of IO Buffer
+                       702  
+FF0B D736              703  convrt  stab    iobuff+1                        
+                            ; clear byte for second digit
+FF0D BDFF64            704                  jsr     binasc                  
+                            ; convert to ASCII digits
+FF10 9635              705                  ldaa    iobuff                  
+                            ; load high digit
+FF12 D636              706                  ldab    iobuff+1                
+                            ; test both digits converted
+FF14 2604              707                  bne     pntbuf                  
+                            ; skips if both digits converted
+
+
+Crasm 1.7:                                                   page 20
+
+FF16 9736              708                  staa    iobuff+1                
+                            ; set up low digit
+FF18 8630              709                  ldaa    #"0"
+FF1A 8D02              710  pntbuf  bsr     pntbf1                          
+                            ; print high digit
+FF1C 9636              711                  ldaa    iobuff+1                
+                            ; get low digit
+FF1E BDFCBC            712  pntbf1  jsr     putchr                          
+                            ; displays character
+FF21 39                713                  rts
+                       714  
+                       715  ; **********************************************
+  ****************************************************
+                       716  ;
+                       717  ;               ASCII to Binary Conversion. Stri
+                ng pointed to by X, Result in BA. Base is in ARA
+                       718  ;
+                       719  ; **********************************************
+  ****************************************************
+                       720  
+FF22 A600              721  ascbin  ldaa    0,x                             
+                            ; look at first character
+FF24 812E              722                  cmpa    #'.'                    
+                            ; is it a decimal point (=> base 10)
+FF26 2D06              723                  blt     oct                     
+                            ; if < assume base 8 (*xxxx)
+FF28 2E09              724                  bgt     hex                     
+                            ; if > assume base 16
+FF2A 860A              725                  ldaa    #10                     
+                            ; if = it is decimal
+FF2C 2002              726                  bra     asc1
+FF2E 8608              727  oct     ldaa    #8                              
+                            ; it is octal
+FF30 08                728  asc1    inx                                     
+                            ; skip over . or *
+FF31 2002              729                  bra     asc2                    
+                            ; and continue
+FF33 8610              730  hex     ldaa    #16                             
+                            ; base 16
+FF35 9707              731  asc2    staa    ar0                             
+                            ; store base in AR0
+                       732  
+FF37 5F                733  entr2   clrb                                    
+                            ; Number is kept in B,TOS
+FF38 37                734                  pshb
+FF39 D706              735                  stab    ar1                     
+                            ; clear high of base
+                       736  
+FF3B A600              737  nxtchr  ldaa    0,x                             
+                            ; read next char
+FF3D 08                738                  inx
+FF3E 8130              739                  cmpa    #'0'                    
+                            ; if < 0 then exit
+FF40 2D20              740                  blt     aexit
+FF42 8030              741                  suba    #'0'                    
+                            ; subtract ascii zero.
+FF44 810A              742                  cmpa    #10                     
+                            ; if in range 0-9 then continue
+FF46 2D0A              743                  blt     asc3
+FF48 8110              744                  cmpa    #16                     
+                            ; if in range 10-16 not a hex digit
+FF4A 2F16              745                  ble     aexit
+
+
+Crasm 1.7:                                                   page 21
+
+FF4C 8007              746                  suba    #7                      
+                            ; now it is in the range 0-15 or more 
+FF4E 8110              747                  cmpa    #16                     
+                            ; out of range (e.g. > 'F' originally)
+FF50 2C10              748                  bge     aexit                   
+                            ; then exit
+                       749  
+FF52 9708              750  asc3    staa    digit                           
+                            ; save the now valid hex digit
+FF54 DF00              751                  stx     tmp                     
+                            ; save X register
+FF56 32                752                  pula                            
+                            ; B:A now contains number so far.
+FF57 8D3A              753                  bsr     mult                    
+                            ; multiply this by the base stored in AR0/1
+FF59 9B08              754                  adda    digit                   
+                            ; add the digit
+FF5B C900              755                  adcb    #0                      
+                            ; add carry into MSB
+FF5D 36                756                  psha                            
+                            ; push back on the stack
+FF5E DE00              757                  ldx     tmp                     
+                            ; restore string pointer
+FF60 20D9              758                  bra     nxtchr                  
+                            ; do the next character
+FF62 32                759  aexit   pula                                    
+                            ; restore A off stack, number now in B:A
+FF63 39                760                  rts
+                       761  
+                       762  ; **********************************************
+  ****************************************************
+                       763  ;
+                       764  ;                               Binary to ASCII 
+                                - Number in BA, Base is in ARB, X points to 
+                                output 
+                       765  ;
+                       766  ; **********************************************
+  ****************************************************
+                       767  
+FF64 DF00              768  binasc  stx     tmp                             
+                            ; save output pointer
+FF66 34                769                  des                             
+                            ; sets TOS to $FF identifying end of string on s
+  tack
+FF67 30                770                  tsx
+FF68 6F00              771                  clr     0,x
+FF6A 6300              772                  com     0,x
+                       773  
+FF6C DE04              774  bin1    ldx     arb                             
+                            ; copy ARB to ARA
+FF6E DF06              775                  stx     ara
+FF70 8D3D              776                  bsr     divide                  
+                            ; divide B:A by ARB
+                       777  
+FF72 9702              778                  staa    tmp1                    
+                            ; save A in TMP1
+FF74 9607              779                  ldaa    ar0                     
+                            ; load digit (remainder) from ar0
+FF76 36                780                  psha                            
+                            ; save on stack
+FF77 9602              781                  ldaa    tmp1                    
+                            ; restore B:A as quotient
+
+
+Crasm 1.7:                                                   page 22
+
+                       782  
+FF79 4D                783                  tsta                            
+                            ; if quotient is nonzero go back and divide agai
+  n
+FF7A 26F0              784                  bne     bin1
+FF7C 5D                785                  tstb
+FF7D 26ED              786                  bne     bin1
+                       787  
+FF7F DE00              788  binstr  ldx     tmp                             
+                            ; reload output pointer, destack the result.
+FF81 32                789  bin3    pula                                    
+                            ; restore a digit
+FF82 4D                790                  tsta                            
+                            ; if negative then reached the end of the string
+FF83 2A01              791                  bpl     bin4
+FF85 39                792                  rts                             
+                            ; so exit.
+FF86 8109              793  bin4    cmpa    #9                              
+                            ; tests if result is hex
+FF88 2F02              794                  ble     bin5
+FF8A 8B07              795                  adda    #7                      
+                            ; if it is A-F add 7 to shift chars to A-F
+FF8C 8B30              796  bin5    adda    #'0'                            
+                            ; make an ASCII character
+FF8E A700              797                  staa    0,x                     
+                            ; save at output
+FF90 08                798                  inx                             
+                            ; bump to next character
+FF91 20EE              799                  bra     bin3                    
+                            ; and destack another character.
+                       800  
+                       801  ; **********************************************
+  ****************************************************
+                       802  ;
+                       803  ;                                               
+                                                16 Bit Multiply : BA = BA * 
+                                                ARA
+                       804  ;
+                       805  ; **********************************************
+  ****************************************************
+                       806  
+FF93 36                807  mult    psha                                    
+                            ; push the value onto the stack
+FF94 37                808                  pshb
+FF95 8610              809                  ldaa    #16                     
+                            ; number of shifts
+FF97 36                810                  psha                            
+                            ; also on the stack
+FF98 4F                811                  clra                            
+                            ; zero result
+FF99 5F                812                  clrb
+FF9A 30                813                  tsx                             
+                            ; point index to stack
+                       814  
+FF9B 48                815  mul1    asla                                    
+                            ; shift BA left
+FF9C 59                816                  rolb
+FF9D 6802              817                  asl     2,x                     
+                            ; shift original BA MSB into carry
+FF9F 6901              818                  rol     1,x
+FFA1 2404              819                  bcc     mul2                    
+                            ; if MSB was 1.
+
+
+Crasm 1.7:                                                   page 23
+
+FFA3 9B07              820                  adda    ar0                     
+                            ; add ara into ba, it will be shifted into posit
+  ion.
+FFA5 D906              821                  adcb    ar1
+FFA7 6A00              822  mul2    dec     0,x                             
+                            ; decrement counter
+FFA9 26F0              823                  bne     mul1                    
+                            ; do this 16 times to multiply.
+FFAB 31                824                  ins                             
+                            ; fix stack back up, result is in BA already.
+FFAC 31                825                  ins
+FFAD 31                826                  ins
+FFAE 39                827                  rts
+                       828  
+                       829  ; **********************************************
+  ****************************************************
+                       830  ;
+                       831  ;                                       16 Bit D
+                                        ivide : BA = BA / ARA, on exit ARA i
+                                        s the remainder
+                       832  ;
+                       833  ; **********************************************
+  ****************************************************
+                       834  
+FFAF 36                835  divide  psha                                    
+                            ; save dividend into X3,4 (eventually)
+FFB0 37                836                  pshb
+FFB1 9606              837                  ldaa    ar1                     
+                            ; puts divisor into X1,2 (eventually)
+FFB3 D607              838                  ldab    ar0
+FFB5 37                839                  pshb
+FFB6 36                840                  psha
+FFB7 34                841                  des                             
+                            ; space for count byte
+FFB8 30                842                  tsx                             
+                            ; index points to stack.
+FFB9 8601              843                  ldaa    #1                      
+                            ; the count
+FFBB 6D01              844                  tst     1,x                     
+                            ; if hi divisor bit on 
+FFBD 2B0B              845                  bmi     div2                    
+                            ; then only do it once
+FFBF 4C                846  div1    inca                                    
+                            ; otherwise, add 1 for every leading zero and sh
+  ift the divisor
+FFC0 6802              847                  asl     2,x                     
+                            ; shift the divisor
+FFC2 6901              848                  rol     1,x
+FFC4 2B04              849                  bmi     div2                    
+                            ; until divisor is left justified
+FFC6 8111              850                  cmpa    #17                     
+                            ; if done 17 times divisor was zero
+FFC8 26F5              851                  bne     div1                    
+                            ; so fall through.
+FFCA A700              852  div2    staa    0,x                             
+                            ; save counter.
+                       853  
+FFCC E603              854                  ldab    3,x                     
+                            ; BA is original dividend value
+FFCE A604              855                  ldaa    4,x
+FFD0 6F03              856                  clr     3,x                     
+                            ; clear quotient
+
+
+Crasm 1.7:                                                   page 24
+
+FFD2 6F04              857                  clr     4,x
+                       858  
+FFD4 A002              859  div3    suba    2,x                             
+                            ; divide loop - subtract LJ divisor from dividen
+  d
+FFD6 E201              860                  sbcb    1,x
+FFD8 2407              861                  bcc     div4                    
+                            ; skip if dividend < divisor
+FFDA AB02              862                  adda    2,x                     
+                            ; fix divisor back
+FFDC E901              863                  adcb    1,x
+FFDE 0C                864                  clc                             
+                            ; clear carry to shift into result.
+FFDF 2001              865                  bra     div5
+FFE1 0D                866  div4    sec                                     
+                            ; dividend >= divisor so keep subtraction and sh
+  ift 1 into result
+                       867  
+FFE2 6904              868  div5    rol     4,x                             
+                            ; shift carry into result
+FFE4 6903              869                  rol     3,x
+FFE6 6401              870                  lsr     1,x                     
+                            ; shift dividend right 1
+FFE8 6602              871                  ror     2,x
+FFEA 6A00              872                  dec     0,x                     
+                            ; do it count times
+FFEC 26E6              873                  bne     div3
+                       874  
+FFEE D706              875                  stab    ar1                     
+                            ; save remainder in ARA
+FFF0 9707              876                  staa    ar0
+FFF2 31                877                  ins                             
+                            ; remove count and divisor from stack
+FFF3 31                878                  ins
+FFF4 31                879                  ins
+FFF5 33                880                  pulb                            
+                            ; restore quotient into BA
+FFF6 32                881                  pula
+FFF7 39                882                  rts                             
+                            ; and end division
+                       883  
+                       884  ; **********************************************
+  ****************************************************
+                       885  ;
+                       886  ;                                               
+                                                6800 Vectors
+                       887  ;
+                       888  ; **********************************************
+  ****************************************************
+                       889  
+  FFF8                 890                  * = 0xFFF8                      
+                            ; always goes at $FFF8
+FFF8 0104              891                  dw              0x104           
+                            ; IRQ vector
+FFFA FE4A              892                  dw              bkentr          
+                            ; SWI vector
+FFFC 0108              893                  dw              0x108           
+                            ; NMI vector
+FFFE FC00              894                  dw              start           
+                            ; RST vector
+                       895  
+                       896  
+
+
+Crasm 1.7:                                                   page 25
+
+
+ERRORS:       0
+WARNINGS:     0
+
+Successful assembly...
+ Last address     ffff (65535)
+ Code length       800 (2048)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Crasm 1.7:                                                   page 26
+
+^FCDB   Abs ADD2                                             
+^FCD5   Abs ADD32                                            
+ FCD7   Abs ADD32A                                           
+^FF62   Abs AEXIT                                            
+ 0007   Abs AR0                                              
+ 0006   Abs AR1                                              
+?0005   Abs AR2                                              
+ 0004   Abs AR3                                              
+ 0006   Abs ARA                                              
+ 0004   Abs ARB                                              
+^FF30   Abs ASC1                                             
+^FF35   Abs ASC2                                             
+^FF52   Abs ASC3                                             
+^FF22   Abs ASCBIN                                           
+ FDA4   Abs ASM1                                             
+ FDAA   Abs ASM1A                                            
+?FDBE   Abs ASM1B                                            
+^FDD6   Abs ASM2                                             
+^FDE0   Abs ASM2A                                            
+^FDE4   Abs ASM3                                             
+ FE13   Abs ASM4                                             
+ FE15   Abs ASM4A                                            
+^FDA1   Abs ASMBLR                                           
+ FF6C   Abs BIN1                                             
+ FF81   Abs BIN3                                             
+^FF86   Abs BIN4                                             
+^FF8C   Abs BIN5                                             
+^FF64   Abs BINASC                                           
+?FF7F   Abs BINSTR                                           
+ FE4A   Abs BKENTR                                           
+ 0030   Abs BRKADR                                           
+ 002E   Abs BRKSAV                                           
+^FEA1   Abs BRKSET                                           
+ 000C   Abs BUFADR                                           
+ 000E   Abs BUFEND                                           
+ 0022   Abs BUFFHI                                           
+ 0020   Abs BUFFLO                                           
+ 001E   Abs BUFPTR                                           
+ FE86   Abs CHANGE                                           
+^FC3D   Abs CLEAR                                            
+ FC42   Abs CLEAR1                                           
+^FCB6   Abs CLER                                             
+?FE7E   Abs CLRBRK                                           
+?FF0B   Abs CONVRT                                           
+ FC87   Abs CR                                               
+^FC8D   Abs CR1                                              
+^FD14   Abs CRLF                                             
+?FCC6   Abs CRLF1                                            
+ 001C   Abs CSRPTR                                           
+ FE66   Abs DBUG1                                            
+^FE64   Abs DEBUG                                            
+^FCA9   Abs DELETE                                           
+ 0008   Abs DIGIT                                            
+^FE35   Abs DIRECT                                           
+ FFBF   Abs DIV1                                             
+^FFCA   Abs DIV2                                             
+ FFD4   Abs DIV3                                             
+^FFE1   Abs DIV4                                             
+^FFE2   Abs DIV5                                             
+^FFAF   Abs DIVIDE                                           
+^FEEE   Abs DSPAD1                                           
+^FEEC   Abs DSPADR                                           
+
+
+Crasm 1.7:                                                   page 27
+
+ 0016   Abs DSTADR                                           
+^FC83   Abs ED1                                              
+ 0032   Abs EDIT                                             
+ FC75   Abs EDITIN                                           
+^FC67   Abs EDITOR                                           
+?FC73   Abs EDITRD                                           
+ FC79   Abs EDREAD                                           
+?FC7B   Abs ENDCHR                                           
+ 001A   Abs ENDMEM                                           
+?FF37   Abs ENTR2                                            
+ FC14   Abs EXEC                                             
+ FC18   Abs EXEC1                                            
+^FC24   Abs EXEC2                                            
+^FC2A   Abs EXEC3                                            
+^FC30   Abs EXEC4                                            
+^FE9C   Abs EXECTV                                           
+^FEC3   Abs EXIT                                             
+^FE30   Abs EXTEND                                           
+ E01F   Abs FRSTLN                                           
+ FC51   Abs GET1                                             
+^FC63   Abs GET2                                             
+ FC4A   Abs GETCHR                                           
+^FED8   Abs GOLOCN                                           
+^FF33   Abs HEX                                              
+^FC37   Abs HOME                                             
+^FE1F   Abs INDADR                                           
+^FE71   Abs INPCHR                                           
+^FEE4   Abs INPNUM                                           
+^FC8F   Abs INSERT                                           
+ FC95   Abs INSRT1                                           
+^FC9C   Abs INSRT2                                           
+ 0035   Abs IOBUFF                                           
+^FEDA   Abs JMPLCN                                           
+ F040   Abs KBDPIA                                           
+ E1FF   Abs LASTCH                                           
+ E1E0   Abs LASTLN                                           
+?FDEE   Abs LDOP                                             
+^FCAD   Abs LFTCSR                                           
+^FCFD   Abs LFTJST                                           
+ FE59   Abs LINE                                             
+?FE29   Abs LOADX                                            
+ FD33   Abs MOVE                                             
+^FD36   Abs MOVE1                                            
+^FD35   Abs MOVE1A                                           
+^FD46   Abs MOVE2                                            
+^FD18   Abs MOVE3                                            
+?FD5E   Abs MOVEX                                            
+^FD45   Abs MOVEXT                                           
+ FF9B   Abs MUL1                                             
+^FFA7   Abs MUL2                                             
+^FF93   Abs MULT                                             
+ FD4A   Abs MV21                                             
+?FD52   Abs MV22                                             
+ FD54   Abs MV23                                             
+ FD23   Abs MV31                                             
+^FD2F   Abs MV32                                             
+?FCDD   Abs NDRFLO                                           
+^FEDC   Abs NEWLIN                                           
+ FF3B   Abs NXTCHR                                           
+^FF2E   Abs OCT                                              
+ 002A   Abs ONDVAL                                           
+ FEBD   Abs OPNLC1                                           
+
+
+Crasm 1.7:                                                   page 28
+
+^FEBB   Abs OPNLOC                                           
+ FE92   Abs OPNNXT                                           
+^FE95   Abs OPNPRE                                           
+^FEAD   Abs OPNREG                                           
+^FECC   Abs OPNTBL                                           
+^FE03   Abs OPRND                                            
+ FD90   Abs OUT1                                             
+^FDA0   Abs OUT2                                             
+ 0011   Abs OUTBUF                                           
+ 000A   Abs OUTEND                                           
+?FD8E   Abs OUTSTR                                           
+^FD04   Abs OVR1                                             
+^FD12   Abs OVR1A                                            
+^FCED   Abs OVR3                                             
+^FD03   Abs OVREXT                                           
+^FCE6   Abs OVRFLO                                           
+ 0040   Abs PCVAL                                            
+^FF1E   Abs PNTBF1                                           
+^FF1A   Abs PNTBUF                                           
+^FF02   Abs PNTBYT                                           
+^FEFC   Abs PNTDIG                                           
+ FE62   Abs POPLIN                                           
+^FCC8   Abs PUTCH1                                           
+ FCBC   Abs PUTCHR                                           
+^FC6F   Abs REEDIT                                           
+^FE3E   Abs RELTIV                                           
+ FCA5   Abs RTARRO                                           
+^FC9F   Abs RTSCR                                            
+^FE78   Abs RUNBUG                                           
+ 0024   Abs SCNPTR                                           
+ FD77   Abs SCRD1                                            
+ FD85   Abs SCRD2                                            
+^FD74   Abs SCRLDN                                           
+^FD5F   Abs SCRLUP                                           
+ FD62   Abs SCRP1                                            
+ FEB8   Abs SETSTK                                           
+?FE8C   Abs SPACE                                            
+ 0014   Abs SRCADR                                           
+ 0026   Abs SRCASM                                           
+ FC00   Abs START                                            
+^FCCB   Abs SUB32                                            
+ FCCF   Abs SUB32A                                           
+ FDC2   Abs SYMBL                                            
+^FE27   Abs SYMPTR                                           
+ 002C   Abs SYMVAL                                           
+ 0000   Abs TMP                                              
+ 0002   Abs TMP1                                             
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

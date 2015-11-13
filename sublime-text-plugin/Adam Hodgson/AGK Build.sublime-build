@@ -1,0 +1,18 @@
+{
+	"cmd": ["AGKCompiler", "-agk", "main.agc"],
+
+	"variants": [
+
+        { "cmd": ["AGKRun", "$file"],
+          "name": "Run the latest AGK build"
+        },
+
+        { "cmd": ["AGKCompiler", "-bct", "main.agc"],
+          "name": "AGK Compile and Broadcast"
+        },
+
+        { "cmd": ["AGKCompiler", "-run", "main.agc"],
+          "name": "AGK Compile Run Broadcast"
+        }
+    ]
+}

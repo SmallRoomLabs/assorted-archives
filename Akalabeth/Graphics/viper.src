@@ -1,0 +1,15 @@
+// *************************************************************************
+//
+//                                 Draw Viper
+//
+// *************************************************************************
+340       hplot y.m - 10 / dI,x.m - 15 / dI to y.m - 10 / dI,x.m - 30 / dI to y.m - 15 / dI,x.m - 20 / dI to y.m - 15 / dI,x.m - 15 / dI to y.m - 15 / dI,x.m to y.m + 15 / dI,x.m to y.m + 15 / dI,x.m - 15 / dI to y.m - 15 / dI,x.m - 15 / dI
+341       hplot y.m - 15 / dI,x.m - 10 / dI to y.m + 15 / dI,x.m - 10 / dI:
+          hplot y.m - 15 / dI,x.m - 5 / dI to y.m + 15 / dI,x.m - 5 / dI
+342       hplot y.m,x.m - 15 / dI to y.m - 5 / dI,x.m - 20 / dI to y.m - 5 / dI,x.m - 35 / dI to y.m + 5 / dI,x.m - 35 / dI to y.m + 5 / dI,x.m - 20 / dI to y.m + 10 / dI,x.m - 15 / dI
+343       hplot y.m - 5 / dI,x.m - 20 / dI to y.m + 5 / dI,x.m - 20 / dI:
+          hplot y.m - 5 / dI,x.m - 25 / dI to y.m + 5 / dI,x.m - 25 / dI:
+          hplot y.m - 5 / dI,x.m - 30 / dI to y.m + 5 / dI,x.m - 30 / dI
+344       hplot y.m - 10 / dI,x.m - 35 / dI to y.m - 10 / dI,x.m - 40 / dI to y.m - 5 / dI,x.m - 45 / dI to y.m + 5 / dI,x.m - 45 / dI to y.m + 10 / dI,x.m - 40 / dI to y.m + 10 / dI,x.m - 35 / dI
+345       hplot y.m - 10 / dI,x.m - 40 / dI to y.m,x.m - 45 / dI to y.m + 10 / dI,x.m - 40 / dI
+346       hplot y.m - 5 / dI,x.m - 40 / dI to y.m + 5 / dI,x.m - 40 / dI to y.m + 15 / dI,x.m - 30 / dI to y.m,x.m - 40 / dI to y.m - 15 / dI,x.m - 30 / dI to y.m - 5 / dI + .5,x.m - 40 / dI
